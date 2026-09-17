@@ -746,4 +746,19 @@ function PipelineColumn({ status, apps, onDelete }) {
       </div>
     </div>
   );
-}
+}     
+/* ── Main Opportunities Page Component ───────────────────────── */
+const PIPELINE_STATUSES = ['SAVED', 'PLANNING', 'APPLIED', 'OA', 'INTERVIEW', 'FINAL_ROUND', 'OFFER', 'REJECTED'];
+
+const DOMAIN_OPTIONS = [
+  { value: '', label: 'All Technical Domains' },
+  { value: 'software-engineering', label: 'Software Engineering' },
+  { value: 'data-science', label: 'Data Science' },
+  { value: 'machine-learning', label: 'Machine Learning' },
+  { value: 'devops', label: 'DevOps & Cloud' },
+  { value: 'frontend', label: 'Frontend Engineering' },
+  { value: 'backend', label: 'Backend Engineering' },
+  { value: 'fullstack', label: 'Full Stack' },
+  { value: 'cybersecurity', label: 'Cybersecurity' },
+  { value: 'mobile', label: 'Mobile Development' },
+];

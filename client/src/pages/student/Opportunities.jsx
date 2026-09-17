@@ -686,4 +686,17 @@ function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
     </div>
   );
 }
-       
+       /* ── Pipeline Column ─────────────────────────────────────────── */
+function PipelineColumn({ status, apps, onDelete }) {
+  const CONFIG = {
+    SAVED:       { label: 'Saved',       dot: 'bg-zinc-400',    border: 'border-zinc-500/20' },
+    PLANNING:    { label: 'Planning',    dot: 'bg-amber-400',   border: 'border-amber-500/20' },
+    APPLIED:     { label: 'Applied',     dot: 'bg-blue-400',    border: 'border-blue-500/20' },
+    OA:          { label: 'Online Assmt',dot: 'bg-indigo-400',  border: 'border-indigo-500/20' },
+    INTERVIEW:   { label: 'Interview',   dot: 'bg-purple-400',  border: 'border-purple-500/20' },
+    FINAL_ROUND: { label: 'Final Round', dot: 'bg-fuchsia-400', border: 'border-fuchsia-500/20' },
+    OFFER:       { label: 'Offer',       dot: 'bg-emerald-400', border: 'border-emerald-500/20' },
+    REJECTED:    { label: 'Rejected',    dot: 'bg-rose-400',    border: 'border-rose-500/20' },
+  };
+  const cfg = CONFIG[status] || { label: status, dot: 'bg-zinc-400', border: 'border-white/[0.08]' };
+  

@@ -319,6 +319,16 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
                 : 'text-zinc-400 hover:text-white bg-white/[0.04] hover:bg-white/[0.09] border border-white/[0.08]'
             }`}
           >
-            
+            <span>{isSaved ? 'Saved' : 'Save'}</span>
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill={isSaved ? 'currentColor' : 'none'}
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            ></svg>
           </button>
               </div>

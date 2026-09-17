@@ -683,3 +683,125 @@ export default function InstitutionDashboard() {
                 )}
               </div>
             )}
+     {/* ── TAB: ACADEMICIANS / FACULTY WORKLOAD ───────────────────── */}
+            {activeTab === 'academicians' && (
+              <div className="flex flex-col gap-8">
+                {/* Hero Header */}
+                <div className="rounded-3xl border border-zinc-800/90 bg-gradient-to-r from-zinc-900 via-zinc-900/70 to-zinc-950 p-6 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xl">
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-3.5">
+                      Faculty Mentorship Roster
+                    </div>
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight">
+                      Faculty Workload &amp; Allocation
+                    </h1>
+                    <p className="text-sm md:text-base text-zinc-300 font-medium mt-2 max-w-2xl leading-relaxed">
+                      Balance mentoring capacity across academic departments (Average: {facultyWorkload.averageWorkload} students/mentor).
+                    </p>
+                  </div>
+                </div>
+
+                {/* Sub-KPI HUD */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Registered Faculty</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-white tracking-tight">{facultyWorkload.academicians.length}</span>
+                      <span className="text-sm font-semibold text-zinc-400">professors</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Active mentors
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Average Workload</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-indigo-400 tracking-tight">{facultyWorkload.averageWorkload}</span>
+                      <span className="text-sm font-semibold text-zinc-400">students/mentor</span>
+                    </div>
+                    <span className="text-xs font-semibold text-emerald-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Target threshold: 25 max
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Total Mentees</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-white tracking-tight">{facultyWorkload.totalAssignedStudents}</span>
+                      <span className="text-sm font-semibold text-zinc-400">assigned</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Under active guidance
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">High Load Flag</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className={`text-4xl md:text-5xl font-black tracking-tight ${facultyWorkload.academicians.filter(f => f.workloadStatus === 'HIGH LOAD').length > 0 ? 'text-rose-400' : 'text-zinc-200'}`}>
+                        {facultyWorkload.academicians.filter(f => f.workloadStatus === 'HIGH LOAD').length}
+                      </span>
+                      <span className="text-sm font-semibold text-zinc-400">mentors</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Rebalancing recommended
+                    </span>
+                  </div>
+                </div>
+
+                {facultyWorkload.academicians.length === 0 ? (
+                  <div className="p-16 border border-dashed border-zinc-800 rounded-3xl bg-zinc-900/30 text-center text-sm text-zinc-400 font-medium">
+                    No faculty profiles registered for this institution yet.
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {facultyWorkload.academicians.map((fac) => (
+                      <div key={fac._id} className="p-6 rounded-2xl border border-zinc-800/90 bg-gradient-to-b from-zinc-900/80 to-zinc-950/90 shadow-xl flex flex-col justify-between hover:border-indigo-500/40 transition-all">
+                        <div>
+                          <div className="flex items-start justify-between gap-3 mb-3">
+                            <div>
+                              <h3 className="text-base font-bold text-white tracking-tight">{fac.user?.name || 'Faculty Member'}</h3>
+                              <p className="text-xs text-zinc-400 font-medium mt-0.5">{fac.user?.email}</p>
+                            </div>
+                            <span
+                              className={`text-xs uppercase font-mono px-2.5 py-1 rounded-full font-bold ${
+                                fac.workloadStatus === 'HIGH LOAD'
+                                  ? 'bg-rose-500/15 text-rose-300 border border-rose-500/30'
+                                  : fac.workloadStatus === 'NORMAL'
+                                  ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
+                                  : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
+                              }`}
+                            >
+                              {fac.workloadStatus}
+                            </span>
+                          </div>
+
+                          <div className="text-xs text-zinc-300 my-4 bg-zinc-950/60 p-3.5 rounded-xl border border-zinc-800/80 flex items-center justify-between font-medium">
+                            <span className="text-zinc-400 font-bold uppercase tracking-wider text-[11px]">Department</span>
+                            <span className="text-zinc-100 font-bold">{fac.department}</span>
+                          </div>
+
+                          <div className="flex items-baseline justify-between text-xs py-1">
+                            <span className="text-zinc-400 font-medium">Assigned Cohort</span>
+                            <span className="text-2xl font-black font-mono text-indigo-400">{fac.assignedStudentsCount} students</span>
+                          </div>
+                        </div>
+
+                        <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-end gap-2">
+                          <button
+                            onClick={() => {
+                              setSelectedAcademician(fac);
+                              setShowAssignModal(true);
+                            }}
+                            className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-md shadow-indigo-600/20"
+                          >
+                            + Allocate Student
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}

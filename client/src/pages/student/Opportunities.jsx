@@ -858,4 +858,13 @@ export default function Opportunities() {
               setSaving(null);
             }
           };
+         const handleDelete = async (appId) => {
+            try {
+              await deleteApplication(appId);
+              showToast('Application removed from pipeline.');
+              await fetchData();
+            } catch (err) {
+              showToast(err.message || 'Failed to remove.', 'error');
+            }
+          };
         

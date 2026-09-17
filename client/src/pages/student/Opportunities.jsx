@@ -349,6 +349,11 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
             </span>
           )}
         </div>
+          {/* Job Title */}
+        <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight leading-snug mb-4 line-clamp-2 group-hover:text-orange-400 transition-colors">
+          {formatRoleTitle(opp.title)}
+        </h3>
+
             </svg>
           </button>
               </div>

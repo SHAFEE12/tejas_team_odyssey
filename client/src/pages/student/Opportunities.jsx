@@ -304,5 +304,21 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
               </div>
             )}
           </div>
-
+           {/* Bookmark Button */}
+          <button
+            type="button"
+            id={`btn-save-${opp._id}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              onSave(opp._id);
+            }}
+            disabled={saving === opp._id}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
+              isSaved
+                ? 'bg-orange-500/15 border border-orange-500/40 text-orange-400 font-semibold shadow-sm'
+                : 'text-zinc-400 hover:text-white bg-white/[0.04] hover:bg-white/[0.09] border border-white/[0.08]'
+            }`}
+          >
+            
+          </button>
               </div>

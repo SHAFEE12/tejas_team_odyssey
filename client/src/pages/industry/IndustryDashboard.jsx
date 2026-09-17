@@ -1273,3 +1273,154 @@ export default function IndustryDashboard() {
           </>
         )}
       </main>
+ {/* ════════ MODAL: CREATE OPPORTUNITY ════════ */}
+      {showCreateModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-xl w-full p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+              <h3 className="font-semibold text-white text-sm">Post New Job / Internship</h3>
+              <button onClick={() => setShowCreateModal(false)} className="text-zinc-400 hover:text-white">✕</button>
+            </div>
+
+            <form onSubmit={handleCreateOpportunity} className="space-y-3 text-xs">
+              <div className="space-y-1">
+                <label className="text-zinc-300">Job Title *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Graduate Software Engineer, Embedded Systems Intern"
+                  value={newOpp.title}
+                  onChange={(e) => setNewOpp({ ...newOpp, title: e.target.value })}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-zinc-300">Opportunity Type *</label>
+                  <select
+                    value={newOpp.type}
+                    onChange={(e) => setNewOpp({ ...newOpp, type: e.target.value })}
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                  >
+                    <option value="full-time">Full-time</option>
+                    <option value="internship">Internship</option>
+                    <option value="part-time">Part-time</option>
+                    <option value="contract">Contract</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-zinc-300">Engineering Domain *</label>
+                  <select
+                    value={newOpp.domain}
+                    onChange={(e) => setNewOpp({ ...newOpp, domain: e.target.value })}
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                  >
+                    <option value="software-engineering">Software Engineering</option>
+                    <option value="backend">Backend Systems</option>
+                    <option value="frontend">Frontend Engineering</option>
+                    <option value="fullstack">Fullstack Development</option>
+                    <option value="data-science">Data Science</option>
+                    <option value="machine-learning">Machine Learning / AI</option>
+                    <option value="cloud">Cloud & DevOps</option>
+                    <option value="embedded">Embedded Systems</option>
+                    <option value="electronics">Electronics (ECE)</option>
+                    <option value="electrical">Electrical (EEE)</option>
+                    <option value="mechanical">Mechanical Engineering</option>
+                    <option value="civil">Civil Engineering</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div className="space-y-1">
+                  <label className="text-zinc-300">Work Mode</label>
+                  <select
+                    value={newOpp.workMode}
+                    onChange={(e) => setNewOpp({ ...newOpp, workMode: e.target.value })}
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                  >
+                    <option value="remote">Remote</option>
+                    <option value="hybrid">Hybrid</option>
+                    <option value="on-site">On-Site</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-zinc-300">Experience Level</label>
+                  <select
+                    value={newOpp.experienceLevel}
+                    onChange={(e) => setNewOpp({ ...newOpp, experienceLevel: e.target.value })}
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                  >
+                    <option value="entry">Entry Level</option>
+                    <option value="internship">Internship</option>
+                    <option value="mid">Mid Level</option>
+                    <option value="any">Any Experience</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-zinc-300">Openings</label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={newOpp.openings}
+                    onChange={(e) => setNewOpp({ ...newOpp, openings: e.target.value })}
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-zinc-300">Required Skills (Canonical Career Odyssey Taxonomy) *</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Java, Python, React, Node.js, SQL, Docker"
+                  value={newOpp.requiredSkills}
+                  onChange={(e) => setNewOpp({ ...newOpp, requiredSkills: e.target.value })}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                />
+                <span className="text-[10px] text-zinc-500">Skills are validated against the master ecosystem taxonomy.</span>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-zinc-300">Preferred Skills</label>
+                <input
+                  type="text"
+                  placeholder="e.g. AWS, Kubernetes, TypeScript"
+                  value={newOpp.preferredSkills}
+                  onChange={(e) => setNewOpp({ ...newOpp, preferredSkills: e.target.value })}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-zinc-300">Job Description *</label>
+                <textarea
+                  rows={4}
+                  required
+                  placeholder="Describe responsibilities, team context, and candidate expectations..."
+                  value={newOpp.description}
+                  onChange={(e) => setNewOpp({ ...newOpp, description: e.target.value })}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-3 border-t border-zinc-800">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateModal(false)}
+                  className="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-medium"
+                >
+                  Publish Opportunity
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}

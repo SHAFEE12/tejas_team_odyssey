@@ -576,6 +576,31 @@ function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
             </span>
           </div>
 
-        
+         {/* Compensation */}
+          {opp.stipend && opp.stipend !== 'Not disclosed' && (
+            <div className="flex items-center justify-between px-4 py-3 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+              <div className="flex items-center gap-2.5">
+                <Icon d={ICONS.money} size={16} className="text-emerald-400" />
+                <span className="text-xs text-zinc-400">Compensation / Stipend</span>
+              </div>
+              <span className="text-sm font-mono font-bold text-white">{opp.stipend}</span>
+            </div>
+          )}
+
+          {/* Critical Missing Action */}
+          {criticalMissing.length > 0 && (
+            <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/25 space-y-1.5">
+              <p className="text-[11px] font-mono font-bold text-rose-400 uppercase tracking-wider">
+                Recommended Action Before Applying
+              </p>
+              {criticalMissing.map((item, i) => (
+                <div key={i} className="flex items-center gap-2 text-xs text-rose-200 font-medium">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-400 shrink-0" />
+                  {item}
+                </div>
+              ))}
+            </div>
+          )}
+
           
       

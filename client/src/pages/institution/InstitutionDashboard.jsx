@@ -341,3 +341,96 @@ export default function InstitutionDashboard() {
           </button>
         ))}
       </div>
+{/* Main Container */}
+      <main className="flex-1 max-w-[1520px] w-full mx-auto p-6 md:p-10 flex flex-col gap-8">
+        {loading && (
+          <div className="flex items-center justify-center p-12">
+            <div className="w-8 h-8 rounded-full border-2 border-indigo-500/20 border-t-indigo-500 animate-spin" />
+          </div>
+        )}
+
+        {!loading && (
+          <>
+            {/* ── TAB: OVERVIEW ────────────────────────────────────────── */}
+            {activeTab === 'overview' && (
+              <div className="flex flex-col gap-8">
+                {/* Executive Hero */}
+                <div className="rounded-3xl border border-zinc-800/90 bg-gradient-to-r from-zinc-900 via-zinc-900/70 to-zinc-950 p-6 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xl">
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-3.5">
+                    
+                      Institutional Placement Intelligence Active
+                    </div>
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight">
+                      {institutionInfo?.name || 'Institutional Console'}
+                    </h1>
+                    <p className="text-sm md:text-base text-zinc-300 font-medium mt-2 max-w-3xl leading-relaxed">
+                      Central university console for cohort career readiness oversight, engineering skill gap aggregation, faculty workload balance, and campus recruitment pipeline execution.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-3">
+                    <button
+                      onClick={() => setShowDriveModal(true)}
+                      className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs md:text-sm font-bold tracking-wide transition-all shadow-xl shadow-indigo-600/30 cursor-pointer"
+                    >
+                      + Launch Campus Drive
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('students')}
+                      className="px-5 py-2.5 rounded-xl bg-zinc-800/90 hover:bg-zinc-700 text-white text-xs md:text-sm font-bold tracking-wide transition-all border border-zinc-700/70 shadow-md cursor-pointer"
+                    >
+                      Browse Cohort
+                    </button>
+                  </div>
+                </div>
+
+                {/* Executive KPIs Grid */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Total Enrolled Cohort</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-white tracking-tight">{metrics.totalStudents}</span>
+                      <span className="text-sm font-semibold text-zinc-400">students</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Across all departments
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Average Readiness</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-indigo-400 tracking-tight">{metrics.averageCareerReadiness}</span>
+                      <span className="text-sm font-semibold text-zinc-400">/ 100</span>
+                    </div>
+                    <span className="text-xs font-semibold text-emerald-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      {metrics.studentsPlacementReady} placement ready (score &ge; 70)
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Students At Risk</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className={`text-4xl md:text-5xl font-black tracking-tight ${metrics.studentsAtRisk > 0 ? 'text-amber-400' : 'text-zinc-200'}`}>
+                        {metrics.studentsAtRisk}
+                      </span>
+                      <span className="text-sm font-semibold text-zinc-400">flagged</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Score &lt; 40 or severe deficit
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Placement Offers</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-emerald-400 tracking-tight">{metrics.totalOffers}</span>
+                      <span className="text-sm font-semibold text-zinc-400">offers ({metrics.conversionRate}%)</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      {metrics.totalApplications} total applications logged
+                    </span>
+                  </div>
+                </div>
+

@@ -60,3 +60,20 @@ const ICONS = {
   shield: ['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'],
 };
 
+/* ── Typography & Relative Date Helpers ───────────────────────── */
+const ROLE_TITLE_FORMAT = {
+  'frontend developer': 'Frontend Developer',
+  'software engineering': 'Software Engineering',
+  'swe': 'Software Engineer',
+  'devops intern': 'DevOps Intern',
+  'backend engineer': 'Backend Engineer',
+  'mobile app developer intern': 'Mobile App Developer Intern',
+  'full stack developer intern': 'Full Stack Developer Intern',
+  'junior software engineer': 'Junior Software Engineer',
+  'software engineering intern': 'Software Engineering Intern',
+  'senior ui/ux designer': 'Senior UI/UX Designer',
+  'graphic designer': 'Graphic Designer',
+  'senior motion designer': 'Senior Motion Designer',
+  'ux designer': 'UX Designer',
+  'junior ui/ux designer': 'Junior UI/UX Designer',
+};

@@ -329,6 +329,26 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-            ></svg>
+            >
+                   <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Company name + time ago */}
+        <div className="flex items-center gap-2 mb-1.5">
+          <span className="font-semibold text-sm text-zinc-300 truncate">
+            {opp.company}
+          </span>
+          <span className="text-xs text-zinc-500 shrink-0 font-normal">
+            {timeAgo}
+          </span>
+          {isPartner && (
+            <span className="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 shrink-0">
+              Partner
+            </span>
+          )}
+        </div>
+            </svg>
           </button>
               </div>

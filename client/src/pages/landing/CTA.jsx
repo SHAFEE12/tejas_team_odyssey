@@ -1332,3 +1332,113 @@ export default function CTA({ onLogin, onRegister }) {
         rotate(${rotation}deg)
       `;
     }
+
+    /* =========================================================
+       UPDATE DOT PHYSICS
+    ========================================================= */
+
+    function updateDots(time) {
+      dots.forEach(dot => {
+        const dx =
+          dot.x -
+          spiderPosition.x;
+
+        const dy =
+          dot.y -
+          spiderPosition.y;
+
+        const distance =
+          Math.sqrt(
+            dx * dx +
+            dy * dy
+          );
+
+        if (
+          distance <
+          SETTINGS.spiderRadius
+        ) {
+          let nx = 0;
+          let ny = 0;
+
+          if (
+            distance >
+            0.001
+          ) {
+            nx =
+              dx /
+              distance;
+
+            ny =
+              dy /
+              distance;
+          }
+
+          const influence =
+            1 -
+            distance /
+            SETTINGS.spiderRadius;
+
+          const force =
+            influence *
+            influence *
+            SETTINGS.displacement;
+
+          dot.vx +=
+            nx *
+            force *
+            0.032;
+
+          dot.vy +=
+            ny *
+            force *
+            0.032;
+
+          dot.vx +=
+            spiderPosition.vx *
+            influence *
+            0.018;
+
+          dot.vy +=
+            spiderPosition.vy *
+            influence *
+            0.018;
+        }
+
+        dot.vx +=
+          (
+            dot.ox -
+            dot.x
+          ) *
+          SETTINGS.spring;
+
+        dot.vy +=
+          (
+            dot.oy -
+            dot.y
+          ) *
+          SETTINGS.spring;
+
+        dot.vx *=
+          SETTINGS.friction;
+
+        dot.vy *=
+          SETTINGS.friction;
+
+        dot.x += dot.vx;
+        dot.y += dot.vy;
+
+        dot.x +=
+          Math.sin(
+            time * 0.00025 +
+            dot.phase
+          ) *
+          0.025;
+
+        dot.y +=
+          Math.cos(
+            time * 0.00025 +
+            dot.phase
+          ) *
+          0.025;
+      });
+    }

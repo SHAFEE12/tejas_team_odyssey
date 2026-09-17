@@ -79,3 +79,60 @@ export default function InstitutionDashboard() {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
   };
+ // Load Main Dashboard Overview
+  const loadDashboardData = async () => {
+    if (!token) return;
+    setLoading(true);
+    try {
+      const [dashRes, deptRes, facRes, skillRes, demandRes, placeRes, driveRes] = await Promise.all([
+        fetch(`${API_URL}/api/institution/dashboard`, { credentials: 'omit', headers: authHeaders }),
+        fetch(`${API_URL}/api/institution/departments`, { credentials: 'omit', headers: authHeaders }),
+        fetch(`${API_URL}/api/institution/academicians`, { credentials: 'omit', headers: authHeaders }),
+        fetch(`${API_URL}/api/institution/skill-gaps`, { credentials: 'omit', headers: authHeaders }),
+        fetch(`${API_URL}/api/institution/industry-demand`, { credentials: 'omit', headers: authHeaders }),
+        fetch(`${API_URL}/api/institution/placements`, { credentials: 'omit', headers: authHeaders }),
+        fetch(`${API_URL}/api/institution/hiring-drives`, { credentials: 'omit', headers: authHeaders }),
+      ]);
+
+      if (dashRes.ok) {
+        const d = await dashRes.json();
+        if (d.success) {
+          setInstitutionInfo(d.data.institution);
+          setMetrics(d.data.metrics);
+        }
+      }
+      if (deptRes.ok) {
+        const d = await deptRes.json();
+        if (d.success) setDepartments(d.data);
+      }
+      if (facRes.ok) {
+        const d = await facRes.json();
+        if (d.success) setFacultyWorkload(d.data);
+      }
+      if (skillRes.ok) {
+        const d = await skillRes.json();
+        if (d.success) setSkillGaps(d.data);
+      }
+      if (demandRes.ok) {
+        const d = await demandRes.json();
+        if (d.success) setIndustryDemand(d.data);
+      }
+      if (placeRes.ok) {
+        const d = await placeRes.json();
+        if (d.success) setPlacements(d.data);
+      }
+      if (driveRes.ok) {
+        const d = await driveRes.json();
+        if (d.success) setHiringDrives(d.data);
+      }
+    } catch (err) {
+      console.error('Failed to load institution data:', err);
+      showToast('Error loading institution analytics', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadDashboardData();
+  }, [token]);

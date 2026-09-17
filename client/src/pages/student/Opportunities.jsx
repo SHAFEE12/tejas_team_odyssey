@@ -190,7 +190,6 @@ function CompanyLogo({ company }) {
     );
   }
 
-  
   if (c.includes('amazon')) {
     return (
       <div className="w-12 h-12 rounded-full bg-black border border-white/10 flex items-center justify-center shadow-md shrink-0">
@@ -199,7 +198,7 @@ function CompanyLogo({ company }) {
     );
   }
 
-   if (c.includes('apple')) {
+  if (c.includes('apple')) {
     return (
       <div className="w-12 h-12 rounded-full bg-black border border-white/10 flex items-center justify-center shadow-md shrink-0">
         <svg width="20" height="20" viewBox="0 0 170 170" fill="white">
@@ -223,7 +222,7 @@ function CompanyLogo({ company }) {
     );
   }
 
-   if (c.includes('airbnb')) {
+  if (c.includes('airbnb')) {
     return (
       <div className="w-12 h-12 rounded-full bg-[#FF5A5F] border border-white/10 flex items-center justify-center shadow-md shrink-0">
         <svg width="22" height="22" viewBox="0 0 32 32" fill="white">
@@ -233,7 +232,7 @@ function CompanyLogo({ company }) {
     );
   }
 
-   if (c.includes('dribbble')) {
+  if (c.includes('dribbble')) {
     return (
       <div className="w-12 h-12 rounded-full bg-[#EA4C89] border border-white/10 flex items-center justify-center shadow-md shrink-0">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -257,6 +256,7 @@ function CompanyLogo({ company }) {
     </div>
   );
 }
+
 /* ── Executive Obsidian Job Card (Matching Reference Layout) ─── */
 function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving }) {
   const isSaved = opp.applicationStatus === 'saved';
@@ -272,13 +272,14 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
   const workModeLabel = opp.workMode === 'remote' || opp.remote ? 'Remote' :
                         opp.workMode === 'hybrid' ? 'Flexible Schedule' : 'In office';
 
-                     return (
+  return (
     <div
       id={`opp-card-${opp._id}`}
       className="group relative flex flex-col justify-between rounded-[28px] p-6 sm:p-7 cursor-pointer transition-all duration-300 bg-[#0f121d] hover:bg-[#141726] text-zinc-100 border border-white/[0.08] hover:border-orange-500/40 shadow-[0_12px_36px_rgba(0,0,0,0.5)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.7),0_0_20px_rgba(249,115,22,0.06)] hover:-translate-y-0.5"
       onClick={() => onView(opp)}
-    ></div>
-      {/* Top row: Circular Logo + Fit Ring indicator + Save Bookmark button */}
+    >
+      <div>
+        {/* Top row: Circular Logo + Fit Ring indicator + Save Bookmark button */}
         <div className="flex items-center justify-between gap-3 mb-5">
           <div className="flex items-center gap-3">
             <CompanyLogo company={opp.company} />
@@ -304,7 +305,8 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
               </div>
             )}
           </div>
-           {/* Bookmark Button */}
+
+          {/* Bookmark Button */}
           <button
             type="button"
             id={`btn-save-${opp._id}`}
@@ -330,7 +332,7 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-                   <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
             </svg>
           </button>
         </div>
@@ -349,12 +351,13 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
             </span>
           )}
         </div>
-          {/* Job Title */}
+
+        {/* Job Title */}
         <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight leading-snug mb-4 line-clamp-2 group-hover:text-orange-400 transition-colors">
           {formatRoleTitle(opp.title)}
         </h3>
 
-           {/* Pill Tags Row (Aligned with Dashboard Theme) */}
+        {/* Pill Tags Row (Aligned with Dashboard Theme) */}
         <div className="flex flex-wrap gap-2 items-center mb-6">
           <span className="px-3 py-1 rounded-xl text-xs font-medium capitalize bg-purple-500/10 text-purple-300 border border-purple-500/20">
             {opp.type}
@@ -371,7 +374,7 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
             </span>
           )}
         </div>
-          </div>
+      </div>
 
       {/* Footer: Salary & Location on Left, Apply Now on Right */}
       <div
@@ -387,7 +390,7 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
           </p>
         </div>
 
-  {isApplied ? (
+        {isApplied ? (
           <div className="flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-bold shrink-0">
             <Icon d={ICONS.check} size={13} />
             <span>Applied</span>
@@ -400,14 +403,15 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
             onClick={() => onApplyClick(opp)}
             className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs shadow-md shadow-orange-600/25 active:scale-95 transition-all disabled:opacity-50 cursor-pointer shrink-0"
           >
-              {saving === opp._id ? '…' : 'Apply now'}
+            {saving === opp._id ? '…' : 'Apply now'}
           </button>
         )}
       </div>
     </div>
   );
 }
-         /* ── Quick Apply Confirmation Modal ──────────────────────────── */
+
+/* ── Quick Apply Confirmation Modal ──────────────────────────── */
 function QuickApplyModal({ opp, onClose, onConfirm, submitting }) {
   if (!opp) return null;
   const isPartner = opp.industry || opp.isDemo === false;
@@ -439,7 +443,7 @@ function QuickApplyModal({ opp, onClose, onConfirm, submitting }) {
           </button>
         </div>
 
-         {/* Company & Location Info */}
+        {/* Company & Location Info */}
         <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-between">
           <div>
             <p className="text-xs font-semibold text-zinc-200">{opp.company}</p>
@@ -453,7 +457,7 @@ function QuickApplyModal({ opp, onClose, onConfirm, submitting }) {
           )}
         </div>
 
-            {/* Telemetry Transmitted */}
+        {/* Telemetry Transmitted */}
         <div className="space-y-2">
           <p className="text-[11px] font-mono font-semibold text-zinc-300 uppercase tracking-wider">
             Verified Proof Transmitted with Application:
@@ -477,7 +481,8 @@ function QuickApplyModal({ opp, onClose, onConfirm, submitting }) {
             </div>
           </div>
         </div>
-          <p className="text-[11px] text-zinc-400 leading-relaxed">
+
+        <p className="text-[11px] text-zinc-400 leading-relaxed">
           Your profile will be directly cataloged into the employer’s applicant tracking system with deterministic match explainability.
         </p>
 
@@ -496,7 +501,7 @@ function QuickApplyModal({ opp, onClose, onConfirm, submitting }) {
             onClick={() => onConfirm(opp._id)}
             className="px-5 py-2 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs shadow-lg shadow-orange-600/25 transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer"
           >
-             {submitting ? (
+            {submitting ? (
               <>
                 <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 <span>Transmitting…</span>
@@ -507,13 +512,14 @@ function QuickApplyModal({ opp, onClose, onConfirm, submitting }) {
                 <Icon d={ICONS.arrow} size={12} />
               </>
             )}
-              </button>
-              </div>
-             </div>
-            </div>
-             );
-            }       
-          /* ── Opportunity Detail Drawer ──────────────────────────────── */
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Opportunity Detail Drawer ──────────────────────────────── */
 function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
   if (!opp) return null;
 
@@ -522,7 +528,8 @@ function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
   const bd = opp.fitBreakdown || {};
   const evidenceMatrix = opp.evidenceMatrix || [];
   const criticalMissing = opp.criticalMissing || [];
-      return (
+
+  return (
     <div className="fixed inset-0 z-50 flex justify-end bg-black/80 backdrop-blur-md animate-fadeIn" role="dialog">
       <div
         className="relative z-10 flex flex-col w-full max-w-[620px] h-full bg-[#0b0d16] border-l border-white/[0.12] overflow-y-auto shadow-2xl"
@@ -539,7 +546,7 @@ function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                     Verified Industry Partner
                   </span>
-                   ) : (
+                ) : (
                   <span className="text-[10px] font-mono font-bold text-orange-400 uppercase tracking-wider">
                     Curated Opening
                   </span>
@@ -558,7 +565,7 @@ function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
             onClick={onClose}
             className="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.08] transition-colors cursor-pointer shrink-0"
           >
-          <Icon d={ICONS.close} size={18} />
+            <Icon d={ICONS.close} size={18} />
           </button>
         </div>
 
@@ -576,7 +583,7 @@ function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
             </span>
           </div>
 
-         {/* Compensation */}
+          {/* Compensation */}
           {opp.stipend && opp.stipend !== 'Not disclosed' && (
             <div className="flex items-center justify-between px-4 py-3 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
               <div className="flex items-center gap-2.5">
@@ -601,8 +608,8 @@ function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
               ))}
             </div>
           )}
-         
-            {/* Score Breakdown */}
+
+          {/* Score Breakdown */}
           <div className="flex flex-col gap-3 p-5 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
             <p className="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider mb-1">
               Deterministic 8-Vector Match Calibration
@@ -633,9 +640,9 @@ function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
                 <span className="font-mono">{bd.githubEvidenceScore ?? 0}% (5%)</span>
               </div>
             </div>
-          </div>      
+          </div>
 
-            {/* Required Skills Chips */}
+          {/* Required Skills Chips */}
           {opp.requiredSkills?.length > 0 && (
             <div className="space-y-2">
               <p className="text-xs font-mono font-bold text-zinc-400 uppercase tracking-wider">
@@ -653,9 +660,8 @@ function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
               </div>
             </div>
           )}
-           
 
-           {/* Action Footer */}
+          {/* Action Footer */}
           <div className="pt-4 border-t border-white/[0.08] flex items-center justify-end gap-3 sticky bottom-0 bg-[#0b0d16] py-4">
             {!isActioned ? (
               <>
@@ -686,7 +692,8 @@ function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
     </div>
   );
 }
-       /* ── Pipeline Column ─────────────────────────────────────────── */
+
+/* ── Pipeline Column ─────────────────────────────────────────── */
 function PipelineColumn({ status, apps, onDelete }) {
   const CONFIG = {
     SAVED:       { label: 'Saved',       dot: 'bg-zinc-400',    border: 'border-zinc-500/20' },
@@ -700,7 +707,7 @@ function PipelineColumn({ status, apps, onDelete }) {
   };
   const cfg = CONFIG[status] || { label: status, dot: 'bg-zinc-400', border: 'border-white/[0.08]' };
 
-   return (
+  return (
     <div className="flex flex-col gap-2.5 min-w-[240px] flex-1">
       {/* Column Header */}
       <div className={`flex items-center gap-2 px-3.5 py-2.5 rounded-2xl border ${cfg.border} bg-[#0c0e17]/80 backdrop-blur`}>
@@ -710,7 +717,7 @@ function PipelineColumn({ status, apps, onDelete }) {
           {apps.length}
         </span>
       </div>
-      
+
       {/* Cards */}
       <div className="flex flex-col gap-2.5">
         {apps.length === 0 ? (
@@ -728,7 +735,7 @@ function PipelineColumn({ status, apps, onDelete }) {
               </p>
               <p className="text-[11px] text-zinc-400">{app.opportunity?.company}</p>
 
-                <div className="flex items-center justify-between mt-1 pt-2 border-t border-white/[0.04]">
+              <div className="flex items-center justify-between mt-1 pt-2 border-t border-white/[0.04]">
                 <span className="text-[11px] font-mono text-emerald-400">
                   {app.fitScore ? `${app.fitScore}% Fit` : 'Tracked'}
                 </span>
@@ -746,7 +753,8 @@ function PipelineColumn({ status, apps, onDelete }) {
       </div>
     </div>
   );
-}     
+}
+
 /* ── Main Opportunities Page Component ───────────────────────── */
 const PIPELINE_STATUSES = ['SAVED', 'PLANNING', 'APPLIED', 'OA', 'INTERVIEW', 'FINAL_ROUND', 'OFFER', 'REJECTED'];
 
@@ -770,7 +778,7 @@ const TYPE_OPTIONS = [
   { value: 'part-time', label: 'Part-time' },
   { value: 'contract', label: 'Contract' },
 ];
-   
+
 export default function Opportunities() {
   const [tab, setTab] = useState('discover'); // 'discover' | 'matches' | 'pipeline'
   const [opportunities, setOpportunities] = useState([]);
@@ -784,18 +792,18 @@ export default function Opportunities() {
   const [applyModalOpp, setApplyModalOpp] = useState(null);
   const [toast, setToast] = useState(null);
 
-    // Filters
+  // Filters
   const [filterType, setFilterType] = useState('');
   const [filterDomain, setFilterDomain] = useState('');
   const [filterRemote, setFilterRemote] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-   const showToast = useCallback((msg, type = 'success') => {
+  const showToast = useCallback((msg, type = 'success') => {
     setToast({ msg, type });
     setTimeout(() => setToast(null), 3500);
   }, []);
-    
-   const fetchMatches = useCallback(async () => {
+
+  const fetchMatches = useCallback(async () => {
     setLoadingMatches(true);
     try {
       const token = localStorage.getItem('token');
@@ -815,8 +823,8 @@ export default function Opportunities() {
       setLoadingMatches(false);
     }
   }, []);
-    
-    const fetchData = useCallback(async () => {
+
+  const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -829,138 +837,140 @@ export default function Opportunities() {
         getOpportunities(params),
         getApplications(),
       ]);
-        useEffect(() => {
-          fetchData();
-        }, [fetchData]);
-       const handleSave = async (oppId, status = 'saved') => {
-          setSaving(oppId);
-          try {
-            await saveOpportunity(oppId, status);
-            showToast(status === 'applied' ? 'Application submitted & tracked in pipeline!' : 'Opportunity saved to pipeline!');
-            await fetchData();
-            setSelected((prev) => prev?._id === oppId ? { ...prev, applicationStatus: status } : prev);
-            setApplyModalOpp(null);
-          } catch (err) {
-            showToast(err.message || 'Failed to save opportunity.', 'error');
-          } finally {
-            setSaving(null);
-          }
-        }; const handleUpdateStatus = async (appId, newStatus) => {
-            setSaving('updating');
-            try {
-              await updateApplication(appId, { status: newStatus });
-              showToast(`Status advanced to "${newStatus}".`);
-              await fetchData();
-              setSelected((prev) => prev ? { ...prev, applicationStatus: newStatus } : prev);
-            } catch (err) {
-              showToast(err.message || 'Failed to update status.', 'error');
-            } finally {
-              setSaving(null);
-            }
-          };
-         const handleDelete = async (appId) => {
-            try {
-              await deleteApplication(appId);
-              showToast('Application removed from pipeline.');
-              await fetchData();
-            } catch (err) {
-              showToast(err.message || 'Failed to remove.', 'error');
-            }
-          };
-         // Filter pipeline
-          const filtered = useMemo(() => {
-            return opportunities.filter((opp) => {
-              if (!searchQuery) return true;
-              const q = searchQuery.toLowerCase().trim();
-              return (
-                opp.title?.toLowerCase().includes(q) ||
-                opp.company?.toLowerCase().includes(q) ||
-                opp.domain?.toLowerCase().includes(q) ||
-                opp.requiredSkills?.some((s) => s.toLowerCase().includes(q))
-              );
-            });
-          }, [opportunities, searchQuery]);  const pipelineGroups = useMemo(() => {
-              return PIPELINE_STATUSES.reduce((acc, s) => {
-                acc[s] = applications.filter((a) => a.status === s);
-                return acc;
-              }, {});
-            }, [applications]);
-           return (
-              <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-7 flex flex-col gap-6 animate-fadeIn font-sans">
-                {/* Toast Feedback */}
-                {toast && (
-                  <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 rounded-2xl border text-xs font-semibold shadow-2xl transition-all ${
-                    toast.type === 'error'
-                      ? 'bg-rose-950/95 border-rose-800 text-rose-200'
-                      : 'bg-[#0c0e17]/95 border-white/20 text-white'
-                  }`}>
-                              <span>{toast.type === 'error' ? '✕' : '✓'}</span>
-                              <span>{toast.msg}</span>
-                            </div>
-                          )}
-                     {/* ── Top Hero Header (Harmonized with Dashboard Obsidian Theme) ── */}
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-3xl bg-[#0c0e17] border border-white/[0.08] shadow-lg">
-                            <div className="flex items-center gap-3.5">
-                              <div className="w-10 h-10 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 shrink-0">
-                                <Icon d={ICONS.compass} size={20} />
-                              </div>
-                              <div>
-                                <div className="flex items-center gap-2.5 flex-wrap">
-                                  <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
-                                    Career Opportunities
-                                  </h1>
-                                  <span className="text-[11px] font-mono text-zinc-400 bg-white/[0.06] px-2.5 py-0.5 rounded-full border border-white/[0.08]">
-                                    {opportunities.length} active roles
-                                  </span>
-                                </div>
-                                <p className="text-xs text-zinc-400 mt-0.5">
-                                  Curated openings calibrated with verified platform evidence and deterministic fit scoring.
-                                </p>
-                              </div>
-                            </div>
-                                  {/* Navigation Tabs */}
-                                    <div className="flex items-center gap-1 p-1 rounded-2xl bg-[#080910] border border-white/[0.08] shrink-0 self-start sm:self-center">
-                                      <button
-                                        onClick={() => setTab('discover')}
-                                        className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                                          tab === 'discover'
-                                            ? 'bg-orange-500 text-white shadow-md shadow-orange-500/25'
-                                            : 'text-zinc-400 hover:text-white'
-                                        }`}
-                                      >
 
-                                      Catalog
-                                                </button>
-                                                <button
-                                                  onClick={() => {
-                                                    setTab('matches');
-                                                    fetchMatches();
-                                                  }}
-                                                  className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                                                    tab === 'matches'
-                                                      ? 'bg-orange-500 text-white shadow-md shadow-orange-500/25'
-                                                      : 'text-zinc-400 hover:text-white'
-                                                  }`}
-                                                >
-                                                  <span>⚡ Best Matches</span>
-                                                  {matches.length > 0 && (
-                                                    <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-black/40 text-white">
-                                                      {matches.length}
-                                                    </span>
-                                                  )}
-                                                </button>
-                                                <button
-                                                 onClick={() => {
-                                                              setTab('matches');
-                                                              fetchMatches();
-                                                            }}
-                                                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                                                              tab === 'matches'
-                                                                ? 'bg-orange-500 text-white shadow-md shadow-orange-500/25'
-                                                                : 'text-zinc-400 hover:text-white'
-                                                            }`}
-                                                          >
-                                                             <span>⚡ Best Matches</span>
+      setOpportunities(oppRes.data?.opportunities || []);
+      setApplications(appRes.data?.applications || []);
+      fetchMatches();
+    } catch (err) {
+      setError(err.message || 'Failed to load opportunities.');
+    } finally {
+      setLoading(false);
+    }
+  }, [filterType, filterDomain, filterRemote, fetchMatches]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const handleSave = async (oppId, status = 'saved') => {
+    setSaving(oppId);
+    try {
+      await saveOpportunity(oppId, status);
+      showToast(status === 'applied' ? 'Application submitted & tracked in pipeline!' : 'Opportunity saved to pipeline!');
+      await fetchData();
+      setSelected((prev) => prev?._id === oppId ? { ...prev, applicationStatus: status } : prev);
+      setApplyModalOpp(null);
+    } catch (err) {
+      showToast(err.message || 'Failed to save opportunity.', 'error');
+    } finally {
+      setSaving(null);
+    }
+  };
+
+  const handleUpdateStatus = async (appId, newStatus) => {
+    setSaving('updating');
+    try {
+      await updateApplication(appId, { status: newStatus });
+      showToast(`Status advanced to "${newStatus}".`);
+      await fetchData();
+      setSelected((prev) => prev ? { ...prev, applicationStatus: newStatus } : prev);
+    } catch (err) {
+      showToast(err.message || 'Failed to update status.', 'error');
+    } finally {
+      setSaving(null);
+    }
+  };
+
+  const handleDelete = async (appId) => {
+    try {
+      await deleteApplication(appId);
+      showToast('Application removed from pipeline.');
+      await fetchData();
+    } catch (err) {
+      showToast(err.message || 'Failed to remove.', 'error');
+    }
+  };
+
+  // Filter pipeline
+  const filtered = useMemo(() => {
+    return opportunities.filter((opp) => {
+      if (!searchQuery) return true;
+      const q = searchQuery.toLowerCase().trim();
+      return (
+        opp.title?.toLowerCase().includes(q) ||
+        opp.company?.toLowerCase().includes(q) ||
+        opp.domain?.toLowerCase().includes(q) ||
+        opp.requiredSkills?.some((s) => s.toLowerCase().includes(q))
+      );
+    });
+  }, [opportunities, searchQuery]);
+
+  const pipelineGroups = useMemo(() => {
+    return PIPELINE_STATUSES.reduce((acc, s) => {
+      acc[s] = applications.filter((a) => a.status === s);
+      return acc;
+    }, {});
+  }, [applications]);
+
+  return (
+    <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-7 flex flex-col gap-6 animate-fadeIn font-sans">
+      {/* Toast Feedback */}
+      {toast && (
+        <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 rounded-2xl border text-xs font-semibold shadow-2xl transition-all ${
+          toast.type === 'error'
+            ? 'bg-rose-950/95 border-rose-800 text-rose-200'
+            : 'bg-[#0c0e17]/95 border-white/20 text-white'
+        }`}>
+          <span>{toast.type === 'error' ? '✕' : '✓'}</span>
+          <span>{toast.msg}</span>
+        </div>
+      )}
+
+      {/* ── Top Hero Header (Harmonized with Dashboard Obsidian Theme) ── */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-3xl bg-[#0c0e17] border border-white/[0.08] shadow-lg">
+        <div className="flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 shrink-0">
+            <Icon d={ICONS.compass} size={20} />
+          </div>
+          <div>
+            <div className="flex items-center gap-2.5 flex-wrap">
+              <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+                Career Opportunities
+              </h1>
+              <span className="text-[11px] font-mono text-zinc-400 bg-white/[0.06] px-2.5 py-0.5 rounded-full border border-white/[0.08]">
+                {opportunities.length} active roles
+              </span>
+            </div>
+            <p className="text-xs text-zinc-400 mt-0.5">
+              Curated openings calibrated with verified platform evidence and deterministic fit scoring.
+            </p>
+          </div>
+        </div>
+
+        {/* Navigation Tabs */}
+        <div className="flex items-center gap-1 p-1 rounded-2xl bg-[#080910] border border-white/[0.08] shrink-0 self-start sm:self-center">
+          <button
+            onClick={() => setTab('discover')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              tab === 'discover'
+                ? 'bg-orange-500 text-white shadow-md shadow-orange-500/25'
+                : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            Catalog
+          </button>
+          <button
+            onClick={() => {
+              setTab('matches');
+              fetchMatches();
+            }}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+              tab === 'matches'
+                ? 'bg-orange-500 text-white shadow-md shadow-orange-500/25'
+                : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            <span>⚡ Best Matches</span>
             {matches.length > 0 && (
               <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-black/40 text-white">
                 {matches.length}
@@ -979,7 +989,8 @@ export default function Opportunities() {
           </button>
         </div>
       </div>
-{/* ── DISCOVER TAB ── */}
+
+      {/* ── DISCOVER TAB ── */}
       {tab === 'discover' && (
         <div className="flex flex-col gap-6">
           {/* Filter Toolbar */}
@@ -990,22 +1001,23 @@ export default function Opportunities() {
                 d={ICONS.search}
                 size={14}
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500"
-              />   <input
-                              type="text"
-                              placeholder="Search opportunities, skills, companies…"
-                              value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
-                              className="w-full pl-9 pr-3 py-2 bg-zinc-900/90 border border-white/[0.08] rounded-xl text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-orange-500/50"
-                            />
-                            {searchQuery && (
-                              <button
-                                onClick={() => setSearchQuery('')}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white cursor-pointer"
-                              >
-                                ✕
-                              </button>
-                            )}
-                             </div>
+              />
+              <input
+                type="text"
+                placeholder="Search opportunities, skills, companies…"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-3 py-2 bg-zinc-900/90 border border-white/[0.08] rounded-xl text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-orange-500/50"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white cursor-pointer"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
 
             {/* Type */}
             <select
@@ -1058,3 +1070,180 @@ export default function Opportunities() {
               )}
             </div>
           </div>
+
+          {/* Card Grid (3 columns, dark obsidian theme matching dashboard) */}
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-28 gap-3">
+              <div className="w-8 h-8 rounded-full border-2 border-orange-500/20 border-t-orange-500 animate-spin" />
+              <span className="text-xs font-mono text-zinc-500">Loading opportunity cards…</span>
+            </div>
+          ) : error ? (
+            <div className="flex flex-col items-center gap-3 py-20 text-center p-8 rounded-3xl bg-[#0c0e17] border border-white/[0.08]">
+              <p className="text-xs text-rose-400 font-medium">{error}</p>
+              <button onClick={fetchData} className="text-xs font-bold text-orange-400 hover:underline cursor-pointer">
+                Retry Connection
+              </button>
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="flex flex-col items-center gap-3 py-20 text-center p-8 rounded-3xl bg-[#0c0e17] border border-white/[0.08]">
+              <p className="text-xs text-zinc-400">No opportunities match the current filter criteria.</p>
+              <button
+                onClick={() => {
+                  setFilterType('');
+                  setFilterDomain('');
+                  setFilterRemote(false);
+                  setSearchQuery('');
+                }}
+                className="text-xs font-bold text-orange-400 hover:underline cursor-pointer"
+              >
+                Clear Filters
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filtered.map((opp) => (
+                <OpportunityCard
+                  key={opp._id}
+                  opp={opp}
+                  onView={setSelected}
+                  onSave={(id) => handleSave(id, 'saved')}
+                  onApplyClick={setApplyModalOpp}
+                  isActioned={!!opp.applicationStatus}
+                  saving={saving}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── BEST MATCHES TAB ── */}
+      {tab === 'matches' && (
+        <div className="flex flex-col gap-6">
+          <div className="flex items-center justify-between p-4 rounded-2xl bg-[#0c0e17] border border-white/[0.08]">
+            <div>
+              <h2 className="text-sm font-bold text-white flex items-center gap-2">
+                <span>⚡ Best Fit Matches</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  Calibrated Telemetry
+                </span>
+              </h2>
+              <p className="text-xs text-zinc-400 mt-0.5">
+                Evaluated against your verified skills, projects, GitHub output, and career goals.
+              </p>
+            </div>
+            <button
+              onClick={fetchMatches}
+              disabled={loadingMatches}
+              className="text-xs font-mono text-orange-400 hover:text-orange-300 underline cursor-pointer"
+            >
+              {loadingMatches ? 'Recalculating…' : '↻ Re-evaluate'}
+            </button>
+          </div>
+
+          {loadingMatches ? (
+            <div className="flex items-center justify-center py-24 text-zinc-500 text-xs">
+              Calculating deterministic fit scores…
+            </div>
+          ) : matches.length === 0 ? (
+            <div className="flex flex-col items-center gap-3 py-20 text-center p-8 rounded-2xl bg-[#0c0e17] border border-white/[0.08]">
+              <p className="text-sm font-semibold text-white">No matching opportunities found</p>
+              <p className="text-xs text-zinc-400 max-w-sm">
+                Add skills, upload projects, or connect GitHub to unlock high-confidence opportunity matches.
+              </p>
+              <Link
+                to={ROUTES.STUDENT_SKILLS}
+                className="mt-2 px-5 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs shadow-md transition-all cursor-pointer"
+              >
+                Review & Add Skills →
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {matches.map((m) => (
+                <OpportunityCard
+                  key={m.opportunity._id}
+                  opp={{
+                    ...m.opportunity,
+                    fitScore: m.matchScore,
+                    fitLabel: m.matchBand,
+                    fitBreakdown: m.scoreBreakdown,
+                    evidenceMatrix: [
+                      ...m.matchedSkills.map((s) => ({ skill: s, status: 'COVERED', resumeEvidence: true, projectEvidence: true })),
+                      ...m.missingSkills.map((s) => ({ skill: s, status: 'MISSING' })),
+                    ],
+                  }}
+                  onView={setSelected}
+                  onSave={(id) => handleSave(id, 'saved')}
+                  onApplyClick={setApplyModalOpp}
+                  isActioned={false}
+                  saving={saving}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── PIPELINE TAB ── */}
+      {tab === 'pipeline' && (
+        <div className="flex flex-col gap-4">
+          {applications.length === 0 ? (
+            <div className="flex flex-col items-center gap-4 py-24 text-center p-8 rounded-3xl bg-[#0c0e17] border border-white/[0.08]">
+              <div className="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400">
+                <Icon d={ICONS.pipeline} size={24} />
+              </div>
+              <div>
+                <p className="text-base font-bold text-white mb-1">No tracked applications yet</p>
+                <p className="text-xs text-zinc-400 max-w-sm">
+                  Save or apply to opportunities from the Catalog to monitor them through the recruitment pipeline.
+                </p>
+              </div>
+              <button
+                onClick={() => setTab('discover')}
+                className="px-5 py-2.5 rounded-xl bg-orange-500 text-white font-bold text-xs hover:bg-orange-600 transition-colors shadow-sm cursor-pointer"
+              >
+                Browse Opportunities →
+              </button>
+            </div>
+          ) : (
+            <div className="overflow-x-auto pb-4" style={{ scrollbarWidth: 'thin' }}>
+              <div className="flex gap-4 min-w-max">
+                {PIPELINE_STATUSES.map((status) => (
+                  <PipelineColumn
+                    key={status}
+                    status={status}
+                    apps={pipelineGroups[status] || []}
+                    onStatusChange={handleUpdateStatus}
+                    onDelete={handleDelete}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ── Detail Drawer ── */}
+      {selected && (
+        <DetailDrawer
+          opp={selected}
+          onClose={() => setSelected(null)}
+          onSave={(id) => handleSave(id, 'saved')}
+          onApplyClick={(opp) => setApplyModalOpp(opp)}
+          saving={saving}
+        />
+      )}
+
+      {/* ── Quick Apply Modal ── */}
+      {applyModalOpp && (
+        <QuickApplyModal
+          opp={applyModalOpp}
+          onClose={() => setApplyModalOpp(null)}
+          onConfirm={(id) => handleSave(id, 'applied')}
+          submitting={saving === applyModalOpp._id}
+        />
+      )}
+    </div>
+  );
+}

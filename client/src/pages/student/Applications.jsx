@@ -734,3 +734,302 @@ export default function Applications() {
           </Link>
         </div>
       </div>
+      
+        {/* ── Conversion Metrics Banner ── */}
+      {metrics && (
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+          <div className="p-3.5 rounded-xl bg-[#0f121d] border border-white/[0.08]">
+            <p className="text-[10px] font-mono font-medium text-zinc-400 uppercase">Total Tracked</p>
+            <p className="text-xl font-bold font-mono text-white mt-1">{metrics.totalTracked}</p>
+          </div>
+          <div className="p-3.5 rounded-xl bg-[#0f121d] border border-white/[0.08]">
+            <p className="text-[10px] font-mono font-medium text-zinc-400 uppercase">Active Pipeline</p>
+            <p className="text-xl font-bold font-mono text-blue-400 mt-1">{metrics.activeApplications}</p>
+          </div>
+          <div className="p-3.5 rounded-xl bg-[#0f121d] border border-white/[0.08]">
+            <p className="text-[10px] font-mono font-medium text-zinc-400 uppercase">Submitted</p>
+            <p className="text-xl font-bold font-mono text-indigo-400 mt-1">{metrics.applicationsSubmitted}</p>
+          </div>
+          <div className="p-3.5 rounded-xl bg-[#0f121d] border border-white/[0.08]">
+            <p className="text-[10px] font-mono font-medium text-zinc-400 uppercase">Interviews</p>
+            <p className="text-xl font-bold font-mono text-purple-400 mt-1">{metrics.interviewCount}</p>
+          </div>
+          <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+            <p className="text-[10px] font-mono font-medium text-emerald-300 uppercase">Offers</p>
+            <p className="text-xl font-bold font-mono text-emerald-400 mt-1">{metrics.offers}</p>
+          </div>
+          <div className="p-3.5 rounded-xl bg-[#0f121d] border border-white/[0.08]">
+            <p className="text-[10px] font-mono font-medium text-zinc-400 uppercase">Response Rate</p>
+            <p className="text-xl font-bold font-mono text-cyan-400 mt-1">
+              {metrics.applicationsSubmitted > 0 && metrics.responseRate !== null && metrics.responseRate !== undefined ? `${metrics.responseRate}%` : 'N/A'}
+            </p>
+          </div>
+          <div className="p-3.5 rounded-xl bg-[#0f121d] border border-white/[0.08]">
+            <p className="text-[10px] font-mono font-medium text-zinc-400 uppercase">Interview Rate</p>
+            <p className="text-xl font-bold font-mono text-fuchsia-400 mt-1">
+              {metrics.applicationsSubmitted > 0 && metrics.interviewRate !== null && metrics.interviewRate !== undefined ? `${metrics.interviewRate}%` : 'N/A'}
+            </p>
+          </div>
+          <div className="p-3.5 rounded-xl bg-[#0f121d] border border-white/[0.08]">
+            <p className="text-[10px] font-mono font-medium text-zinc-400 uppercase">Offer Rate</p>
+            <p className="text-xl font-bold font-mono text-emerald-400 mt-1">
+              {metrics.applicationsSubmitted > 0 && metrics.offerRate !== null && metrics.offerRate !== undefined ? `${metrics.offerRate}%` : 'N/A'}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* ── Controls Bar ── */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-3 rounded-2xl bg-[#0f121d] border border-white/[0.08]">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          {/* Search */}
+          <div className="relative flex-1 sm:w-72">
+            <Icon
+              d={ICONS.search}
+              size={14}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500"
+            />
+            <input
+              type="text"
+              placeholder="Search company, role, location..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full pl-9 pr-3 py-2 rounded-xl bg-zinc-900 border border-white/[0.08] text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-orange-500/50"
+            />
+          </div>
+
+          {/* Status Filter */}
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="px-3 py-2 rounded-xl bg-zinc-900 border border-white/[0.08] text-xs text-zinc-300 focus:outline-none focus:border-orange-500/50 cursor-pointer"
+          >
+            <option value="ALL">All Stages</option>
+            {ALL_STATUSES.map((st) => (
+              <option key={st.id} value={st.id}>
+                {st.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* View Mode Toggle */}
+        <div className="flex items-center gap-1 bg-zinc-900 p-1 rounded-xl border border-white/[0.06] shrink-0 self-end sm:self-center">
+          <button
+            onClick={() => setViewMode('kanban')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              viewMode === 'kanban' ? 'bg-orange-500 text-white shadow-sm' : 'text-zinc-400 hover:text-zinc-200'
+            }`}
+          >
+            Kanban Board
+          </button>
+          <button
+            onClick={() => setViewMode('table')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              viewMode === 'table' ? 'bg-orange-500 text-white shadow-sm' : 'text-zinc-400 hover:text-zinc-200'
+            }`}
+          >
+            List View
+          </button>
+        </div>
+      </div>
+
+      {/* ── Main Content: Kanban or Table ── */}
+      {loading ? (
+        <div className="py-24 text-center text-zinc-500">
+          <div className="inline-block animate-spin w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full mb-3" />
+          <p className="text-xs text-zinc-400 font-medium">Loading application tracker...</p>
+        </div>
+      ) : applications.length === 0 ? (
+        <div className="py-20 flex flex-col items-center justify-center text-center p-8 rounded-2xl bg-[#0f121d] border border-white/[0.08]">
+          <div className="w-16 h-16 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-4 text-orange-400">
+            <Icon d={ICONS.pipeline} size={26} />
+          </div>
+          <h2 className="text-xl font-bold text-white mb-1.5">No applications tracked yet</h2>
+          <p className="text-xs text-zinc-400 max-w-sm mb-6 leading-relaxed">
+            Save opportunities or mark them as applied to monitor your full career funnel from planning to offer.
+          </p>
+          <Link
+            to={ROUTES.STUDENT_OPPORTUNITIES}
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#ea580c] to-[#f97316] hover:from-[#f97316] hover:to-[#fb923c] text-white font-bold text-xs transition-all shadow-md shadow-orange-500/25"
+          >
+            Explore Opportunities →
+          </Link>
+        </div>
+      ) : viewMode === 'kanban' ? (
+        <div className="flex flex-col gap-6">
+          {/* Kanban Board Columns (Horizontal Scrolling) */}
+          <div className="overflow-x-auto pb-4" style={{ scrollbarWidth: 'thin' }}>
+            <div className="flex gap-4 min-w-max items-start">
+              {PIPELINE_COLUMNS.map((col) => {
+                const colApps = kanbanGroups[col.id] || [];
+                return (
+                  <div
+                    key={col.id}
+                    className="w-80 flex flex-col rounded-2xl bg-[#0d101a] border border-white/[0.08] p-3.5 min-h-[460px] shadow-sm"
+                  >
+                    {/* Column Header */}
+                    <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/[0.06]">
+                      <div className="flex items-center gap-2">
+                        <span className={`w-2.5 h-2.5 rounded-full ${col.dot}`} />
+                        <span className="text-xs font-bold font-mono uppercase tracking-wider text-zinc-200">{col.label}</span>
+                      </div>
+                      <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md bg-white/[0.05] text-zinc-400 border border-white/[0.06]">
+                        {colApps.length}
+                      </span>
+                    </div>
+
+                    {/* Column Cards */}
+                    <div className="flex flex-col gap-3 flex-1">
+                      {colApps.length === 0 ? (
+                        <div className="flex-1 flex items-center justify-center p-6 text-center border border-dashed border-white/[0.06] rounded-xl text-xs text-zinc-600 font-medium">
+                          No applications
+                        </div>
+                      ) : (
+                        colApps.map((app) => (
+                          <ApplicationCard
+                            key={app._id}
+                            app={app}
+                            onSelect={setSelectedApp}
+                            onStatusChange={handleStatusChange}
+                          />
+                        ))
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Secondary Outcomes (Rejected / Withdrawn Collapsible / Grid) */}
+          {(rejectedApps.length > 0 || withdrawnApps.length > 0) && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-white/[0.06]">
+              {/* Rejected */}
+              <div className="p-4 rounded-2xl bg-[#0f121d] border border-white/[0.08]">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-bold font-mono text-rose-400 uppercase tracking-wider flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-rose-400" />
+                    Rejected ({rejectedApps.length})
+                  </span>
+                </div>
+                {rejectedApps.length === 0 ? (
+                  <p className="text-xs text-zinc-500">No rejected applications.</p>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {rejectedApps.map((app) => (
+                      <ApplicationCard
+                        key={app._id}
+                        app={app}
+                        onSelect={setSelectedApp}
+                        onStatusChange={handleStatusChange}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Withdrawn */}
+              <div className="p-4 rounded-2xl bg-[#0f121d] border border-white/[0.08]">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-bold font-mono text-zinc-400 uppercase tracking-wider flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-zinc-500" />
+                    Withdrawn ({withdrawnApps.length})
+                  </span>
+                </div>
+                {withdrawnApps.length === 0 ? (
+                  <p className="text-xs text-zinc-500">No withdrawn applications.</p>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {withdrawnApps.map((app) => (
+                      <ApplicationCard
+                        key={app._id}
+                        app={app}
+                        onSelect={setSelectedApp}
+                        onStatusChange={handleStatusChange}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      ) : (
+        /* Table View */
+        <div className="overflow-x-auto rounded-2xl border border-white/[0.08] bg-[#0f121d] shadow-sm">
+          <table className="w-full text-left text-xs text-zinc-300">
+            <thead className="bg-black/30 text-[11px] font-mono uppercase tracking-wider text-zinc-400 border-b border-white/[0.06]">
+              <tr>
+                <th className="py-3.5 px-4 font-semibold">Opportunity</th>
+                <th className="py-3.5 px-4 font-semibold">Stage</th>
+                <th className="py-3.5 px-4 font-semibold">Fit Score</th>
+                <th className="py-3.5 px-4 font-semibold">Readiness</th>
+                <th className="py-3.5 px-4 font-semibold">Next Action</th>
+                <th className="py-3.5 px-4 font-semibold">Applied Date</th>
+                <th className="py-3.5 px-4 text-right font-semibold">Action</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-white/[0.04]">
+              {filteredApps.map((app) => {
+                const opp = app.opportunity || {};
+                return (
+                  <tr
+                    key={app._id}
+                    onClick={() => setSelectedApp(app)}
+                    className="hover:bg-white/[0.02] cursor-pointer transition-colors"
+                  >
+                    <td className="py-3.5 px-4">
+                      <p className="font-bold text-white text-[13px]">{opp.company || 'Direct'}</p>
+                      <p className="text-[12px] text-zinc-400 mt-0.5">{opp.title}</p>
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <StatusBadge status={app.status} />
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <FitPill score={app.fitScore || opp.fitScore || 0} />
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <ReadinessBadge label={app.applicationReadinessLabel} />
+                    </td>
+                    <td className="py-3.5 px-4 max-w-xs truncate text-zinc-400">
+                      {app.nextAction || '—'}
+                    </td>
+                    <td className="py-3.5 px-4 font-mono text-zinc-400">
+                      {app.appliedAt ? new Date(app.appliedAt).toLocaleDateString() : '—'}
+                    </td>
+                    <td className="py-3.5 px-4 text-right">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedApp(app);
+                        }}
+                        className="text-xs font-semibold text-orange-400 hover:text-orange-300 transition-colors"
+                      >
+                        Details →
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* ── Detail Drawer Modal ── */}
+      {selectedApp && (
+        <ApplicationDetailDrawer
+          appId={selectedApp._id}
+          onClose={() => setSelectedApp(null)}
+          onUpdate={async (id, data) => {
+            await updateApplication(id, data);
+            fetchData();
+          }}
+          onDelete={handleDelete}
+          allProjects={projects}
+        />
+      )}
+    </div>
+  );
+}

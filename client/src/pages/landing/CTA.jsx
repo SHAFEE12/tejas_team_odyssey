@@ -1442,3 +1442,76 @@ export default function CTA({ onLogin, onRegister }) {
           0.025;
       });
     }
+
+    /* =========================================================
+       FIND CLOSEST DOTS
+    ========================================================= */
+
+    function getNearestDots() {
+      const nearby = [];
+
+      dots.forEach(dot => {
+        const dx =
+          dot.x -
+          spiderPosition.x;
+
+        const dy =
+          dot.y -
+          spiderPosition.y;
+
+        const distance =
+          Math.sqrt(
+            dx * dx +
+            dy * dy
+          );
+
+        if (
+          distance <
+          SETTINGS.spiderRadius
+        ) {
+          nearby.push({
+            dot,
+            distance
+          });
+        }
+      });
+
+      nearby.sort(
+        (a, b) =>
+          a.distance -
+          b.distance
+      );
+
+      return nearby.slice(
+        0,
+        SETTINGS.maxConnections
+      );
+    }
+
+    /* =========================================================
+       DRAW DOTS
+    ========================================================= */
+
+    function drawDots() {
+      dots.forEach(dot => {
+        ctx.beginPath();
+
+        ctx.arc(
+          dot.x,
+          dot.y,
+          SETTINGS.dotRadius,
+          0,
+          Math.PI * 2
+        );
+
+        ctx.fillStyle =
+          `rgba(
+            255,
+            255,
+            255,
+            ${dot.alpha}
+          )`;
+
+        ctx.fill();
+      });
+    }

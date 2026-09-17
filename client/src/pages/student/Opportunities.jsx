@@ -287,5 +287,22 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
                 className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono font-bold bg-white/[0.05] border border-white/[0.08] text-zinc-200"
                 title="Deterministic Job Fit"
               >
-                
+                <span
+                  className="w-2 h-2 rounded-full"
+                  style={{
+                    backgroundColor:
+                      opp.fitScore >= 70 ? '#10b981' :
+                      opp.fitScore >= 50 ? '#38bdf8' :
+                      opp.fitScore >= 35 ? '#f97316' : '#f43f5e',
+                    boxShadow:
+                      opp.fitScore >= 70 ? '0 0 8px rgba(16,185,129,0.5)' :
+                      opp.fitScore >= 50 ? '0 0 8px rgba(56,189,248,0.5)' :
+                      opp.fitScore >= 35 ? '0 0 8px rgba(249,115,22,0.5)' : 'none',
+                  }}
+                />
+                <span>{opp.fitScore}% Fit</span>
+              </div>
+            )}
+          </div>
+
               </div>

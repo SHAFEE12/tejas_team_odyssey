@@ -979,3 +979,15 @@ export default function Opportunities() {
           </button>
         </div>
       </div>
+{/* ── DISCOVER TAB ── */}
+      {tab === 'discover' && (
+        <div className="flex flex-col gap-6">
+          {/* Filter Toolbar */}
+          <div className="flex flex-wrap items-center gap-3 p-3.5 rounded-2xl bg-[#0c0e17] border border-white/[0.08]">
+            {/* Search */}
+            <div className="relative flex-1 min-w-[220px] sm:min-w-[280px]">
+              <Icon
+                d={ICONS.search}
+                size={14}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500"
+              />

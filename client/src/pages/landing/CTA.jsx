@@ -1623,3 +1623,89 @@ export default function CTA({ onLogin, onRegister }) {
         }
       );
     }
+
+    /* =========================================================
+       SUBTLE RED AURA
+    ========================================================= */
+
+    function drawAura() {
+      const gradient =
+        ctx.createRadialGradient(
+          spiderPosition.x,
+          spiderPosition.y,
+          0,
+          spiderPosition.x,
+          spiderPosition.y,
+          85
+        );
+
+      gradient.addColorStop(
+        0,
+        "rgba(255,55,25,.08)"
+      );
+
+      gradient.addColorStop(
+        0.35,
+        "rgba(255,55,25,.025)"
+      );
+
+      gradient.addColorStop(
+        1,
+        "rgba(255,55,25,0)"
+      );
+
+      ctx.beginPath();
+
+      ctx.arc(
+        spiderPosition.x,
+        spiderPosition.y,
+        85,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fillStyle =
+        gradient;
+
+      ctx.fill();
+    }
+
+    /* =========================================================
+       ANIMATION LOOP
+    ========================================================= */
+
+    function animate(time) {
+      updateInteraction(time);
+
+      ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+      );
+
+      updateSpiderMovement(time);
+      updateDots(time);
+
+      drawAura();
+      drawDots();
+      drawSpiderConnections();
+
+      animationId =
+        requestAnimationFrame(
+          animate
+        );
+    }
+
+    /* =========================================================
+       START
+    ========================================================= */
+
+    resize();
+    chooseNewDirection();
+    animate(0);
+
+    window.addEventListener(
+      "resize",
+      resize
+    );

@@ -439,6 +439,21 @@ function QuickApplyModal({ opp, onClose, onConfirm, submitting }) {
           </button>
         </div>
 
+         {/* Company & Location Info */}
+        <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-between">
+          <div>
+            <p className="text-xs font-semibold text-zinc-200">{opp.company}</p>
+            <p className="text-[11px] text-zinc-400">{opp.location} • {opp.stipend || 'Competitive'}</p>
+          </div>
+          {isPartner && (
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              Verified Industry Partner
+            </span>
+          )}
+        </div>
+
+
       </div>
 
           

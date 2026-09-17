@@ -453,6 +453,30 @@ function QuickApplyModal({ opp, onClose, onConfirm, submitting }) {
           )}
         </div>
 
+            {/* Telemetry Transmitted */}
+        <div className="space-y-2">
+          <p className="text-[11px] font-mono font-semibold text-zinc-300 uppercase tracking-wider">
+            Verified Proof Transmitted with Application:
+          </p>
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-emerald-500/5 border border-emerald-500/15 text-emerald-200">
+              <Icon d={ICONS.check} size={13} className="text-emerald-400" />
+              <span className="truncate">Skill Profile & Level</span>
+            </div>
+            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-blue-500/5 border border-blue-500/15 text-blue-200">
+              <Icon d={ICONS.check} size={13} className="text-blue-400" />
+              <span className="truncate">Verified GitHub Evidence</span>
+            </div>
+            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-purple-500/5 border border-purple-500/15 text-purple-200">
+              <Icon d={ICONS.check} size={13} className="text-purple-400" />
+              <span className="truncate">Active Project Portfolio</span>
+            </div>
+            <div className="flex items-center gap-2 p-2.5 rounded-xl bg-amber-500/5 border border-amber-500/15 text-amber-200">
+              <Icon d={ICONS.check} size={13} className="text-amber-400" />
+              <span className="truncate">ATS-Parsed Resume</span>
+            </div>
+          </div>
+        </div>
 
       </div>
 

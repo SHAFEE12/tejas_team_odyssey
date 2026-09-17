@@ -867,4 +867,16 @@ export default function Opportunities() {
               showToast(err.message || 'Failed to remove.', 'error');
             }
           };
-        
+         // Filter pipeline
+          const filtered = useMemo(() => {
+            return opportunities.filter((opp) => {
+              if (!searchQuery) return true;
+              const q = searchQuery.toLowerCase().trim();
+              return (
+                opp.title?.toLowerCase().includes(q) ||
+                opp.company?.toLowerCase().includes(q) ||
+                opp.domain?.toLowerCase().includes(q) ||
+                opp.requiredSkills?.some((s) => s.toLowerCase().includes(q))
+              );
+            });
+          }, [opportunities, searchQuery]);

@@ -1024,3 +1024,96 @@ export default function CTA({ onLogin, onRegister }) {
       }
       interaction.pointerNear = near;
     }
+
+    /* =========================================================
+       RESIZE
+    ========================================================= */
+
+    function resize() {
+      dpr = Math.min(
+        window.devicePixelRatio || 1,
+        2
+      );
+
+      const rect = section.getBoundingClientRect();
+
+      width = rect.width;
+      height = rect.height;
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+
+      ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+      );
+
+      if (
+        spiderPosition.x === 0 &&
+        spiderPosition.y === 0
+      ) {
+        spiderPosition.x = width * 0.5;
+        spiderPosition.y = height * 0.52;
+      }
+
+      createDots();
+    }
+
+    /* =========================================================
+       CREATE DOT GRID
+    ========================================================= */
+
+    function createDots() {
+      dots = [];
+
+      const spacing = SETTINGS.spacing;
+
+      for (
+        let x = spacing / 2;
+        x < width;
+        x += spacing
+      ) {
+        for (
+          let y = spacing / 2;
+          y < height;
+          y += spacing
+        ) {
+          const random = Math.abs(
+            Math.sin(
+              x * 12.9898 +
+              y * 78.233
+            )
+          );
+
+          dots.push({
+            ox: x,
+            oy: y,
+
+            x: x,
+            y: y,
+
+            vx: 0,
+            vy: 0,
+
+            alpha:
+              SETTINGS.dotOpacity *
+              (
+                0.65 +
+                random * 0.35
+              ),
+
+            phase:
+              random *
+              Math.PI *
+              2
+          });
+        }
+      }
+    }

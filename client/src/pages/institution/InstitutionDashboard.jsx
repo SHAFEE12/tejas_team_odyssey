@@ -1372,3 +1372,60 @@ export default function InstitutionDashboard() {
           </form>
         </div>
       )}
+       {/* ── MODAL: DRIVE ELIGIBILITY ENGINE ──────────────────────────── */}
+      {selectedDriveForEligibility && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-4xl w-full p-6 flex flex-col gap-4 shadow-2xl max-h-[85vh] overflow-hidden">
+            <div className="flex items-start justify-between pb-3 border-b border-zinc-800">
+              <div>
+                <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                  Campus Drive Eligibility Engine
+                </span>
+                <h3 className="text-xl font-bold text-white mt-1">{selectedDriveForEligibility.title}</h3>
+                <p className="text-xs text-zinc-400">
+                  {eligibilityData?.eligibleCount || 0} of {eligibilityData?.totalCandidates || 0} students eligible
+                </p>
+              </div>
+              <button onClick={() => setSelectedDriveForEligibility(null)} className="text-zinc-400 hover:text-white text-lg">✕</button>
+            </div>
+
+            <div className="overflow-y-auto flex-1 divide-y divide-zinc-800/60 pr-1">
+              {loadingEligibility ? (
+                <div className="p-8 text-center text-xs text-zinc-500">Evaluating cohort eligibility...</div>
+              ) : (
+                eligibilityData?.candidates?.map((cand, idx) => (
+                  <div key={idx} className="py-3 flex items-start justify-between gap-4">
+                    <div>
+                      <span className="text-sm font-semibold text-white block">{cand.student?.name}</span>
+                      <span className="text-[11px] text-zinc-400">
+                        {cand.department} • Batch {cand.batch} • CGPA: {cand.cgpa} • Readiness: {cand.readinessScore}/100
+                      </span>
+                      {cand.reasons && cand.reasons.length > 0 && (
+                        <div className="mt-1 space-y-0.5">
+                          {cand.reasons.map((r, ri) => (
+                            <p key={ri} className="text-[11px] text-rose-400">✗ {r}</p>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <span
+                      className={`text-[10px] font-mono px-2.5 py-1 rounded-full font-bold shrink-0 ${
+                        cand.isEligible
+                          ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                          : 'bg-zinc-800 text-zinc-400'
+                      }`}
+                    >
+                      {cand.isEligible ? '✓ ELIGIBLE' : 'NOT ELIGIBLE'}
+                    </span>
+                  </div>
+                ))
+              )}
+            </div>
+
+            <div className="pt-3 border-t border-zinc-800 text-right">
+              <button onClick={() => setSelectedDriveForEligibility(null)} className="px-4 py-2 rounded-xl bg-zinc-800 text-zinc-300 text-xs font-medium">Close</button>
+            </div>
+          </div>
+        </div>
+      )}

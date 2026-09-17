@@ -908,3 +908,31 @@ export default function InstitutionDashboard() {
                       </div>
                     )}
                   </div>
+ {/* Top Covered Skills */}
+                  <div className="rounded-2xl border border-zinc-800/90 bg-gradient-to-b from-zinc-900/80 to-zinc-950/90 p-6 flex flex-col shadow-xl">
+                    <h2 className="text-lg font-bold text-white mb-1 tracking-tight">Top Mastered Competencies</h2>
+                    <p className="text-xs text-zinc-400 mb-5 font-medium">Verified student capabilities across engineering batches</p>
+
+                    {skillGaps.topCoveredSkills.length === 0 ? (
+                      <div className="p-12 text-center text-xs text-zinc-500">No student skills documented yet.</div>
+                    ) : (
+                      <div className="divide-y divide-zinc-800/60">
+                        {skillGaps.topCoveredSkills.map((sk, i) => (
+                          <div key={i} className="py-3.5 flex items-center justify-between gap-4">
+                            <span className="text-base font-bold text-zinc-100">{sk.skill}</span>
+                            <div className="text-right">
+                              <span className="text-xs font-mono font-bold text-emerald-400 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                                {sk.coveragePercentage}% coverage
+                              </span>
+                              <span className="text-xs text-zinc-400 font-mono block mt-1">
+                                {sk.studentCount} students
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}

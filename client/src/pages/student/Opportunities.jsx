@@ -601,6 +601,37 @@ function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
               ))}
             </div>
           )}
-
-          
+         
+            {/* Score Breakdown */}
+          <div className="flex flex-col gap-3 p-5 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+            <p className="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider mb-1">
+              Deterministic 8-Vector Match Calibration
+            </p>
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs text-zinc-300">
+                <span>Required Skills</span>
+                <span className="font-mono">{bd.requiredSkillScore ?? 0}% (30%)</span>
+              </div>
+              <div className="flex justify-between text-xs text-zinc-300">
+                <span>Preferred Skills</span>
+                <span className="font-mono">{bd.preferredSkillScore ?? 0}% (20%)</span>
+              </div>
+              <div className="flex justify-between text-xs text-zinc-300">
+                <span>Career Goal Alignment</span>
+                <span className="font-mono">{bd.careerGoalScore ?? 0}% (15%)</span>
+              </div>
+              <div className="flex justify-between text-xs text-zinc-300">
+                <span>Resume Evidence</span>
+                <span className="font-mono">{bd.resumeScore ?? 0}% (10%)</span>
+              </div>
+              <div className="flex justify-between text-xs text-zinc-300">
+                <span>Project Portfolio</span>
+                <span className="font-mono">{bd.projectEvidenceScore ?? 0}% (10%)</span>
+              </div>
+              <div className="flex justify-between text-xs text-zinc-300">
+                <span>GitHub Telemetry</span>
+                <span className="font-mono">{bd.githubEvidenceScore ?? 0}% (5%)</span>
+              </div>
+            </div>
+          </div>          
       

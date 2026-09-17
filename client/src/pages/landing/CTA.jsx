@@ -1182,3 +1182,153 @@ export default function CTA({ onLogin, onRegister }) {
       interaction.phase = "fast";
       interaction.until = performance.now() + 900;
     }
+
+    function updateSpiderMovement(time) {
+      if (interaction.phase === "pause") {
+        spiderPosition.vx = 0;
+        spiderPosition.vy = 0;
+        spider.style.transform = `
+          translate(-50%, -50%)
+          rotate(0deg)
+        `;
+        return;
+      }
+
+      const speedMultiplier =
+        interaction.phase === "fast"
+          ? INTERACTION.fastMultiplier
+          : 1;
+
+      // During the fast escape the spider keeps its launch direction
+      // so it actually shoots out of the CTA instead of turning back.
+      if (interaction.phase !== "fast" &&
+        Math.random() < SETTINGS.directionChangeSpeed
+      ) {
+        chooseNewDirection();
+      }
+
+      spiderPosition.directionX +=
+        (
+          spiderPosition.targetDirectionX -
+          spiderPosition.directionX
+        ) *
+        SETTINGS.directionSmoothness;
+
+      spiderPosition.directionY +=
+        (
+          spiderPosition.targetDirectionY -
+          spiderPosition.directionY
+        ) *
+        SETTINGS.directionSmoothness;
+
+      const directionLength =
+        Math.sqrt(
+          spiderPosition.directionX *
+            spiderPosition.directionX +
+          spiderPosition.directionY *
+            spiderPosition.directionY
+        );
+
+      if (directionLength > 0) {
+        spiderPosition.directionX /=
+          directionLength;
+
+        spiderPosition.directionY /=
+          directionLength;
+      }
+
+      spiderPosition.vx +=
+        spiderPosition.directionX *
+        SETTINGS.movementSpeed *
+        0.07 *
+        speedMultiplier;
+
+      spiderPosition.vy +=
+        spiderPosition.directionY *
+        SETTINGS.movementSpeed *
+        0.07 *
+        speedMultiplier;
+
+      spiderPosition.vx *= 0.986;
+      spiderPosition.vy *= 0.986;
+
+      const velocity =
+        Math.sqrt(
+          spiderPosition.vx *
+            spiderPosition.vx +
+          spiderPosition.vy *
+            spiderPosition.vy
+        );
+
+      const velocityLimit =
+        interaction.phase === "fast"
+          ? SETTINGS.maxVelocity * 3.8
+          : SETTINGS.maxVelocity;
+
+      if (velocity > velocityLimit) {
+        spiderPosition.vx =
+          (spiderPosition.vx / velocity) * velocityLimit;
+
+        spiderPosition.vy =
+          (spiderPosition.vy / velocity) * velocityLimit;
+      }
+
+      spiderPosition.x +=
+        spiderPosition.vx;
+
+      spiderPosition.y +=
+        spiderPosition.vy;
+
+      /* CTA SECTION BOUNDARIES / FAST EXIT */
+
+      if (interaction.phase === "fast") {
+        const exit = INTERACTION.exitMargin;
+        const outside =
+          spiderPosition.x < -exit ||
+          spiderPosition.x > width + exit ||
+          spiderPosition.y < -exit ||
+          spiderPosition.y > height + exit;
+
+        if (outside) {
+          respawnFromRandomSide();
+        }
+      } else {
+        const margin = 100;
+
+        if (spiderPosition.x < margin) {
+          spiderPosition.x = margin;
+          spiderPosition.targetDirectionX = Math.abs(spiderPosition.targetDirectionX);
+        }
+
+        if (spiderPosition.x > width - margin) {
+          spiderPosition.x = width - margin;
+          spiderPosition.targetDirectionX = -Math.abs(spiderPosition.targetDirectionX);
+        }
+
+        if (spiderPosition.y < margin) {
+          spiderPosition.y = margin;
+          spiderPosition.targetDirectionY = Math.abs(spiderPosition.targetDirectionY);
+        }
+
+        if (spiderPosition.y > height - margin) {
+          spiderPosition.y = height - margin;
+          spiderPosition.targetDirectionY = -Math.abs(spiderPosition.targetDirectionY);
+        }
+      }
+
+      /* LOGO POSITION */
+
+      spider.style.left =
+        spiderPosition.x + "px";
+
+      spider.style.top =
+        spiderPosition.y + "px";
+
+      const rotation =
+        spiderPosition.vx * 1.2;
+
+      spider.style.transform = `
+        translate(-50%, -50%)
+        rotate(${rotation}deg)
+      `;
+    }

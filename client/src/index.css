@@ -1,0 +1,933 @@
+@import url("https://db.onlinewebfonts.com/c/3864ce63b4dd018ad27be780487d0399?family=Silicone+W00+Regular");
+@import "tailwindcss";
+
+
+
+@theme {
+  /* Colors from User Interviews Reference */
+  --color-deep-teal: #1c5d5f;
+  --color-pine-shadow: #0e4749;
+  --color-sage: #65b8a2;
+  --color-lake-teal: #2a7779;
+  --color-forest-floor: #156152;
+  --color-ink-navy: #16325a;
+  --color-dusty-rose: #d6aec1;
+  --color-mint-mist: #a2cbcd;
+  --color-sea-foam: #cae1e2;
+  --color-paper-white: #f2f8f7;
+  --color-card-mint: #e4f0f1;
+  --color-blush-sand: #f2e8e2;
+  --color-charcoal-navy: #283338;
+  --color-slate: #333333;
+  --color-soft-black: #1a1a1a;
+  --color-illustration-ink: #231e21;
+
+  /* Typography */
+  --font-sofia-pro: 'DM Sans', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-p22-mackinac-pro: 'Lora', 'Source Serif 4', Georgia, serif;
+  --font-ibm-plex-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-silicone: "Silicone W00 Regular", sans-serif;
+
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   User Interviews Light Design System — Design Tokens
+   ──────────────────────────────────────────────────────────── */
+
+:root {
+  --color-deep-teal: #1c5d5f;
+  --color-pine-shadow: #0e4749;
+  --color-sage: #65b8a2;
+  --color-lake-teal: #2a7779;
+  --color-forest-floor: #156152;
+  --color-ink-navy: #16325a;
+  --color-dusty-rose: #d6aec1;
+  --color-mint-mist: #a2cbcd;
+  --color-sea-foam: #cae1e2;
+  --color-paper-white: #f2f8f7;
+  --color-card-mint: #e4f0f1;
+  --color-blush-sand: #f2e8e2;
+  --color-charcoal-navy: #283338;
+  --color-slate: #333333;
+  --color-soft-black: #1a1a1a;
+  --color-illustration-ink: #231e21;
+
+  /* Obsidian Auth compatibility variables */
+  --obsidian-bg: #0d0d0f;
+  --obsidian-surface: #131313;
+  --obsidian-surface-dim: #131313;
+  --obsidian-surface-bright: #393939;
+  --obsidian-surface-lowest: #0e0e0e;
+  --obsidian-surface-low: #1c1b1b;
+  --obsidian-surface-container: #201f1f;
+  --obsidian-surface-high: #2a2a2a;
+  --obsidian-surface-highest: #353534;
+  --obsidian-on-surface: #e5e2e1;
+  --obsidian-on-surface-variant: #c4c7c8;
+  --obsidian-outline: #8e9192;
+  --obsidian-outline-variant: #444748;
+  --obsidian-primary: #ffffff;
+  --obsidian-on-primary: #2f3131;
+  --obsidian-tertiary: #FC8200;
+  --obsidian-card-bg: rgba(20, 20, 24, 0.9);
+  --obsidian-input-bg: #1b1b22;
+  --obsidian-glass-border: rgba(255, 255, 255, 0.10);
+  --obsidian-glass-border-active: rgba(255, 255, 255, 0.30);
+  --obsidian-error: #ffb4ab;
+  --obsidian-error-container: #93000a;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Base Resets (Light Editorial Paper)
+   ──────────────────────────────────────────────────────────── */
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  background-color: #0d0d0f;
+  color: #f4f4f6;
+  font-family: 'DM Sans', 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Typography Helper Classes & Obsidian Glass Utilities
+   ──────────────────────────────────────────────────────────── */
+
+.font-serif-heading {
+  font-family: "Silicone W00 Regular",'Lora', 'Source Serif 4', Georgia, serif;
+}
+
+.font-mono-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.font-body-sans {
+  font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
+}
+
+.serif-title {
+  font-family: 'Instrument Serif', Georgia, serif;
+}
+
+.glass-panel {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.10);
+}
+
+/* ────────────────────────────────────────────────────────────
+   Scrollbar & Motion
+   ──────────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #f2f8f7;
+}
+::-webkit-scrollbar-thumb {
+  background: #cae1e2;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a2cbcd;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Hero Card Micro-Animations
+   ──────────────────────────────────────────────────────────── */
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(-0.6deg);
+  }
+}
+
+@keyframes floatSlowReverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(8px) rotate(0.6deg);
+  }
+}
+
+@keyframes shimmerGlow {
+  0% {
+    transform: translateX(-150%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+@keyframes spinSlow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: floatSlowReverse 6.5s ease-in-out infinite;
+}
+
+.animate-shimmer-glow {
+  animation: shimmerGlow 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-spin-slow {
+  animation: spinSlow 14s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* ────────────────────────────────────────────────────────────
+   Obsidian Glass — Design System Tokens
+   ──────────────────────────────────────────────────────────── */
+
+:root {
+  /* Surfaces */
+  --obsidian-bg: #0d0d0f;
+  --obsidian-surface: #131313;
+  --obsidian-surface-dim: #131313;
+  --obsidian-surface-bright: #393939;
+  --obsidian-surface-lowest: #0e0e0e;
+  --obsidian-surface-low: #1c1b1b;
+  --obsidian-surface-container: #201f1f;
+  --obsidian-surface-high: #2a2a2a;
+  --obsidian-surface-highest: #353534;
+
+  /* Text */
+  --obsidian-on-surface: #e5e2e1;
+  --obsidian-on-surface-variant: #c4c7c8;
+  --obsidian-outline: #8e9192;
+  --obsidian-outline-variant: #444748;
+
+  /* Primary / Accent (Career Odyssey Orange & Amber Palette) */
+  --obsidian-primary: #ffffff;
+  --obsidian-on-primary: #2f3131;
+  --obsidian-tertiary: #FF6B00;
+  --brand-primary: #FF6B00;
+  --brand-orange: #FF6B00;
+  --brand-orange-light: #FF8A00;
+  --brand-amber: #FFA500;
+  --brand-gold: #FFB74D;
+  --brand-sunset: #E65100;
+  --brand-gradient: linear-gradient(135deg, #FF5100 0%, #FF6B00 45%, #FFA726 100%);
+  --brand-gradient-subtle: linear-gradient(135deg, rgba(255, 81, 0, 0.15) 0%, rgba(255, 107, 0, 0.08) 50%, rgba(255, 167, 38, 0.05) 100%);
+  --brand-glow: 0 0 25px rgba(255, 107, 0, 0.25);
+
+  /* Error */
+  --obsidian-error: #ffb4ab;
+  --obsidian-error-container: #93000a;
+
+  /* Card / Glass */
+  --obsidian-card-bg: rgba(20, 20, 24, 0.9);
+  --obsidian-input-bg: #1b1b22;
+  --obsidian-glass-border: rgba(255, 255, 255, 0.10);
+  --obsidian-glass-border-active: rgba(255, 107, 0, 0.40);
+}
+
+/* ────────────────────────────────────────────────────────────
+   Base Resets
+   ──────────────────────────────────────────────────────────── */
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Accessible Keyboard Navigation (WCAG 2.1 AA)
+   ──────────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid #FF7A00;
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #FF7A00;
+  outline-offset: 2px;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Custom Scrollbar (Obsidian Dark)
+   ──────────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--obsidian-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #27272e;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Utility Classes
+   ──────────────────────────────────────────────────────────── */
+
+.serif-title {
+  font-family: 'Instrument Serif', Georgia, serif;
+}
+
+.glass-panel {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.10);
+}
+
+.text-brand-gradient {
+  background: linear-gradient(135deg, #FF6B00 0%, #FFA500 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-brand-gradient {
+  background: linear-gradient(135deg, #FF5100 0%, #FF6B00 45%, #FFA726 100%);
+}
+
+.brand-glow {
+  box-shadow: 0 0 25px rgba(255, 107, 0, 0.28);
+}
+
+.brand-glow-lg {
+  box-shadow: 0 0 45px rgba(255, 107, 0, 0.38);
+}
+
+.border-brand-glow {
+  border-color: rgba(255, 107, 0, 0.35);
+}
+
+/* ────────────────────────────────────────────────────────────
+   Dashboard Design Tokens
+   (additive — obsidian-* auth tokens above are untouched)
+   ──────────────────────────────────────────────────────────── */
+
+:root {
+  /* Layout geometry */
+  --dash-sidebar-width:  224px;
+  --dash-topbar-height:   56px;
+
+  /* Surfaces */
+  --dash-sidebar-bg:      #0c0c0e;
+  --dash-content-bg:      var(--obsidian-bg);
+  --dash-sidebar-border:  rgba(255, 255, 255, 0.05);
+  --dash-topbar-bg:       rgba(13, 13, 15, 0.85);
+  --dash-card-bg:         #111113;
+  --dash-card-border:     rgba(255, 255, 255, 0.06);
+  --dash-card-hover-border: rgba(255, 107, 0, 0.25);
+
+  /* Status palette */
+  --dash-success:         #4ade80;
+  --dash-success-bg:      rgba(74, 222, 128, 0.10);
+  --dash-warning:         #fbbf24;
+  --dash-warning-bg:      rgba(251, 191, 36, 0.10);
+  --dash-info:            #60a5fa;
+  --dash-info-bg:         rgba(96, 165, 250, 0.10);
+  --dash-danger:          #f87171;
+  --dash-danger-bg:       rgba(248, 113, 113, 0.10);
+
+  /* Nav active accent — matches obsidian-tertiary */
+  --dash-nav-active-accent: #FF6B00;
+  --dash-nav-active-bg:     rgba(255, 107, 0, 0.08);
+}
+
+/* ────────────────────────────────────────────────────────────
+   Print Media Styles for Modern Resume Export (Save as PDF)
+   ──────────────────────────────────────────────────────────── */
+@media print {
+  /* Hide all dashboard UI elements */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Make only the resume printable area visible */
+  .resume-printable-area,
+  .resume-printable-area * {
+    visibility: visible !important;
+  }
+
+  .resume-printable-area {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 20px 24px !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: #ffffff !important;
+    color: #18181b !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  @page {
+    margin: 8mm 10mm;
+    size: A4 portrait;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════
+   INDUSTRY-LEVEL ANIMATION SYSTEM
+   Career Odyssey — Motion Design Language v2.0
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Core Keyframes ───────────────────────────────────────── */
+
+@keyframes co-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes co-slide-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes co-slide-in-left {
+  from { opacity: 0; transform: translateX(-18px); }
+  to   { opacity: 1; transform: translateX(0);     }
+}
+
+@keyframes co-slide-in-right {
+  from { opacity: 0; transform: translateX(18px); }
+  to   { opacity: 1; transform: translateX(0);    }
+}
+
+@keyframes co-scale-in {
+  from { opacity: 0; transform: scale(0.90); }
+  to   { opacity: 1; transform: scale(1);    }
+}
+
+@keyframes co-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+@keyframes co-progress-fill {
+  from { width: 0%; }
+  to   { width: var(--target-width, 100%); }
+}
+
+@keyframes co-glow-pulse {
+  0%, 100% { box-shadow: 0 0 0   0   rgba(255, 107, 0, 0);    }
+  50%       { box-shadow: 0 0 16px 4px rgba(255, 107, 0, 0.30); }
+}
+
+@keyframes co-nav-glow-pulse {
+  0%, 100% { box-shadow: 0 0 0   0   rgba(255, 107, 0, 0);    }
+  50%       { box-shadow: 0 0 12px 2px rgba(255, 107, 0, 0.22); }
+}
+
+@keyframes co-dot-blink {
+  0%, 100% { opacity: 0.25; transform: scale(0.85); }
+  50%       { opacity: 1;    transform: scale(1.15); }
+}
+
+@keyframes co-gauge-arc {
+  from { stroke-dashoffset: 125.6; }
+  to   { stroke-dashoffset: var(--gauge-offset, 0); }
+}
+
+@keyframes co-count-up {
+  from { opacity: 0; transform: translateY(6px) scale(0.85); }
+  to   { opacity: 1; transform: translateY(0)   scale(1);    }
+}
+
+@keyframes co-accordion-open {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes co-float {
+  0%, 100% { transform: translateY(0px);  }
+  50%       { transform: translateY(-4px); }
+}
+
+@keyframes co-spin-once {
+  from { transform: rotate(0deg);   }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes co-sidebar-item-in {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0);     }
+}
+
+@keyframes co-topbar-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+@keyframes animate-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Base Animation Utilities ─────────────────────────────── */
+
+.animate-fade-in        { animation: co-fade-in       0.35s ease forwards; }
+.animate-slide-up       { animation: co-slide-up      0.40s cubic-bezier(.25,.8,.25,1) forwards; }
+.animate-slide-in-left  { animation: co-slide-in-left 0.35s cubic-bezier(.25,.8,.25,1) forwards; }
+.animate-slide-in-right { animation: co-slide-in-right 0.35s cubic-bezier(.25,.8,.25,1) forwards; }
+.animate-scale-in       { animation: co-scale-in      0.30s cubic-bezier(.34,1.56,.64,1) forwards; }
+.animate-count-up       { animation: co-count-up      0.45s cubic-bezier(.34,1.56,.64,1) forwards; }
+.animate-accordion-open { animation: co-accordion-open 0.22s ease forwards; }
+.animate-float          { animation: co-float          3.5s ease-in-out infinite; }
+.animate-glow-pulse     { animation: co-glow-pulse     2.5s ease-in-out infinite; }
+.animate-nav-glow-pulse { animation: co-nav-glow-pulse 2.2s ease-in-out infinite; }
+.animate-topbar-in      { animation: co-topbar-in      0.40s ease forwards; }
+
+/* ── Stagger Delay Utilities (use with any animation class) ── */
+
+.stagger-1  { animation-delay: 0.05s; }
+.stagger-2  { animation-delay: 0.10s; }
+.stagger-3  { animation-delay: 0.15s; }
+.stagger-4  { animation-delay: 0.20s; }
+.stagger-5  { animation-delay: 0.25s; }
+.stagger-6  { animation-delay: 0.30s; }
+.stagger-7  { animation-delay: 0.35s; }
+.stagger-8  { animation-delay: 0.40s; }
+.stagger-9  { animation-delay: 0.45s; }
+.stagger-10 { animation-delay: 0.50s; }
+
+/* Start invisible so stagger looks right */
+.animate-slide-up,
+.animate-slide-in-left,
+.animate-slide-in-right,
+.animate-scale-in,
+.animate-count-up,
+.animate-accordion-open,
+.animate-fade-in {
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+/* ── Shimmer Skeleton ─────────────────────────────────────── */
+
+.co-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.03) 0%,
+    rgba(255,255,255,0.08) 50%,
+    rgba(255,255,255,0.03) 100%
+  );
+  background-size: 800px 100%;
+  animation: co-shimmer 1.6s ease-in-out infinite;
+}
+
+/* ── Animated Progress Bar ────────────────────────────────── */
+
+.co-progress-bar {
+  height: 6px;
+  border-radius: 9999px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.06);
+}
+
+.co-progress-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  animation: co-progress-fill 1.1s cubic-bezier(.4,0,.2,1) forwards;
+  animation-delay: 0.2s;
+  width: 0%;
+}
+
+/* ── Gauge Arc Animation ─────────────────────────────────── */
+
+.co-gauge-arc-animated {
+  animation: co-gauge-arc 1.4s cubic-bezier(.4,0,.2,1) forwards;
+  animation-delay: 0.3s;
+}
+
+/* ── Sidebar Nav Active Item — Glow + micro-indicator ──────── */
+
+.sidebar-nav-active-glow {
+  animation: co-nav-glow-pulse 2.2s ease-in-out infinite;
+}
+
+/* ── Sidebar entrance — stagger each group item ─────────────── */
+
+.sidebar-nav-item {
+  opacity: 0;
+  animation: co-sidebar-item-in 0.30s cubic-bezier(.25,.8,.25,1) forwards;
+}
+
+/* ── Icon hover spin ─────────────────────────────────────── */
+
+.icon-hover-spin:hover svg {
+  animation: co-spin-once 0.5s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ── Dot blink (live status indicators) ──────────────────── */
+
+.co-dot-blink {
+  animation: co-dot-blink 1.8s ease-in-out infinite;
+}
+
+/* ── Card entrance ripple on hover ──────────────────────── */
+
+.card-hover-lift {
+  transition: transform 0.22s cubic-bezier(.4,0,.2,1),
+              box-shadow 0.22s cubic-bezier(.4,0,.2,1),
+              border-color 0.22s ease;
+}
+
+.card-hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,107,0,0.18);
+}
+
+/* ── Brand accent underline animate ─────────────────────── */
+
+.brand-underline {
+  position: relative;
+}
+
+.brand-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, #FF5100, #FFA726);
+  border-radius: 2px;
+  transition: width 0.3s cubic-bezier(.4,0,.2,1);
+}
+
+.brand-underline:hover::after {
+  width: 100%;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Premium SaaS Button & Card Utilities
+   ──────────────────────────────────────────────────────────── */
+
+.btn-primary-orange {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #fb923c 100%);
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.28);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary-orange:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.42);
+}
+
+.btn-primary-orange:active {
+  transform: translateY(0);
+}
+
+.btn-secondary-glass {
+  background: rgba(255, 255, 255, 0.04);
+  color: #e4e4e7;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-secondary-glass:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.saas-card {
+  background: rgba(13, 14, 19, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.saas-card:hover {
+  border-color: rgba(249, 115, 22, 0.25);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45), 0 0 20px rgba(249, 115, 22, 0.08);
+}
+
+/* ────────────────────────────────────────────────────────────
+   Custom Sleek Sidebar Scrollbar
+   ──────────────────────────────────────────────────────────── */
+.custom-sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.animate-count-up       { animation: co-count-up      0.45s cubic-bezier(.34,1.56,.64,1) forwards; }
+.animate-accordion-open { animation: co-accordion-open 0.22s ease forwards; }
+.animate-float          { animation: co-float          3.5s ease-in-out infinite; }
+.animate-glow-pulse     { animation: co-glow-pulse     2.5s ease-in-out infinite; }
+.animate-nav-glow-pulse { animation: co-nav-glow-pulse 2.2s ease-in-out infinite; }
+.animate-topbar-in      { animation: co-topbar-in      0.40s ease forwards; }
+
+/* ── Stagger Delay Utilities (use with any animation class) ── */
+
+.stagger-1  { animation-delay: 0.05s; }
+.stagger-2  { animation-delay: 0.10s; }
+.stagger-3  { animation-delay: 0.15s; }
+.stagger-4  { animation-delay: 0.20s; }
+.stagger-5  { animation-delay: 0.25s; }
+.stagger-6  { animation-delay: 0.30s; }
+.stagger-7  { animation-delay: 0.35s; }
+.stagger-8  { animation-delay: 0.40s; }
+.stagger-9  { animation-delay: 0.45s; }
+.stagger-10 { animation-delay: 0.50s; }
+
+/* Start invisible so stagger looks right */
+.animate-slide-up,
+.animate-slide-in-left,
+.animate-slide-in-right,
+.animate-scale-in,
+.animate-count-up,
+.animate-accordion-open,
+.animate-fade-in {
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+/* ── Shimmer Skeleton ─────────────────────────────────────── */
+
+.co-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.03) 0%,
+    rgba(255,255,255,0.08) 50%,
+    rgba(255,255,255,0.03) 100%
+  );
+  background-size: 800px 100%;
+  animation: co-shimmer 1.6s ease-in-out infinite;
+}
+
+/* ── Animated Progress Bar ────────────────────────────────── */
+
+.co-progress-bar {
+  height: 6px;
+  border-radius: 9999px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.06);
+}
+
+.co-progress-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  animation: co-progress-fill 1.1s cubic-bezier(.4,0,.2,1) forwards;
+  animation-delay: 0.2s;
+  width: 0%;
+}
+
+/* ── Gauge Arc Animation ─────────────────────────────────── */
+
+.co-gauge-arc-animated {
+  animation: co-gauge-arc 1.4s cubic-bezier(.4,0,.2,1) forwards;
+  animation-delay: 0.3s;
+}
+
+/* ── Sidebar Nav Active Item — Glow + micro-indicator ──────── */
+
+.sidebar-nav-active-glow {
+  animation: co-nav-glow-pulse 2.2s ease-in-out infinite;
+}
+
+/* ── Sidebar entrance — stagger each group item ─────────────── */
+
+.sidebar-nav-item {
+  opacity: 0;
+  animation: co-sidebar-item-in 0.30s cubic-bezier(.25,.8,.25,1) forwards;
+}
+
+/* ── Icon hover spin ─────────────────────────────────────── */
+
+.icon-hover-spin:hover svg {
+  animation: co-spin-once 0.5s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* ── Dot blink (live status indicators) ──────────────────── */
+
+.co-dot-blink {
+  animation: co-dot-blink 1.8s ease-in-out infinite;
+}
+
+/* ── Card entrance ripple on hover ──────────────────────── */
+
+.card-hover-lift {
+  transition: transform 0.22s cubic-bezier(.4,0,.2,1),
+              box-shadow 0.22s cubic-bezier(.4,0,.2,1),
+              border-color 0.22s ease;
+}
+
+.card-hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,107,0,0.18);
+}
+
+/* ── Brand accent underline animate ─────────────────────── */
+
+.brand-underline {
+  position: relative;
+}
+
+.brand-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, #FF5100, #FFA726);
+  border-radius: 2px;
+  transition: width 0.3s cubic-bezier(.4,0,.2,1);
+}
+
+.brand-underline:hover::after {
+  width: 100%;
+}
+
+/* ────────────────────────────────────────────────────────────
+   Premium SaaS Button & Card Utilities
+   ──────────────────────────────────────────────────────────── */
+
+.btn-primary-orange {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #fb923c 100%);
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.28);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary-orange:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.42);
+}
+
+.btn-primary-orange:active {
+  transform: translateY(0);
+}
+
+.btn-secondary-glass {
+  background: rgba(255, 255, 255, 0.04);
+  color: #e4e4e7;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-secondary-glass:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.saas-card {
+  background: rgba(13, 14, 19, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.saas-card:hover {
+  border-color: rgba(249, 115, 22, 0.25);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45), 0 0 20px rgba(249, 115, 22, 0.08);
+}
+
+/* ────────────────────────────────────────────────────────────
+   Custom Sleek Sidebar Scrollbar
+   ──────────────────────────────────────────────────────────── */
+.custom-sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-sidebar-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+}
+
+.custom-sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(249, 115, 22, 0.4);
+}

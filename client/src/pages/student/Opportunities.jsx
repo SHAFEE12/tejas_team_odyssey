@@ -522,7 +522,23 @@ function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
   const bd = opp.fitBreakdown || {};
   const evidenceMatrix = opp.evidenceMatrix || [];
   const criticalMissing = opp.criticalMissing || [];
-
+      return (
+    <div className="fixed inset-0 z-50 flex justify-end bg-black/80 backdrop-blur-md animate-fadeIn" role="dialog">
+      <div
+        className="relative z-10 flex flex-col w-full max-w-[620px] h-full bg-[#0b0d16] border-l border-white/[0.12] overflow-y-auto shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="sticky top-0 z-20 flex items-start justify-between gap-4 p-6 border-b border-white/[0.08] bg-[#0b0d16]/95 backdrop-blur">
+          <div className="flex items-center gap-3.5 min-w-0">
+            <CompanyLogo company={opp.company} />
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 mb-0.5">
+                {isPartner ? (
+                  <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                    Verified Industry Partner
+                  </span>
 
           </button>
 

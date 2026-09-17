@@ -959,4 +959,23 @@ export default function Opportunities() {
                                                                 ? 'bg-orange-500 text-white shadow-md shadow-orange-500/25'
                                                                 : 'text-zinc-400 hover:text-white'
                                                             }`}
-                                                          ></button>
+                                                          >
+                                                             <span>⚡ Best Matches</span>
+            {matches.length > 0 && (
+              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-black/40 text-white">
+                {matches.length}
+              </span>
+            )}
+          </button>
+          <button
+            onClick={() => setTab('pipeline')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              tab === 'pipeline'
+                ? 'bg-orange-500 text-white shadow-md shadow-orange-500/25'
+                : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            Pipeline ({applications.length})
+          </button>
+        </div>
+      </div>

@@ -153,3 +153,12 @@ function getCompanyInitials(name) {
   }
   return name.slice(0, 2).toUpperCase();
 }
+
+const COMPANY_GRADIENTS = [
+  { bg: 'from-orange-500/20 via-amber-500/15 to-yellow-500/20', text: 'text-orange-400', border: 'border-orange-500/30' },
+  { bg: 'from-indigo-500/20 via-purple-500/15 to-violet-500/20', text: 'text-indigo-400', border: 'border-indigo-500/30' },
+  { bg: 'from-emerald-500/20 via-teal-500/15 to-cyan-500/20', text: 'text-emerald-400', border: 'border-emerald-500/30' },
+  { bg: 'from-sky-500/20 via-blue-500/15 to-indigo-500/20', text: 'text-sky-400', border: 'border-sky-500/30' },
+  { bg: 'from-rose-500/20 via-pink-500/15 to-fuchsia-500/20', text: 'text-rose-400', border: 'border-rose-500/30' },
+  { bg: 'from-teal-500/20 via-emerald-500/15 to-cyan-500/20', text: 'text-teal-400', border: 'border-teal-500/30' },
+];

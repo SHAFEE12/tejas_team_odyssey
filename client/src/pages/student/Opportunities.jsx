@@ -794,3 +794,24 @@ export default function Opportunities() {
     setToast({ msg, type });
     setTimeout(() => setToast(null), 3500);
   }, []);
+    
+   const fetchMatches = useCallback(async () => {
+    setLoadingMatches(true);
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/matching/student/opportunities?limit=50`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.ok) {
+        const d = await res.json();
+        if (d.success) setMatches(d.data?.matches || []);
+      }
+    } catch (err) {
+      console.error('Error fetching matches:', err);
+    } finally {
+      setLoadingMatches(false);
+    }
+  }, []);

@@ -77,3 +77,19 @@ const ROLE_TITLE_FORMAT = {
   'ux designer': 'UX Designer',
   'junior ui/ux designer': 'Junior UI/UX Designer',
 };
+
+function formatRoleTitle(title) {
+  if (!title) return '';
+  const lower = title.toLowerCase().trim();
+  if (ROLE_TITLE_FORMAT[lower]) return ROLE_TITLE_FORMAT[lower];
+  return title
+    .split(' ')
+    .map((word) => {
+      const w = word.trim();
+      if (!w) return '';
+      const wLower = w.toLowerCase();
+      if (['and', 'or', 'in', 'at', 'of', 'for', 'to', '&'].includes(wLower)) return wLower;
+      return w.charAt(0).toUpperCase() + w.slice(1);
+    })
+    .join(' ');
+}

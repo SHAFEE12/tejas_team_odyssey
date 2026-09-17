@@ -1424,3 +1424,4 @@ export default function IndustryDashboard() {
           </div>
         </div>
       )}
+      

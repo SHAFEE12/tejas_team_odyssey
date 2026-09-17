@@ -990,4 +990,19 @@ export default function Opportunities() {
                 d={ICONS.search}
                 size={14}
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500"
-              />
+              />   <input
+                              type="text"
+                              placeholder="Search opportunities, skills, companies…"
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                              className="w-full pl-9 pr-3 py-2 bg-zinc-900/90 border border-white/[0.08] rounded-xl text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-orange-500/50"
+                            />
+                            {searchQuery && (
+                              <button
+                                onClick={() => setSearchQuery('')}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white cursor-pointer"
+                              >
+                                ✕
+                              </button>
+                            )}
+                          </div>

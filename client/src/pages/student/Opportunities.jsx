@@ -699,4 +699,14 @@ function PipelineColumn({ status, apps, onDelete }) {
     REJECTED:    { label: 'Rejected',    dot: 'bg-rose-400',    border: 'border-rose-500/20' },
   };
   const cfg = CONFIG[status] || { label: status, dot: 'bg-zinc-400', border: 'border-white/[0.08]' };
-  
+
+   return (
+    <div className="flex flex-col gap-2.5 min-w-[240px] flex-1">
+      {/* Column Header */}
+      <div className={`flex items-center gap-2 px-3.5 py-2.5 rounded-2xl border ${cfg.border} bg-[#0c0e17]/80 backdrop-blur`}>
+        <span className={`w-2 h-2 rounded-full ${cfg.dot}`} />
+        <span className="text-xs font-mono font-bold uppercase text-zinc-200">{cfg.label}</span>
+        <span className="ml-auto text-xs font-mono font-bold text-zinc-400 bg-white/[0.04] px-2 py-0.5 rounded-full border border-white/[0.06]">
+          {apps.length}
+        </span>
+      </div>

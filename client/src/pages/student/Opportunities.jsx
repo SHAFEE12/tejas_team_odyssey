@@ -893,4 +893,9 @@ export default function Opportunities() {
                     toast.type === 'error'
                       ? 'bg-rose-950/95 border-rose-800 text-rose-200'
                       : 'bg-[#0c0e17]/95 border-white/20 text-white'
-                  }`}></div>
+                  }`}>
+                              <span>{toast.type === 'error' ? '✕' : '✓'}</span>
+                              <span>{toast.msg}</span>
+                            </div>
+                          )}
+                    

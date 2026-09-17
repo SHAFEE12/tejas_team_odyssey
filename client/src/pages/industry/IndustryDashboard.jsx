@@ -1172,3 +1172,104 @@ export default function IndustryDashboard() {
                 )}
               </div>
             )}
+ {/* ════════ TAB: COMPANY PROFILE ════════ */}
+            {activeTab === 'profile' && companyProfile && (
+              <div className="max-w-2xl bg-zinc-900/40 border border-zinc-800/80 rounded-xl p-6 space-y-6">
+                <div>
+                  <h2 className="text-base font-semibold text-white">Company Profile</h2>
+                  <p className="text-xs text-zinc-400">Configure your hiring organization details across the ecosystem</p>
+                </div>
+
+                <form onSubmit={handleUpdateProfile} className="space-y-4 text-xs">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-zinc-400">Company Name</label>
+                      <input
+                        type="text"
+                        value={companyProfile.companyName || ''}
+                        onChange={(e) => setCompanyProfile({ ...companyProfile, companyName: e.target.value })}
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-zinc-400">Industry Domain</label>
+                      <input
+                        type="text"
+                        value={companyProfile.domain || ''}
+                        onChange={(e) => setCompanyProfile({ ...companyProfile, domain: e.target.value })}
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-zinc-400">Website</label>
+                      <input
+                        type="text"
+                        value={companyProfile.website || ''}
+                        onChange={(e) => setCompanyProfile({ ...companyProfile, website: e.target.value })}
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-zinc-400">Company Size</label>
+                      <select
+                        value={companyProfile.companySize || '51-200'}
+                        onChange={(e) => setCompanyProfile({ ...companyProfile, companySize: e.target.value })}
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                      >
+                        <option value="1-10">1-10 employees</option>
+                        <option value="11-50">11-50 employees</option>
+                        <option value="51-200">51-200 employees</option>
+                        <option value="201-500">201-500 employees</option>
+                        <option value="501-1000">501-1000 employees</option>
+                        <option value="1000+">1000+ employees</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-zinc-400">Location</label>
+                      <input
+                        type="text"
+                        value={companyProfile.location || ''}
+                        onChange={(e) => setCompanyProfile({ ...companyProfile, location: e.target.value })}
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-zinc-400">Headquarters</label>
+                      <input
+                        type="text"
+                        value={companyProfile.headquarters || ''}
+                        onChange={(e) => setCompanyProfile({ ...companyProfile, headquarters: e.target.value })}
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-zinc-400">Description</label>
+                    <textarea
+                      rows={3}
+                      value={companyProfile.description || ''}
+                      onChange={(e) => setCompanyProfile({ ...companyProfile, description: e.target.value })}
+                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-medium transition-colors"
+                  >
+                    Save Changes
+                  </button>
+                </form>
+              </div>
+            )}
+          </>
+        )}
+      </main>

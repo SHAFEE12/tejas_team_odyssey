@@ -1626,3 +1626,82 @@ export default function IndustryDashboard() {
                         className="w-full p-2 rounded-lg bg-zinc-900 border border-zinc-700 text-white text-xs"
                       />
                     </div>
+<div className="flex justify-end gap-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={() => setEvalFormOpen(false)}
+                        className="px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-white text-xs cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-4 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold shadow cursor-pointer"
+                      >
+                        Submit Evaluation & Trigger Student Feedback Loop
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                {/* Explainable Match Card if Available */}
+                {candidate360.matchEvaluation && (
+                  <div className="bg-purple-950/30 border border-purple-800/60 rounded-xl p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-bold text-white">Deterministic Match Score</span>
+                        <span className="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono text-[10px] uppercase font-semibold">
+                          {candidate360.matchEvaluation.matchBand}
+                        </span>
+                      </div>
+                      <span className="text-2xl font-black text-purple-400 font-mono">
+                        {candidate360.matchEvaluation.matchScore}%
+                      </span>
+                    </div>
+
+                    {/* Breakdown Scores */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 font-mono text-[11px]">
+                      <div className="bg-zinc-950/60 p-2 rounded border border-zinc-800/80">
+                        <span className="text-[10px] text-zinc-500 block">Required Skills (35%)</span>
+                        <span className="text-purple-300 font-bold">{candidate360.matchEvaluation.breakdown.requiredSkills.score}%</span>
+                      </div>
+                      <div className="bg-zinc-950/60 p-2 rounded border border-zinc-800/80">
+                        <span className="text-[10px] text-zinc-500 block">Preferred Skills (15%)</span>
+                        <span className="text-purple-300 font-bold">{candidate360.matchEvaluation.breakdown.preferredSkills.score}%</span>
+                      </div>
+                      <div className="bg-zinc-950/60 p-2 rounded border border-zinc-800/80">
+                        <span className="text-[10px] text-zinc-500 block">Project Evidence (15%)</span>
+                        <span className="text-purple-300 font-bold">{candidate360.matchEvaluation.breakdown.projectEvidence.score}%</span>
+                      </div>
+                      <div className="bg-zinc-950/60 p-2 rounded border border-zinc-800/80">
+                        <span className="text-[10px] text-zinc-500 block">Readiness (10%)</span>
+                        <span className="text-purple-300 font-bold">{candidate360.matchEvaluation.breakdown.careerReadiness.score}%</span>
+                      </div>
+                    </div>
+
+                    {/* Reasons & Recommendations */}
+                    <div className="space-y-1 text-zinc-300 text-[11px] pt-1">
+                      {candidate360.matchEvaluation.reasons.map((r, i) => (
+                        <div key={i} className="flex items-start gap-1.5">
+                          <span className="text-purple-400">✓</span>
+                          <span>{r}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Skills Profile */}
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-zinc-200 text-xs uppercase tracking-wider">Technical Competencies</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {(candidate360.skills || []).map((sk, idx) => (
+                      <div key={idx} className="bg-zinc-950 border border-zinc-800 px-2.5 py-1 rounded-lg flex items-center gap-2">
+                        <span className="text-zinc-200 font-medium">{sk.name}</span>
+                        <span className="text-[10px] font-mono px-1 rounded bg-zinc-800 text-zinc-400 uppercase">
+                          {sk.level}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>

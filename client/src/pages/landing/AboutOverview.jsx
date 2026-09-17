@@ -141,3 +141,8 @@ export default function AboutOverview() {
             </div>
           ))}
         </div>
+
+      </div>
+    </section>
+  );
+}

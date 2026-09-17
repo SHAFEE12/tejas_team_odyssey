@@ -539,6 +539,25 @@ function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                     Verified Industry Partner
                   </span>
+                   ) : (
+                  <span className="text-[10px] font-mono font-bold text-orange-400 uppercase tracking-wider">
+                    Curated Opening
+                  </span>
+                )}
+              </div>
+              <h2 className="text-xl font-bold text-white leading-tight truncate">
+                {formatRoleTitle(opp.title)}
+              </h2>
+              <p className="text-xs text-zinc-400 font-medium truncate">
+                {opp.company} • {opp.location}
+              </p>
+            </div>
+          </div>
+          <button
+            id="btn-close-drawer"
+            onClick={onClose}
+            className="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.08] transition-colors cursor-pointer shrink-0"
+          >
 
           </button>
 

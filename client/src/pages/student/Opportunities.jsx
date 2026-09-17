@@ -399,5 +399,14 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
             disabled={saving === opp._id}
             onClick={() => onApplyClick(opp)}
             className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs shadow-md shadow-orange-600/25 active:scale-95 transition-all disabled:opacity-50 cursor-pointer shrink-0"
-          ></button>
+          >
+              {saving === opp._id ? '…' : 'Apply now'}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+          
       

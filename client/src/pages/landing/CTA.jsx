@@ -1709,3 +1709,59 @@ export default function CTA({ onLogin, onRegister }) {
       "resize",
       resize
     );
+
+    /* =========================================================
+       POINTER / TOUCH EVENTS
+    ========================================================= */
+
+    function onPointerMove(event) {
+      handlePointerPosition(event.clientX, event.clientY);
+    }
+
+    function onPointerLeave() {
+      interaction.pointerNear = false;
+    }
+
+    function onTouchStart(event) {
+      const touch = event.touches[0];
+      if (!touch) return;
+      handlePointerPosition(touch.clientX, touch.clientY);
+    }
+
+    function onTouchMove(event) {
+      const touch = event.touches[0];
+      if (!touch) return;
+      handlePointerPosition(touch.clientX, touch.clientY);
+    }
+
+    function onTouchEnd() {
+      interaction.pointerNear = false;
+    }
+
+    section.addEventListener("pointermove", onPointerMove);
+    section.addEventListener("pointerleave", onPointerLeave);
+    section.addEventListener("touchstart", onTouchStart, { passive: true });
+    section.addEventListener("touchmove", onTouchMove, { passive: true });
+    section.addEventListener("touchend", onTouchEnd, { passive: true });
+
+    /* =========================================================
+       CLEANUP
+    ========================================================= */
+
+    return () => {
+      cancelAnimationFrame(
+        animationId
+      );
+
+      window.removeEventListener(
+        "resize",
+        resize
+      );
+
+      section.removeEventListener("pointermove", onPointerMove);
+      section.removeEventListener("pointerleave", onPointerLeave);
+      section.removeEventListener("touchstart", onTouchStart);
+      section.removeEventListener("touchmove", onTouchMove);
+      section.removeEventListener("touchend", onTouchEnd);
+    };
+  }, []);

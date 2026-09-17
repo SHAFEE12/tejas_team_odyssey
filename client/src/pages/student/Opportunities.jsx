@@ -727,3 +727,23 @@ function PipelineColumn({ status, apps, onDelete }) {
                 {formatRoleTitle(app.opportunity?.title || '—')}
               </p>
               <p className="text-[11px] text-zinc-400">{app.opportunity?.company}</p>
+
+                <div className="flex items-center justify-between mt-1 pt-2 border-t border-white/[0.04]">
+                <span className="text-[11px] font-mono text-emerald-400">
+                  {app.fitScore ? `${app.fitScore}% Fit` : 'Tracked'}
+                </span>
+                <button
+                  onClick={() => onDelete(app._id)}
+                  className="text-[11px] font-mono text-zinc-500 hover:text-rose-400 transition-colors cursor-pointer"
+                  title="Remove application"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+}

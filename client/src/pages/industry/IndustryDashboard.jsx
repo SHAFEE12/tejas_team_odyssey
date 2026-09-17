@@ -1424,4 +1424,112 @@ export default function IndustryDashboard() {
           </div>
         </div>
       )}
-      
+       {/* ════════ MODAL: SHORTLIST CANDIDATE ════════ */}
+      {shortlistModalOpen && candidateToShortlist && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-md w-full p-6 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+              <h3 className="font-semibold text-white text-sm">Shortlist Candidate</h3>
+              <button onClick={() => setShortlistModalOpen(false)} className="text-zinc-400 hover:text-white">✕</button>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div>
+                <span className="text-zinc-400">Candidate:</span>
+                <span className="ml-2 font-semibold text-white">{candidateToShortlist.name}</span>
+                <div className="text-[11px] text-zinc-500">{candidateToShortlist.department} • Readiness: {candidateToShortlist.careerReadinessScore}%</div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-zinc-300">Target Opportunity *</label>
+                <select
+                  value={targetOppId}
+                  onChange={(e) => setTargetOppId(e.target.value)}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                >
+                  {opportunities.map((o) => (
+                    <option key={o._id} value={o._id}>{o.title} ({o.type})</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-zinc-300">Recruiter Notes</label>
+                <textarea
+                  rows={3}
+                  placeholder="Optional internal notes on why this candidate was shortlisted..."
+                  value={shortlistNotes}
+                  onChange={(e) => setShortlistNotes(e.target.value)}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-3 border-t border-zinc-800">
+                <button
+                  type="button"
+                  onClick={() => setShortlistModalOpen(false)}
+                  className="px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-300"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirmShortlist}
+                  className="px-4 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-medium"
+                >
+                  Confirm Shortlist
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ════════ MODAL: CANDIDATE 360° DOSSIER ════════ */}
+      {selectedCandidateId && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-3xl w-full p-6 space-y-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-purple-300 font-bold text-sm">
+                  {candidate360?.candidate?.name?.charAt(0) || 'C'}
+                </div>
+                <div>
+                  <h3 className="font-semibold text-white text-base">{candidate360?.candidate?.name}</h3>
+                  <p className="text-xs text-zinc-400">
+                    {candidate360?.candidate?.department} • {candidate360?.candidate?.institution}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  setSelectedCandidateId(null);
+                  setCandidate360(null);
+                }}
+                className="text-zinc-400 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+
+            {loading360 ? (
+              <div className="py-12 text-center text-xs text-zinc-500">Loading candidate career dossier...</div>
+            ) : candidate360 ? (
+              <div className="space-y-5 text-xs">
+                {/* ── Recruiter Evaluation Action Banner ── */}
+                <div className="p-3 bg-gradient-to-r from-purple-950/40 via-fuchsia-950/20 to-zinc-900 border border-purple-500/30 rounded-xl flex items-center justify-between gap-3">
+                  <div>
+                    <span className="font-bold text-white text-xs block">Recruiter Evaluation & Feedback Loop</span>
+                    <span className="text-[11px] text-zinc-400">
+                      Submit structured rubrics. Feedback automatically routes to student skill gap & roadmap.
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setEvalFormOpen(!evalFormOpen)}
+                    className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-500 hover:to-fuchsia-500 text-white font-semibold text-xs shadow-md cursor-pointer flex items-center gap-1.5 shrink-0"
+                  >
+                    <span>📝</span>
+                    <span>{evalFormOpen ? 'Close Rubric' : 'Evaluate Candidate'}</span>
+                  </button>
+                </div>

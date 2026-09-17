@@ -507,12 +507,23 @@ function QuickApplyModal({ opp, onClose, onConfirm, submitting }) {
                 <Icon d={ICONS.arrow} size={12} />
               </>
             )}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
+              </button>
+              </div>
+             </div>
+            </div>
+             );
+            }       
+          /* ── Opportunity Detail Drawer ──────────────────────────────── */
+function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
+  if (!opp) return null;
+
+  const isActioned = !!opp.applicationStatus;
+  const isPartner = opp.industry || opp.isDemo === false;
+  const bd = opp.fitBreakdown || {};
+  const evidenceMatrix = opp.evidenceMatrix || [];
+  const criticalMissing = opp.criticalMissing || [];
+
+
           </button>
 
       </div>

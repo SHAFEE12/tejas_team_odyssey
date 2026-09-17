@@ -633,5 +633,25 @@ function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
                 <span className="font-mono">{bd.githubEvidenceScore ?? 0}% (5%)</span>
               </div>
             </div>
-          </div>          
+          </div>      
+
+            {/* Required Skills Chips */}
+          {opp.requiredSkills?.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-xs font-mono font-bold text-zinc-400 uppercase tracking-wider">
+                Required Technical Skills
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {opp.requiredSkills.map((sk) => (
+                  <span
+                    key={sk}
+                    className="px-3 py-1 rounded-xl text-xs font-mono bg-white/[0.04] text-zinc-200 border border-white/[0.08]"
+                  >
+                    {formatSkillName(sk)}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+    
       

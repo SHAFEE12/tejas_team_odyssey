@@ -136,3 +136,32 @@ export default function InstitutionDashboard() {
   useEffect(() => {
     loadDashboardData();
   }, [token]);
+ // Load Students with Active Filters
+  const loadStudents = async () => {
+    if (!token) return;
+    const query = new URLSearchParams();
+    if (studentFilters.search) query.set('search', studentFilters.search);
+    if (studentFilters.department) query.set('department', studentFilters.department);
+    if (studentFilters.batch) query.set('batch', studentFilters.batch);
+    if (studentFilters.readiness) query.set('readiness', studentFilters.readiness);
+    if (studentFilters.placementStatus) query.set('placementStatus', studentFilters.placementStatus);
+
+    try {
+      const res = await fetch(`${API_URL}/api/institution/students?${query.toString()}`, {
+        credentials: 'omit',
+        headers: authHeaders,
+      });
+      if (res.ok) {
+        const d = await res.json();
+        if (d.success) setStudents(d.data);
+      }
+    } catch (err) {
+      console.error('Error fetching students:', err);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'students') {
+      loadStudents();
+    }
+  }, [activeTab, studentFilters]);

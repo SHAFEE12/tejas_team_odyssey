@@ -79,7 +79,8 @@ export default function InstitutionDashboard() {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${token}`,
   };
- // Load Main Dashboard Overview
+
+  // Load Main Dashboard Overview
   const loadDashboardData = async () => {
     if (!token) return;
     setLoading(true);
@@ -136,7 +137,8 @@ export default function InstitutionDashboard() {
   useEffect(() => {
     loadDashboardData();
   }, [token]);
- // Load Students with Active Filters
+
+  // Load Students with Active Filters
   const loadStudents = async () => {
     if (!token) return;
     const query = new URLSearchParams();
@@ -165,6 +167,71 @@ export default function InstitutionDashboard() {
       loadStudents();
     }
   }, [activeTab, studentFilters]);
+
+  // View Student 360 Details
+  const handleViewStudent360 = async (student) => {
+    setSelectedStudent(student);
+    setLoading360(true);
+    try {
+      const res = await fetch(`${API_URL}/api/institution/students/${student._id}`, {
+        credentials: 'omit',
+        headers: authHeaders,
+      });
+      if (res.ok) {
+        const d = await res.json();
+        if (d.success) setStudent360(d.data);
+      }
+    } catch (err) {
+      showToast('Failed to load student career telemetry', 'error');
+    } finally {
+      setLoading360(false);
+    }
+  };
+
+  // Create Hiring Drive
+  const handleCreateDrive = async (e) => {
+    e.preventDefault();
+    try {
+      const deptsArr = newDrive.departments
+        ? newDrive.departments.split(',').map((s) => s.trim()).filter(Boolean)
+        : [];
+      const batchesArr = newDrive.eligibleBatches
+        ? newDrive.eligibleBatches.split(',').map((b) => Number(b.trim())).filter(Boolean)
+        : [2025, 2026];
+      const skillsArr = newDrive.requiredSkills
+        ? newDrive.requiredSkills.split(',').map((s) => s.trim()).filter(Boolean)
+        : [];
+
+      const payload = {
+        title: newDrive.title,
+        company: newDrive.company,
+        departments: deptsArr,
+        eligibleBatches: batchesArr,
+        minCgpa: Number(newDrive.minCgpa),
+        minReadinessScore: Number(newDrive.minReadinessScore),
+        requiredSkills: skillsArr,
+        deadline: newDrive.deadline,
+      };
+
+      const res = await fetch(`${API_URL}/api/institution/hiring-drives`, {
+        method: 'POST',
+        credentials: 'omit',
+        headers: authHeaders,
+        body: JSON.stringify(payload),
+      });
+      const d = await res.json();
+      if (d.success) {
+        showToast('Campus hiring drive created successfully');
+        setShowDriveModal(false);
+        loadDashboardData();
+      } else {
+        showToast(d.message || 'Error creating hiring drive', 'error');
+      }
+    } catch (err) {
+      showToast('Error creating hiring drive', 'error');
+    }
+  };
+
   // Evaluate Hiring Drive Eligibility
   const handleCheckDriveEligibility = async (drive) => {
     setSelectedDriveForEligibility(drive);
@@ -210,6 +277,7 @@ export default function InstitutionDashboard() {
       showToast('Error assigning student', 'error');
     }
   };
+
   // Unassign Student
   const handleUnassignStudent = async (academicianId, studentId) => {
     if (!window.confirm('Unassign this student from faculty mentor?')) return;
@@ -270,7 +338,8 @@ export default function InstitutionDashboard() {
             </p>
           </div>
         </div>
-{/* Global Navigation Tabs */}
+
+        {/* Global Navigation Tabs */}
         <nav className="hidden lg:flex items-center gap-1 bg-[#06120e]/90 p-1 rounded-xl border border-emerald-950/80">
           {[
             { id: 'overview', label: 'Overview' },
@@ -341,7 +410,8 @@ export default function InstitutionDashboard() {
           </button>
         ))}
       </div>
-{/* Main Container */}
+
+      {/* Main Container */}
       <main className="flex-1 max-w-[1520px] w-full mx-auto p-6 md:p-10 flex flex-col gap-8">
         {loading && (
           <div className="flex items-center justify-center p-12">
@@ -433,7 +503,8 @@ export default function InstitutionDashboard() {
                     </span>
                   </div>
                 </div>
- {/* Department Analytics Cards */}
+
+                {/* Department Analytics Cards */}
                 <div>
                   <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight mb-4">Department Cohort Breakdown</h2>
                   {departments.length === 0 ? (
@@ -552,7 +623,8 @@ export default function InstitutionDashboard() {
                     </span>
                   </div>
                 </div>
-     {/* Filters HUD */}
+
+                {/* Filters HUD */}
                 <div className="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3.5 shadow-lg">
                   <input
                     type="text"
@@ -683,7 +755,8 @@ export default function InstitutionDashboard() {
                 )}
               </div>
             )}
-     {/* ── TAB: ACADEMICIANS / FACULTY WORKLOAD ───────────────────── */}
+
+            {/* ── TAB: ACADEMICIANS / FACULTY WORKLOAD ───────────────────── */}
             {activeTab === 'academicians' && (
               <div className="flex flex-col gap-8">
                 {/* Hero Header */}
@@ -805,7 +878,8 @@ export default function InstitutionDashboard() {
                 )}
               </div>
             )}
-  {/* ── TAB: SKILL GAP RADAR ─────────────────────────────────── */}
+
+            {/* ── TAB: SKILL GAP RADAR ─────────────────────────────────── */}
             {activeTab === 'skills' && (
               <div className="flex flex-col gap-8">
                 {/* Hero Header */}
@@ -908,7 +982,8 @@ export default function InstitutionDashboard() {
                       </div>
                     )}
                   </div>
- {/* Top Covered Skills */}
+
+                  {/* Top Covered Skills */}
                   <div className="rounded-2xl border border-zinc-800/90 bg-gradient-to-b from-zinc-900/80 to-zinc-950/90 p-6 flex flex-col shadow-xl">
                     <h2 className="text-lg font-bold text-white mb-1 tracking-tight">Top Mastered Competencies</h2>
                     <p className="text-xs text-zinc-400 mb-5 font-medium">Verified student capabilities across engineering batches</p>
@@ -936,7 +1011,8 @@ export default function InstitutionDashboard() {
                 </div>
               </div>
             )}
-      {/* ── TAB: INDUSTRY DEMAND VS SUPPLY ────────────────────────── */}
+
+            {/* ── TAB: INDUSTRY DEMAND VS SUPPLY ────────────────────────── */}
             {activeTab === 'industry' && (
               <div className="flex flex-col gap-8">
                 {/* Hero Header */}
@@ -981,7 +1057,8 @@ export default function InstitutionDashboard() {
                       Urgent curriculum update
                     </span>
                   </div>
-                       <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
                     <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Ready Supply</span>
                     <div className="mt-3 flex items-baseline gap-2.5">
                       <span className="text-4xl md:text-5xl font-black text-emerald-400 tracking-tight">
@@ -1052,7 +1129,8 @@ export default function InstitutionDashboard() {
                 )}
               </div>
             )}
-              {/* ── TAB: PLACEMENTS ──────────────────────────────────────── */}
+
+            {/* ── TAB: PLACEMENTS ──────────────────────────────────────── */}
             {activeTab === 'placements' && (
               <div className="flex flex-col gap-8">
                 {/* Hero Header */}
@@ -1122,6 +1200,7 @@ export default function InstitutionDashboard() {
                         </span>
                       </div>
                     </div>
+
                     {/* Department Placement Breakdown */}
                     <div className="rounded-3xl border border-zinc-800/90 bg-gradient-to-b from-zinc-900/70 to-zinc-950/90 p-6 md:p-8 shadow-xl">
                       <h2 className="text-xl font-bold text-white mb-2 tracking-tight">Placement Conversion by Department</h2>
@@ -1280,7 +1359,8 @@ export default function InstitutionDashboard() {
           </>
         )}
       </main>
-   {/* ── MODAL: CREATE HIRING DRIVE ───────────────────────────────── */}
+
+      {/* ── MODAL: CREATE HIRING DRIVE ───────────────────────────────── */}
       {showDriveModal && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
           <form
@@ -1372,7 +1452,8 @@ export default function InstitutionDashboard() {
           </form>
         </div>
       )}
-       {/* ── MODAL: DRIVE ELIGIBILITY ENGINE ──────────────────────────── */}
+
+      {/* ── MODAL: DRIVE ELIGIBILITY ENGINE ──────────────────────────── */}
       {selectedDriveForEligibility && (
         <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-4xl w-full p-6 flex flex-col gap-4 shadow-2xl max-h-[85vh] overflow-hidden">
@@ -1429,7 +1510,8 @@ export default function InstitutionDashboard() {
           </div>
         </div>
       )}
- {/* ── MODAL: ALLOCATE STUDENT TO FACULTY ──────────────────────── */}
+
+      {/* ── MODAL: ALLOCATE STUDENT TO FACULTY ──────────────────────── */}
       {showAssignModal && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
           <form

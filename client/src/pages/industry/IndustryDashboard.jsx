@@ -902,5 +902,171 @@ export default function IndustryDashboard() {
                       </div>
                     )}
                   </div>
+            {/* Filter Controls */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <input
+                      type="text"
+                      placeholder="Target Role (e.g. Backend, Frontend)..."
+                      value={talentFilters.targetRole}
+                      onChange={(e) => setTalentFilters({ ...talentFilters, targetRole: e.target.value })}
+                      className="bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-purple-500"
+                    />
+
+                    <select
+                      value={talentFilters.department}
+                      onChange={(e) => setTalentFilters({ ...talentFilters, department: e.target.value })}
+                      className="bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-purple-500"
+                    >
+                      <option value="">All Engineering Disciplines</option>
+                      <option value="Computer Science">Computer Science & Engineering</option>
+                      <option value="Information Technology">Information Technology</option>
+                      <option value="Electronics">Electronics & Communication</option>
+                      <option value="Electrical">Electrical Engineering</option>
+                      <option value="Mechanical">Mechanical Engineering</option>
+                      <option value="Civil">Civil Engineering</option>
+                      <option value="Data Science">Data Science / AI</option>
+                    </select>
+
+                    <input
+                      type="text"
+                      placeholder="Skills (comma-separated)..."
+                      value={talentFilters.skills}
+                      onChange={(e) => setTalentFilters({ ...talentFilters, skills: e.target.value })}
+                      className="bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-purple-500"
+                    />
+
+                    <select
+                      value={talentFilters.minReadiness}
+                      onChange={(e) => setTalentFilters({ ...talentFilters, minReadiness: e.target.value })}
+                      className="bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:outline-none focus:border-purple-500"
+                    >
+                      <option value="">Any Career Readiness</option>
+                      <option value="40">Readiness &gt;= 40%</option>
+                      <option value="60">Readiness &gt;= 60% (High Signal)</option>
+                      <option value="75">Readiness &gt;= 75% (Placement Ready)</option>
+                    </select>
+                  </div>
+
+                  {/* Evidence Toggles */}
+                  <div className="flex items-center gap-6 pt-1 text-xs text-zinc-400">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={talentFilters.hasProjects === 'true'}
+                        onChange={(e) => setTalentFilters({ ...talentFilters, hasProjects: e.target.checked ? 'true' : '' })}
+                        className="rounded bg-zinc-950 border-zinc-800 text-purple-600 focus:ring-0"
+                      />
+                      <span>Must Have Projects</span>
+                    </label>
+
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={talentFilters.hasGithub === 'true'}
+                        onChange={(e) => setTalentFilters({ ...talentFilters, hasGithub: e.target.checked ? 'true' : '' })}
+                        className="rounded bg-zinc-950 border-zinc-800 text-purple-600 focus:ring-0"
+                      />
+                      <span>GitHub Connected</span>
+                    </label>
+
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={talentFilters.hasResume === 'true'}
+                        onChange={(e) => setTalentFilters({ ...talentFilters, hasResume: e.target.checked ? 'true' : '' })}
+                        className="rounded bg-zinc-950 border-zinc-800 text-purple-600 focus:ring-0"
+                      />
+                      <span>Resume Parsed</span>
+                    </label>
+
+                    {opportunities.length > 0 && (
+                      <div className="ml-auto flex items-center gap-2">
+                        <span className="text-zinc-500">Calculate Match For:</span>
+                        <select
+                          value={talentFilters.opportunityId}
+                          onChange={(e) => setTalentFilters({ ...talentFilters, opportunityId: e.target.value })}
+                          className="bg-zinc-950 border border-zinc-800 rounded px-2 py-1 text-xs text-zinc-300"
+                        >
+                          <option value="">Select Opportunity...</option>
+                          {opportunities.map((o) => (
+                            <option key={o._id} value={o._id}>{o.title}</option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Candidate Results Grid */}
+                {loadingTalent ? (
+                  <div className="py-12 text-center text-xs text-zinc-500">Searching student talent cohort...</div>
+                ) : talentList.length === 0 ? (
+                  <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-12 text-center space-y-2">
+                    <div className="text-2xl">🔍</div>
+                    <div className="text-sm font-medium text-zinc-300">No candidates found</div>
+                    <p className="text-xs text-zinc-500">Try adjusting your filters or search keywords.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <div className="text-xs text-zinc-400 flex items-center justify-between">
+                      <span>Showing {talentList.length} of {talentTotal} candidates</span>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {talentList.map((cand) => (
+                        <div
+                          key={cand.studentId}
+                          className="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-4 flex flex-col justify-between space-y-3 hover:border-zinc-700 transition-all"
+                        >
+                          <div className="space-y-2">
+                            <div className="flex items-start justify-between gap-2">
+                              <div>
+                                <h3 className="font-semibold text-sm text-white">{cand.name}</h3>
+                                <p className="text-[11px] text-zinc-400">{cand.department} • Class of {cand.graduationYear}</p>
+                              </div>
+                              {cand.matchEvaluation ? (
+                                <div className="text-right">
+                                  <div className="text-xs font-bold text-purple-400 font-mono">
+                                    {cand.matchEvaluation.matchScore}%
+                                  </div>
+                                  <span className="text-[9px] px-1.5 py-0.2 rounded bg-purple-500/10 text-purple-300 font-mono uppercase">
+                                    {cand.matchEvaluation.matchBand}
+                                  </span>
+                                </div>
+                              ) : (
+                                <div className="text-right">
+                                  <div className="text-xs font-bold text-indigo-400 font-mono">
+                                    {cand.careerReadinessScore}%
+                                  </div>
+                                  <span className="text-[9px] text-zinc-500 uppercase font-mono">Readiness</span>
+                                </div>
+                              )}
+                            </div>
+
+                            <div className="text-xs text-zinc-300 font-medium">
+                              🎯 {cand.targetRole}
+                            </div>
+
+                            {/* Evidence Summary Badges */}
+                            <div className="flex flex-wrap gap-1 text-[10px]">
+                              <span className="px-2 py-0.5 rounded bg-zinc-800/80 text-zinc-300">
+                                💻 {cand.evidenceSummary.projectCount} Projects
+                              </span>
+                              {cand.evidenceSummary.githubConnected && (
+                                <span className="px-2 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-800/40">
+                                  ✓ GitHub
+                                </span>
+                              )}
+                              {cand.evidenceSummary.resumeAvailable && (
+                                <span className="px-2 py-0.5 rounded bg-blue-950/60 text-blue-300 border border-blue-800/40">
+                                  ✓ Resume
+                                </span>
+                              )}
+                              {cand.evidenceSummary.dsaSolved > 0 && (
+                                <span className="px-2 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-800/40">
+                                  ⚡ {cand.evidenceSummary.dsaSolved} DSA
+                                </span>
+                              )}
+                            </div>
 
                   

@@ -789,3 +789,8 @@ export default function Opportunities() {
   const [filterDomain, setFilterDomain] = useState('');
   const [filterRemote, setFilterRemote] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+
+   const showToast = useCallback((msg, type = 'success') => {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 3500);
+  }, []);

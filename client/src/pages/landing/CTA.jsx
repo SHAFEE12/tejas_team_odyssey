@@ -934,3 +934,23 @@ export default function CTA({ onLogin, onRegister }) {
       lineColor: "255, 58, 32",
       maxLineAlpha: 0.72
     };
+
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let dots = [];
+    let animationId;
+
+    const spiderPosition = {
+      x: 0,
+      y: 0,
+
+      vx: 0,
+      vy: 0,
+
+      directionX: 1,
+      directionY: 0,
+
+      targetDirectionX: 1,
+      targetDirectionY: 0
+    };

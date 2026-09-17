@@ -222,3 +222,13 @@ function CompanyLogo({ company }) {
       </div>
     );
   }
+
+   if (c.includes('airbnb')) {
+    return (
+      <div className="w-12 h-12 rounded-full bg-[#FF5A5F] border border-white/10 flex items-center justify-center shadow-md shrink-0">
+        <svg width="22" height="22" viewBox="0 0 32 32" fill="white">
+          <path d="M16 1c-4.4 0-8 3.6-8 8 0 5.4 6.7 13.8 7.3 14.5.4.4 1 .4 1.4 0 .6-.7 7.3-9.1 7.3-14.5 0-4.4-3.6-8-8-8zm0 11c-1.7 0-3-1.3-3-3s1.3-3 3-3 3 1.3 3 3-1.3 3-3 3z"/>
+        </svg>
+      </div>
+    );
+  }

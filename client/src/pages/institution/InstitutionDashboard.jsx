@@ -1429,3 +1429,91 @@ export default function InstitutionDashboard() {
           </div>
         </div>
       )}
+ {/* ── MODAL: ALLOCATE STUDENT TO FACULTY ──────────────────────── */}
+      {showAssignModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <form
+            onSubmit={handleAssignStudent}
+            className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-md w-full p-6 flex flex-col gap-4 shadow-2xl"
+          >
+            <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+              <h3 className="text-base font-semibold text-white">Allocate Student to Faculty</h3>
+              <button type="button" onClick={() => setShowAssignModal(false)} className="text-zinc-400 hover:text-white">✕</button>
+            </div>
+
+            <p className="text-xs text-zinc-400">
+              Assigning student to mentor: <span className="text-white font-medium">{selectedAcademician?.user?.name}</span>
+            </p>
+
+            <div>
+              <label className="text-xs font-medium text-zinc-300 block mb-1">Student User ID *</label>
+              <input
+                type="text"
+                required
+                value={assignStudentId}
+                onChange={(e) => setAssignStudentId(e.target.value)}
+                placeholder="Enter Student MongoDB ObjectId..."
+                className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-200"
+              />
+            </div>
+
+            <div className="pt-3 border-t border-zinc-800 flex justify-end gap-2">
+              <button type="button" onClick={() => setShowAssignModal(false)} className="px-4 py-2 rounded-xl bg-zinc-800 text-zinc-300 text-xs font-medium">Cancel</button>
+              <button type="submit" className="px-4 py-2 rounded-xl bg-indigo-600 text-white text-xs font-medium">Confirm Allocation</button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* ── MODAL: 360° STUDENT INTELLIGENCE ─────────────────────────── */}
+      {selectedStudent && (
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-3xl w-full p-6 flex flex-col gap-4 shadow-2xl max-h-[85vh] overflow-y-auto">
+            <div className="flex items-start justify-between pb-3 border-b border-zinc-800">
+              <div>
+                <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                  Institutional Student Intelligence
+                </span>
+                <h2 className="text-2xl font-bold text-white mt-1">{selectedStudent.name}</h2>
+                <p className="text-xs text-zinc-400">
+                  {selectedStudent.department} • Batch {selectedStudent.batch} • Roll: {selectedStudent.registrationNumber}
+                </p>
+              </div>
+              <button onClick={() => setSelectedStudent(null)} className="text-zinc-400 hover:text-white text-xl">✕</button>
+            </div>
+
+            {loading360 ? (
+              <div className="p-8 text-center text-xs text-zinc-500">Loading student career profile...</div>
+            ) : (
+              <div className="flex flex-col gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="p-3 bg-zinc-950 border border-zinc-800 rounded-xl">
+                    <span className="text-[10px] text-zinc-500 block uppercase">Career Readiness</span>
+                    <span className="text-xl font-bold text-indigo-400 mt-0.5 block">{selectedStudent.readinessScore}/100</span>
+                  </div>
+                  <div className="p-3 bg-zinc-950 border border-zinc-800 rounded-xl">
+                    <span className="text-[10px] text-zinc-500 block uppercase">Target Goal</span>
+                    <span className="text-xs font-semibold text-white mt-0.5 truncate block">{selectedStudent.targetRole}</span>
+                  </div>
+                  <div className="p-3 bg-zinc-950 border border-zinc-800 rounded-xl">
+                    <span className="text-[10px] text-zinc-500 block uppercase">DSA Solved</span>
+                    <span className="text-xl font-bold text-white mt-0.5 block">{student360?.dsaProfile?.totalSolved || 0}</span>
+                  </div>
+                  <div className="p-3 bg-zinc-950 border border-zinc-800 rounded-xl">
+                    <span className="text-[10px] text-zinc-500 block uppercase">Projects</span>
+                    <span className="text-xl font-bold text-white mt-0.5 block">{student360?.projects?.length || 0}</span>
+                  </div>
+                </div>
+
+                <div className="p-3 bg-zinc-950/60 border border-zinc-800 rounded-xl text-xs text-zinc-300">
+                  <span className="font-semibold text-white block mb-1">Privacy & Document Governance:</span>
+                  Institutional administrators review aggregated readiness metrics, project counts, and verified goals. Raw resume document files remain encrypted and strictly student-owned.
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

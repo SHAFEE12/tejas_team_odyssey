@@ -1070,3 +1070,357 @@ export default function IndustryDashboard() {
                             </div>
 
                   
+                            {/* Match Reasons */}
+                            {cand.matchEvaluation?.reasons?.length > 0 && (
+                              <div className="bg-purple-950/20 border border-purple-900/40 rounded p-2 text-[10px] text-purple-300 space-y-0.5">
+                                {cand.matchEvaluation.reasons.map((r, i) => (
+                                  <div key={i}>• {r}</div>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Skills Chips */}
+                            <div className="flex flex-wrap gap-1">
+                              {(cand.skills || []).slice(0, 5).map((s, i) => (
+                                <span key={i} className="text-[10px] px-1.5 py-0.2 rounded bg-zinc-800 text-zinc-400">
+                                  {s.name}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className="pt-2 border-t border-zinc-800/60 flex items-center justify-between">
+                            <button
+                              onClick={() => handleViewCandidate360(cand.studentId, talentFilters.opportunityId)}
+                              className="text-xs text-purple-400 hover:text-purple-300 underline font-medium"
+                            >
+                              View 360° Profile
+                            </button>
+                            <button
+                              onClick={() => handleOpenShortlistModal(cand)}
+                              className="px-3 py-1 rounded bg-purple-600 hover:bg-purple-500 text-white text-xs font-medium transition-colors"
+                            >
+                              Shortlist Candidate
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ════════ TAB: SHORTLISTED / INTERVIEWS / OFFERS ════════ */}
+            {['shortlisted', 'interviews', 'offers'].includes(activeTab) && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-base font-semibold text-white capitalize">{activeTab} Candidates</h2>
+                    <p className="text-xs text-zinc-400">Review all candidate applications currently in the {activeTab} stage</p>
+                  </div>
+                </div>
+
+                {loadingStageCandidates ? (
+                  <div className="py-12 text-center text-xs text-zinc-500">Loading candidate stage cohort...</div>
+                ) : stageCandidates.length === 0 ? (
+                  <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-12 text-center space-y-2">
+                    <div className="text-2xl">📂</div>
+                    <div className="text-sm font-medium text-zinc-300">No candidates in {activeTab} stage</div>
+                    <p className="text-xs text-zinc-500">Move applicants from the pipeline or shortlist talent from search.</p>
+                  </div>
+                ) : (
+                  <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-xl overflow-hidden">
+                    <table className="w-full text-left text-xs">
+                      <thead className="bg-zinc-950/80 border-b border-zinc-800 text-zinc-400 font-medium">
+                        <tr>
+                          <th className="py-3 px-4">Candidate</th>
+                          <th className="py-3 px-4">Department</th>
+                          <th className="py-3 px-4">Opportunity</th>
+                          <th className="py-3 px-4">Stage</th>
+                          <th className="py-3 px-4">Updated</th>
+                          <th className="py-3 px-4 text-right">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-zinc-800/60 text-zinc-300">
+                        {stageCandidates.map((c) => (
+                          <tr key={c.applicationId} className="hover:bg-zinc-800/30 transition-colors">
+                            <td className="py-3 px-4 font-semibold text-white">{c.name}</td>
+                            <td className="py-3 px-4 text-zinc-400">{c.department} ({c.graduationYear})</td>
+                            <td className="py-3 px-4 text-purple-300 font-medium">{c.opportunityTitle}</td>
+                            <td className="py-3 px-4">
+                              <span className="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                                {c.status}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 text-zinc-500 font-mono text-[11px]">
+                              {new Date(c.updatedAt).toLocaleDateString()}
+                            </td>
+                            <td className="py-3 px-4 text-right">
+                              <button
+                                onClick={() => handleViewCandidate360(c.studentId, c.opportunityId)}
+                                className="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs transition-colors"
+                              >
+                                View 360°
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
+ {/* ════════ TAB: COMPANY PROFILE ════════ */}
+            {activeTab === 'profile' && companyProfile && (
+              <div className="max-w-2xl bg-zinc-900/40 border border-zinc-800/80 rounded-xl p-6 space-y-6">
+                <div>
+                  <h2 className="text-base font-semibold text-white">Company Profile</h2>
+                  <p className="text-xs text-zinc-400">Configure your hiring organization details across the ecosystem</p>
+                </div>
+
+                <form onSubmit={handleUpdateProfile} className="space-y-4 text-xs">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-zinc-400">Company Name</label>
+                      <input
+                        type="text"
+                        value={companyProfile.companyName || ''}
+                        onChange={(e) => setCompanyProfile({ ...companyProfile, companyName: e.target.value })}
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-zinc-400">Industry Domain</label>
+                      <input
+                        type="text"
+                        value={companyProfile.domain || ''}
+                        onChange={(e) => setCompanyProfile({ ...companyProfile, domain: e.target.value })}
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-zinc-400">Website</label>
+                      <input
+                        type="text"
+                        value={companyProfile.website || ''}
+                        onChange={(e) => setCompanyProfile({ ...companyProfile, website: e.target.value })}
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-zinc-400">Company Size</label>
+                      <select
+                        value={companyProfile.companySize || '51-200'}
+                        onChange={(e) => setCompanyProfile({ ...companyProfile, companySize: e.target.value })}
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                      >
+                        <option value="1-10">1-10 employees</option>
+                        <option value="11-50">11-50 employees</option>
+                        <option value="51-200">51-200 employees</option>
+                        <option value="201-500">201-500 employees</option>
+                        <option value="501-1000">501-1000 employees</option>
+                        <option value="1000+">1000+ employees</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-zinc-400">Location</label>
+                      <input
+                        type="text"
+                        value={companyProfile.location || ''}
+                        onChange={(e) => setCompanyProfile({ ...companyProfile, location: e.target.value })}
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-zinc-400">Headquarters</label>
+                      <input
+                        type="text"
+                        value={companyProfile.headquarters || ''}
+                        onChange={(e) => setCompanyProfile({ ...companyProfile, headquarters: e.target.value })}
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-zinc-400">Description</label>
+                    <textarea
+                      rows={3}
+                      value={companyProfile.description || ''}
+                      onChange={(e) => setCompanyProfile({ ...companyProfile, description: e.target.value })}
+                      className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-medium transition-colors"
+                  >
+                    Save Changes
+                  </button>
+                </form>
+              </div>
+            )}
+          </>
+        )}
+      </main>
+ {/* ════════ MODAL: CREATE OPPORTUNITY ════════ */}
+      {showCreateModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-xl w-full p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+              <h3 className="font-semibold text-white text-sm">Post New Job / Internship</h3>
+              <button onClick={() => setShowCreateModal(false)} className="text-zinc-400 hover:text-white">✕</button>
+            </div>
+
+            <form onSubmit={handleCreateOpportunity} className="space-y-3 text-xs">
+              <div className="space-y-1">
+                <label className="text-zinc-300">Job Title *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Graduate Software Engineer, Embedded Systems Intern"
+                  value={newOpp.title}
+                  onChange={(e) => setNewOpp({ ...newOpp, title: e.target.value })}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="text-zinc-300">Opportunity Type *</label>
+                  <select
+                    value={newOpp.type}
+                    onChange={(e) => setNewOpp({ ...newOpp, type: e.target.value })}
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                  >
+                    <option value="full-time">Full-time</option>
+                    <option value="internship">Internship</option>
+                    <option value="part-time">Part-time</option>
+                    <option value="contract">Contract</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-zinc-300">Engineering Domain *</label>
+                  <select
+                    value={newOpp.domain}
+                    onChange={(e) => setNewOpp({ ...newOpp, domain: e.target.value })}
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                  >
+                    <option value="software-engineering">Software Engineering</option>
+                    <option value="backend">Backend Systems</option>
+                    <option value="frontend">Frontend Engineering</option>
+                    <option value="fullstack">Fullstack Development</option>
+                    <option value="data-science">Data Science</option>
+                    <option value="machine-learning">Machine Learning / AI</option>
+                    <option value="cloud">Cloud & DevOps</option>
+                    <option value="embedded">Embedded Systems</option>
+                    <option value="electronics">Electronics (ECE)</option>
+                    <option value="electrical">Electrical (EEE)</option>
+                    <option value="mechanical">Mechanical Engineering</option>
+                    <option value="civil">Civil Engineering</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div className="space-y-1">
+                  <label className="text-zinc-300">Work Mode</label>
+                  <select
+                    value={newOpp.workMode}
+                    onChange={(e) => setNewOpp({ ...newOpp, workMode: e.target.value })}
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                  >
+                    <option value="remote">Remote</option>
+                    <option value="hybrid">Hybrid</option>
+                    <option value="on-site">On-Site</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-zinc-300">Experience Level</label>
+                  <select
+                    value={newOpp.experienceLevel}
+                    onChange={(e) => setNewOpp({ ...newOpp, experienceLevel: e.target.value })}
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                  >
+                    <option value="entry">Entry Level</option>
+                    <option value="internship">Internship</option>
+                    <option value="mid">Mid Level</option>
+                    <option value="any">Any Experience</option>
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-zinc-300">Openings</label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={newOpp.openings}
+                    onChange={(e) => setNewOpp({ ...newOpp, openings: e.target.value })}
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-zinc-300">Required Skills (Canonical Career Odyssey Taxonomy) *</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Java, Python, React, Node.js, SQL, Docker"
+                  value={newOpp.requiredSkills}
+                  onChange={(e) => setNewOpp({ ...newOpp, requiredSkills: e.target.value })}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                />
+                <span className="text-[10px] text-zinc-500">Skills are validated against the master ecosystem taxonomy.</span>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-zinc-300">Preferred Skills</label>
+                <input
+                  type="text"
+                  placeholder="e.g. AWS, Kubernetes, TypeScript"
+                  value={newOpp.preferredSkills}
+                  onChange={(e) => setNewOpp({ ...newOpp, preferredSkills: e.target.value })}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-zinc-300">Job Description *</label>
+                <textarea
+                  rows={4}
+                  required
+                  placeholder="Describe responsibilities, team context, and candidate expectations..."
+                  value={newOpp.description}
+                  onChange={(e) => setNewOpp({ ...newOpp, description: e.target.value })}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-zinc-200"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-3 border-t border-zinc-800">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateModal(false)}
+                  className="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-medium"
+                >
+                  Publish Opportunity
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}

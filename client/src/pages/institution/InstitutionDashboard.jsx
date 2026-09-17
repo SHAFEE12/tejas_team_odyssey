@@ -210,3 +210,63 @@ export default function InstitutionDashboard() {
       showToast('Error assigning student', 'error');
     }
   };
+  // Unassign Student
+  const handleUnassignStudent = async (academicianId, studentId) => {
+    if (!window.confirm('Unassign this student from faculty mentor?')) return;
+    try {
+      const res = await fetch(`${API_URL}/api/institution/academicians/${academicianId}/students/${studentId}`, {
+        method: 'DELETE',
+        credentials: 'omit',
+        headers: authHeaders,
+      });
+      const d = await res.json();
+      if (d.success) {
+        showToast('Student unassigned successfully');
+        loadDashboardData();
+      }
+    } catch (err) {
+      showToast('Error unassigning student', 'error');
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#050c0a] text-zinc-100 flex flex-col font-sans selection:bg-emerald-500/30 relative overflow-hidden">
+      {/* Ambient Executive Mesh Lights */}
+      <div className="fixed -top-40 right-10 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="fixed bottom-10 -left-20 w-96 h-96 bg-teal-600/5 rounded-full blur-3xl pointer-events-none -z-10" />
+
+      {/* Toast Alert */}
+      {toast && (
+        <div
+          className={`fixed bottom-6 right-6 z-50 px-4 py-3 rounded-xl shadow-2xl border text-sm flex items-center gap-3 animate-fade-in ${
+            toast.type === 'error'
+              ? 'bg-rose-950/90 border-rose-800 text-rose-200'
+              : 'bg-emerald-950/90 border-emerald-800 text-emerald-200'
+          }`}
+        >
+          <span>{toast.type === 'error' ? '⚠️' : '✓'}</span>
+          <span>{toast.msg}</span>
+        </div>
+      )}
+
+      {/* Header Navigation */}
+      <header className="border-b border-emerald-950/80 bg-[#061410]/85 backdrop-blur-md px-6 py-3.5 flex items-center justify-between sticky top-0 z-20 shadow-lg shadow-emerald-950/20">
+        <div className="flex items-center gap-3.5">
+          <BrandLogo size="sm" showText={false} role="institution" glow={true} />
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-sm tracking-tight text-white">
+                Career{' '}
+                <span className="font-extrabold bg-gradient-to-r from-[#FF5100] via-[#FF7A00] to-[#FFA726] bg-clip-text text-transparent">
+                  Odyssey
+                </span>
+              </span>
+              <span className="text-[10px] uppercase font-mono px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-semibold tracking-wide">
+                🏛️ Institution Admin
+              </span>
+            </div>
+            <p className="text-[11px] text-emerald-200/70 font-medium">
+              {institutionInfo?.name || user?.collegeName || 'National Engineering Academy'} • {institutionInfo?.code || 'INST'}
+            </p>
+          </div>
+        </div>

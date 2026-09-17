@@ -710,3 +710,20 @@ function PipelineColumn({ status, apps, onDelete }) {
           {apps.length}
         </span>
       </div>
+      
+      {/* Cards */}
+      <div className="flex flex-col gap-2.5">
+        {apps.length === 0 ? (
+          <div className="py-8 text-center text-xs font-mono text-zinc-600 border border-dashed border-white/[0.06] rounded-2xl bg-white/[0.01]">
+            Empty stage
+          </div>
+        ) : (
+          apps.map((app) => (
+            <div
+              key={app._id}
+              className="flex flex-col gap-2 p-4 rounded-2xl bg-[#0f121d] border border-white/[0.08] hover:border-white/[0.2] transition-all shadow-sm"
+            >
+              <p className="text-xs font-bold text-white leading-snug line-clamp-2">
+                {formatRoleTitle(app.opportunity?.title || '—')}
+              </p>
+              <p className="text-[11px] text-zinc-400">{app.opportunity?.company}</p>

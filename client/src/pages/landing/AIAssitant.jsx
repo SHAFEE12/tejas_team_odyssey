@@ -107,3 +107,48 @@ export default function AIAssistant({ onRegister }) {
                 <span className="material-symbols-outlined text-sm">person</span>
               </div>
             </div>
+
+             {/* Assistant Message */}
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#fc8200] to-orange-400 flex items-center justify-center text-white shrink-0 shadow-md shadow-[#fc8200]/20">
+                <span className="material-symbols-outlined text-sm">smart_toy</span>
+              </div>
+              <div className="bg-black/40 border border-white/10 p-4 rounded-2xl rounded-tl-sm max-w-[85%] sm:max-w-[85%] space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-white">Odyssey Mentor</span>
+                  <span className="text-[10px] font-mono text-zinc-500">Curriculum & Market Model</span>
+                </div>
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                  {current.response}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Interactive Simulation Input Bar */}
+          <div className="p-4 border-t border-white/10 bg-black/20 flex items-center gap-3">
+            <input
+              type="text"
+              readOnly
+              value={`Select another prompt above to preview simulated mentorship...`}
+              className="w-full bg-transparent border-none text-xs text-zinc-500 italic focus:outline-none"
+            />
+            <button
+              type="button"
+              onClick={() => onRegister && onRegister('student')}
+              className="shrink-0 px-4 py-2 rounded-lg bg-[#fc8200] hover:bg-[#ff9326] text-white text-xs font-semibold transition-all cursor-pointer shadow-md"
+            >
+              Sign Up to Chat
+            </button>
+          </div>
+
+          {/* Truthful Demo Notice */}
+          <div className="py-2.5 text-center text-[10px] font-mono text-zinc-500 bg-black/40 border-t border-white/5">
+            *Interactive product demonstration using simulated data
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+}

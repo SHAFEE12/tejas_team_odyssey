@@ -143,3 +143,13 @@ function getTimeAgo(dateStr) {
   const months = Math.floor(days / 30);
   return `${months} month${months > 1 ? 's' : ''} ago`;
 }
+
+function getCompanyInitials(name) {
+  if (!name) return 'CO';
+  const clean = name.replace(/technologies|inc|labs|solutions|studio|systems/gi, '').trim();
+  const words = clean.split(/\s+/).filter(Boolean);
+  if (words.length >= 2) {
+    return (words[0][0] + words[1][0]).toUpperCase();
+  }
+  return name.slice(0, 2).toUpperCase();
+}

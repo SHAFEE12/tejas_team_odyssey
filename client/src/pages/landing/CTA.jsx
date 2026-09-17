@@ -978,3 +978,49 @@ export default function CTA({ onLogin, onRegister }) {
       glowWidth: 1.45,
       exitMargin: 90
     };
+
+    function triggerSpiderInteraction() {
+      if (interaction.phase !== "normal") return;
+
+      interaction.phase = "pause";
+      interaction.until = performance.now() + INTERACTION.pauseDuration;
+      spiderPosition.vx = 0;
+      spiderPosition.vy = 0;
+
+      // After the short pause, launch the spider away from the pointer.
+      const lastPointer = interaction.lastPointer;
+      if (lastPointer) {
+        const dx = spiderPosition.x - lastPointer.x;
+        const dy = spiderPosition.y - lastPointer.y;
+        const length = Math.sqrt(dx * dx + dy * dy) || 1;
+        spiderPosition.directionX = dx / length;
+        spiderPosition.directionY = dy / length;
+        spiderPosition.targetDirectionX = dx / length;
+        spiderPosition.targetDirectionY = dy / length;
+      }
+    }
+
+    function updateInteraction(time) {
+      if (interaction.phase === "pause" && time >= interaction.until) {
+        interaction.phase = "fast";
+        interaction.until = time + INTERACTION.fastDuration;
+      } else if (interaction.phase === "fast" && time >= interaction.until) {
+        interaction.phase = "normal";
+      }
+    }
+
+    function handlePointerPosition(clientX, clientY) {
+      const rect = section.getBoundingClientRect();
+      const px = clientX - rect.left;
+      const py = clientY - rect.top;
+      const dx = px - spiderPosition.x;
+      const dy = py - spiderPosition.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      interaction.lastPointer = { x: px, y: py };
+      const near = distance <= INTERACTION.triggerRadius;
+
+      if (near && !interaction.pointerNear) {
+        triggerSpiderInteraction();
+      }
+      interaction.pointerNear = near;
+    }

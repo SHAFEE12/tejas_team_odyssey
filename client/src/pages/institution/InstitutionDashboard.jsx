@@ -936,3 +936,189 @@ export default function InstitutionDashboard() {
                 </div>
               </div>
             )}
+      {/* ── TAB: INDUSTRY DEMAND VS SUPPLY ────────────────────────── */}
+            {activeTab === 'industry' && (
+              <div className="flex flex-col gap-8">
+                {/* Hero Header */}
+                <div className="rounded-3xl border border-zinc-800/90 bg-gradient-to-r from-zinc-900 via-zinc-900/70 to-zinc-950 p-6 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xl">
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-3.5">
+                      Market Alignment Telemetry
+                    </div>
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight">
+                      Student Supply vs. Industry Demand
+                    </h1>
+                    <p className="text-sm md:text-base text-zinc-300 font-medium mt-2 max-w-2xl leading-relaxed">
+                      Live market intelligence comparing catalog opportunity requirements directly against placement-ready students.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Sub-KPI HUD */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Catalog Openings</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-white tracking-tight">
+                        {industryDemand.comparisons.reduce((acc, c) => acc + (c.demand || 0), 0)}
+                      </span>
+                      <span className="text-sm font-semibold text-zinc-400">openings</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Active hiring requirements
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">High Priority Gaps</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-rose-400 tracking-tight">
+                        {industryDemand.comparisons.filter(c => c.priority === 'HIGH').length}
+                      </span>
+                      <span className="text-sm font-semibold text-zinc-400">skills</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Urgent curriculum update
+                    </span>
+                  </div>
+                       <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Ready Supply</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-emerald-400 tracking-tight">
+                        {industryDemand.comparisons.reduce((acc, c) => acc + (c.readyStudents || 0), 0)}
+                      </span>
+                      <span className="text-sm font-semibold text-zinc-400">candidates</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Placement-ready students
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Net Supply Deficit</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-amber-400 tracking-tight">
+                        {industryDemand.comparisons.reduce((acc, c) => acc + (c.gap || 0), 0)}
+                      </span>
+                      <span className="text-sm font-semibold text-zinc-400">positions</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Unfulfilled campus demand
+                    </span>
+                  </div>
+                </div>
+
+                {industryDemand.comparisons.length === 0 ? (
+                  <div className="p-16 border border-dashed border-zinc-800 rounded-3xl bg-zinc-900/30 text-center text-sm text-zinc-400 font-medium">
+                    No industry demand data available in the opportunity catalog.
+                  </div>
+                ) : (
+                  <div className="border border-zinc-800 rounded-2xl overflow-hidden bg-zinc-900/40 shadow-xl">
+                    <table className="w-full text-left border-collapse text-xs">
+                      <thead>
+                        <tr className="border-b border-zinc-800 bg-zinc-950/80 text-zinc-300 font-bold uppercase tracking-wider text-[11px]">
+                          <th className="p-4 font-bold">Required Skill</th>
+                          <th className="p-4 font-bold">Industry Demand</th>
+                          <th className="p-4 font-bold">Capable Students</th>
+                          <th className="p-4 font-bold">Placement Ready</th>
+                          <th className="p-4 font-bold">Supply Gap</th>
+                          <th className="p-4 font-bold">Remediation Priority</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-zinc-800/60">
+                        {industryDemand.comparisons.map((c, idx) => (
+                          <tr key={idx} className="hover:bg-zinc-800/40 transition-colors">
+                            <td className="p-4 font-bold text-white text-sm">{c.skill}</td>
+                            <td className="p-4 font-mono text-zinc-200 font-bold">{c.demand} openings</td>
+                            <td className="p-4 font-mono text-zinc-300">{c.capableStudents}</td>
+                            <td className="p-4 font-mono text-emerald-400 font-bold">{c.readyStudents}</td>
+                            <td className="p-4 font-mono text-amber-400 font-bold">{c.gap} deficit</td>
+                            <td className="p-4">
+                              <span
+                                className={`text-[10px] font-mono uppercase px-2.5 py-1 rounded-full font-bold ${
+                                  c.priority === 'HIGH'
+                                    ? 'bg-rose-500/15 text-rose-300 border border-rose-500/30'
+                                    : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
+                                }`}
+                              >
+                                {c.priority}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
+              {/* ── TAB: PLACEMENTS ──────────────────────────────────────── */}
+            {activeTab === 'placements' && (
+              <div className="flex flex-col gap-8">
+                {/* Hero Header */}
+                <div className="rounded-3xl border border-zinc-800/90 bg-gradient-to-r from-zinc-900 via-zinc-900/70 to-zinc-950 p-6 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xl">
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-3.5">
+                      Placement Outcomes &amp; Conversion
+                    </div>
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight">
+                      Placement Intelligence &amp; Funnel
+                    </h1>
+                    <p className="text-sm md:text-base text-zinc-300 font-medium mt-2 max-w-2xl leading-relaxed">
+                      Real application transitions, interview progression, and verified offers for {institutionInfo?.name || 'your institution'}.
+                    </p>
+                  </div>
+                </div>
+
+                {placements.status === 'INSUFFICIENT_DATA' ? (
+                  <div className="p-16 border border-dashed border-zinc-800 rounded-3xl bg-zinc-900/30 text-center text-sm text-zinc-400 font-medium">
+                    Insufficient outcome data recorded for your institution yet.
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-8">
+                    {/* Funnel HUD */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
+                      <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                        <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Applications Logged</span>
+                        <div className="mt-3 flex items-baseline gap-2.5">
+                          <span className="text-4xl md:text-5xl font-black text-white tracking-tight">{placements.funnel?.applied || 0}</span>
+                          <span className="text-sm font-semibold text-zinc-400">submitted</span>
+                        </div>
+                        <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                          Initial student applications
+                        </span>
+                      </div>
+
+                      <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                        <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Online Assessments</span>
+                        <div className="mt-3 flex items-baseline gap-2.5">
+                          <span className="text-4xl md:text-5xl font-black text-indigo-400 tracking-tight">{placements.funnel?.oa || 0}</span>
+                          <span className="text-sm font-semibold text-zinc-400">cleared</span>
+                        </div>
+                        <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                          OA screening stage
+                        </span>
+                      </div>
+
+                      <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                        <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Interviews Conducted</span>
+                        <div className="mt-3 flex items-baseline gap-2.5">
+                          <span className="text-4xl md:text-5xl font-black text-amber-400 tracking-tight">{placements.funnel?.interview || 0}</span>
+                          <span className="text-sm font-semibold text-zinc-400">rounds</span>
+                        </div>
+                        <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                          Technical &amp; HR rounds
+                        </span>
+                      </div>
+
+                      <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                        <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Verified Offers</span>
+                        <div className="mt-3 flex items-baseline gap-2.5">
+                          <span className="text-4xl md:text-5xl font-black text-emerald-400 tracking-tight">{placements.funnel?.offers || 0}</span>
+                          <span className="text-sm font-semibold text-zinc-400">offers</span>
+                        </div>
+                        <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                          Confirmed student placements
+                        </span>
+                      </div>
+                    </div>

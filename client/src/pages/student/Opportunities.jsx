@@ -407,6 +407,20 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
     </div>
   );
 }
+         /* ── Quick Apply Confirmation Modal ──────────────────────────── */
+function QuickApplyModal({ opp, onClose, onConfirm, submitting }) {
+  if (!opp) return null;
+  const isPartner = opp.industry || opp.isDemo === false;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn" role="dialog">
+      <div
+        className="relative w-full max-w-lg rounded-3xl bg-[#0c0e17] border border-white/[0.12] shadow-2xl p-6 sm:p-7 flex flex-col gap-5"
+        onClick={(e) => e.stopPropagation()}
+      >
+
+        
+      </div>
 
           
       

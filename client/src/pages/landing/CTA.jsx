@@ -1515,3 +1515,111 @@ export default function CTA({ onLogin, onRegister }) {
         ctx.fill();
       });
     }
+
+    /* =========================================================
+       DRAW SPIDER CONNECTIONS
+    ========================================================= */
+
+    function drawSpiderConnections() {
+      const nearby =
+        getNearestDots();
+
+      nearby.forEach(
+        ({ dot, distance }) => {
+
+          const influence =
+            1 -
+            distance /
+            SETTINGS.spiderRadius;
+
+          const alpha =
+            Math.pow(
+              influence,
+              1.65
+            ) *
+            SETTINGS.maxLineAlpha;
+
+          if (alpha <= 0) {
+            return;
+          }
+
+          /* EXACTLY ONE LINE */
+
+          ctx.beginPath();
+
+          ctx.moveTo(
+            spiderPosition.x,
+            spiderPosition.y
+          );
+
+          ctx.lineTo(
+            dot.x,
+            dot.y
+          );
+
+          const glowMultiplier =
+            interaction.phase === "pause"
+              ? INTERACTION.glowMultiplier
+              : interaction.phase === "fast"
+                ? 1.45
+                : 1;
+
+          const glowAlpha = Math.min(1, alpha * glowMultiplier);
+
+          ctx.strokeStyle =
+            `rgba(${SETTINGS.lineColor}, ${glowAlpha})`;
+
+          ctx.lineWidth =
+            SETTINGS.lineWidth *
+            (interaction.phase === "pause"
+              ? INTERACTION.glowWidth
+              : interaction.phase === "fast"
+                ? 1.12
+                : 1);
+
+          ctx.lineCap =
+            "round";
+
+          // Glow uses the SAME stroke. No duplicate/secondary leg.
+          if (interaction.phase === "pause") {
+            ctx.shadowColor = `rgba(${SETTINGS.lineColor}, 0.95)`;
+            ctx.shadowBlur = INTERACTION.glowBlur;
+          } else if (interaction.phase === "fast") {
+            ctx.shadowColor = `rgba(${SETTINGS.lineColor}, 0.48)`;
+            ctx.shadowBlur = 8;
+          }
+
+          ctx.stroke();
+
+          ctx.shadowBlur = 0;
+          ctx.shadowColor = "transparent";
+
+          /* DOT ENDPOINT */
+
+          ctx.beginPath();
+
+          ctx.arc(
+            dot.x,
+            dot.y,
+            1.15 +
+              influence * 0.7,
+            0,
+            Math.PI * 2
+          );
+
+          ctx.fillStyle =
+            `rgba(
+              255,
+              255,
+              255,
+              ${Math.min(
+                0.9,
+                dot.alpha +
+                  influence * 0.25
+              )}
+            )`;
+
+          ctx.fill();
+        }
+      );
+    }

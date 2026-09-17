@@ -832,4 +832,17 @@ export default function Opportunities() {
         useEffect(() => {
           fetchData();
         }, [fetchData]);
-      
+       const handleSave = async (oppId, status = 'saved') => {
+          setSaving(oppId);
+          try {
+            await saveOpportunity(oppId, status);
+            showToast(status === 'applied' ? 'Application submitted & tracked in pipeline!' : 'Opportunity saved to pipeline!');
+            await fetchData();
+            setSelected((prev) => prev?._id === oppId ? { ...prev, applicationStatus: status } : prev);
+            setApplyModalOpp(null);
+          } catch (err) {
+            showToast(err.message || 'Failed to save opportunity.', 'error');
+          } finally {
+            setSaving(null);
+          }
+        };

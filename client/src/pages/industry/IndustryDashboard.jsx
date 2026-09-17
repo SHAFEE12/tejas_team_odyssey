@@ -612,3 +612,295 @@ export default function IndustryDashboard() {
                       </div>
                     )}
                   </div>
+                  
+                  {/* Right: Canonical Sourcing Quick Launch */}
+                  <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-xl p-5 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-sm font-semibold text-white tracking-tight">Talent Discovery Telemetry</h2>
+                      <button
+                        onClick={() => setActiveTab('talent')}
+                        className="text-xs text-purple-400 hover:text-purple-300 transition-colors"
+                      >
+                        Explore All Candidates →
+                      </button>
+                    </div>
+                    <p className="text-xs text-zinc-400 leading-relaxed">
+                      Sourcing in Career Odyssey is linked directly to canonical skill profiles, verified GitHub repository commits, hands-on projects, and institutional career readiness scores.
+                    </p>
+
+                    <div className="grid grid-cols-2 gap-3 pt-2">
+                      <div className="bg-zinc-950/60 border border-zinc-800/80 rounded-lg p-3">
+                        <span className="text-[10px] text-zinc-500 uppercase tracking-wider font-mono">Multi-Discipline</span>
+                        <div className="text-sm font-semibold text-zinc-200 mt-1">Cross-Engineering</div>
+                        <p className="text-[11px] text-zinc-400 mt-1">CSE, ECE, EE, Mech, Civil, AI/ML</p>
+                      </div>
+                      <div className="bg-zinc-950/60 border border-zinc-800/80 rounded-lg p-3">
+                        <span className="text-[10px] text-zinc-500 uppercase tracking-wider font-mono">Evidence-First</span>
+                        <div className="text-sm font-semibold text-zinc-200 mt-1">Verified Portfolio</div>
+                        <p className="text-[11px] text-zinc-400 mt-1">Direct GitHub and project proofs</p>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => setActiveTab('talent')}
+                      className="w-full py-2.5 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/30 text-purple-300 text-xs font-medium transition-all"
+                    >
+                      Launch Talent Search Engine →
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ════════ TAB: OPPORTUNITIES (JOBS & INTERNSHIPS) ════════ */}
+            {activeTab === 'opportunities' && (
+              <div className="space-y-6">
+                {applicantsPipeline ? (
+                  /* PIPELINE VIEW FOR SELECTED OPPORTUNITY */
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between bg-zinc-900/60 border border-zinc-800/80 rounded-xl p-4">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => setApplicantsPipeline(null)}
+                            className="text-xs text-purple-400 hover:text-purple-300 underline mr-2"
+                          >
+                            ← Back to Opportunities
+                          </button>
+                          <span className="text-base font-semibold text-white capitalize">{selectedOpportunity?.title}</span>
+                          <span className="text-xs px-2 py-0.5 rounded bg-zinc-800 text-zinc-400 font-mono">
+                            {applicantsPipeline.totalApplicants} Total Applicants
+                          </span>
+                        </div>
+                        <div className="text-xs text-zinc-400 mt-1 flex items-center gap-4">
+                          <span>Domain: {selectedOpportunity?.domain}</span>
+                          <span>Type: {selectedOpportunity?.type}</span>
+                          <span>Openings: {selectedOpportunity?.openings}</span>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => {
+                          setTalentFilters({ ...talentFilters, opportunityId: selectedOpportunity._id });
+                          setActiveTab('talent');
+                        }}
+                        className="px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-medium transition-colors"
+                      >
+                        Source Matching Talent →
+                      </button>
+                    </div>
+
+                    {/* Kanban Columns */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+                      {[
+                        { key: 'APPLIED', label: 'Applied / New', color: 'border-blue-500/30 text-blue-400' },
+                        { key: 'OA', label: 'Online Assessment', color: 'border-amber-500/30 text-amber-400' },
+                        { key: 'INTERVIEW', label: 'Interview', color: 'border-purple-500/30 text-purple-400' },
+                        { key: 'FINAL_ROUND', label: 'Final Round', color: 'border-indigo-500/30 text-indigo-400' },
+                        { key: 'OFFER', label: 'Offered', color: 'border-emerald-500/30 text-emerald-400' },
+                        { key: 'REJECTED', label: 'Archived / Rejected', color: 'border-zinc-700 text-zinc-500' },
+                      ].map((col) => {
+                        const candidates = applicantsPipeline.pipeline[col.key] || [];
+                        return (
+                          <div key={col.key} className="bg-zinc-900/40 border border-zinc-800/80 rounded-xl p-3 flex flex-col min-h-[400px]">
+                            <div className="flex items-center justify-between pb-3 border-b border-zinc-800/60 mb-3">
+                              <span className={`text-xs font-semibold ${col.color}`}>{col.label}</span>
+                              <span className="text-[11px] font-mono px-1.5 py-0.2 rounded bg-zinc-800 text-zinc-400">
+                                {candidates.length}
+                              </span>
+                            </div>
+
+                            <div className="space-y-3 flex-1 overflow-y-auto">
+                              {candidates.length === 0 ? (
+                                <div className="text-[11px] text-zinc-600 text-center py-6">No candidates in this stage</div>
+                              ) : (
+                                candidates.map((c) => (
+                                  <div
+                                    key={c.applicationId}
+                                    className="bg-zinc-950/80 border border-zinc-800/70 rounded-lg p-3 space-y-2 hover:border-zinc-700 transition-all text-xs"
+                                  >
+                                    <div className="flex items-center justify-between">
+                                      <span className="font-semibold text-zinc-200">{c.name}</span>
+                                      <span className="text-[10px] text-zinc-400">{c.department}</span>
+                                    </div>
+                                    <div className="text-[11px] text-zinc-400 flex items-center justify-between">
+                                      <span>Grad: {c.graduationYear}</span>
+                                      <span>CGPA: {c.cgpa || 'N/A'}</span>
+                                    </div>
+
+                                    {/* Action Buttons */}
+                                    <div className="pt-2 border-t border-zinc-800/60 flex items-center justify-between gap-1 flex-wrap">
+                                      <button
+                                        onClick={() => handleViewCandidate360(c.studentId, selectedOpportunity._id)}
+                                        className="text-[10px] text-purple-400 hover:text-purple-300 underline"
+                                      >
+                                        360° Dossier
+                                      </button>
+                                      <div className="flex items-center gap-1">
+                                        {col.key === 'APPLIED' && (
+                                          <button
+                                            onClick={() => handleAdvanceStage(c.applicationId, 'OA')}
+                                            className="px-2 py-0.5 rounded bg-blue-600/20 text-blue-300 text-[10px] hover:bg-blue-600/30"
+                                          >
+                                            To OA
+                                          </button>
+                                        )}
+                                        {col.key === 'OA' && (
+                                          <button
+                                            onClick={() => handleAdvanceStage(c.applicationId, 'INTERVIEW')}
+                                            className="px-2 py-0.5 rounded bg-purple-600/20 text-purple-300 text-[10px] hover:bg-purple-600/30"
+                                          >
+                                            Interview
+                                          </button>
+                                        )}
+                                        {col.key === 'INTERVIEW' && (
+                                          <button
+                                            onClick={() => handleAdvanceStage(c.applicationId, 'FINAL_ROUND')}
+                                            className="px-2 py-0.5 rounded bg-indigo-600/20 text-indigo-300 text-[10px] hover:bg-indigo-600/30"
+                                          >
+                                            Final Round
+                                          </button>
+                                        )}
+                                        {['INTERVIEW', 'FINAL_ROUND'].includes(col.key) && (
+                                          <button
+                                            onClick={() => handleAdvanceStage(c.applicationId, 'OFFER')}
+                                            className="px-2 py-0.5 rounded bg-emerald-600/20 text-emerald-300 text-[10px] hover:bg-emerald-600/30"
+                                          >
+                                            Offer
+                                          </button>
+                                        )}
+                                        {col.key !== 'REJECTED' && (
+                                          <button
+                                            onClick={() => handleAdvanceStage(c.applicationId, 'REJECTED')}
+                                            className="px-1.5 py-0.5 rounded text-zinc-500 hover:text-rose-400 text-[10px]"
+                                          >
+                                            ✕
+                                          </button>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : (
+                  /* LIST OF OPPORTUNITIES */
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h2 className="text-base font-semibold text-white">Company Opportunities</h2>
+                        <p className="text-xs text-zinc-400">Manage your active job postings and candidate pipelines</p>
+                      </div>
+                      <button
+                        onClick={() => setShowCreateModal(true)}
+                        className="px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-medium transition-colors shadow-md shadow-purple-600/20"
+                      >
+                        + Post New Opportunity
+                      </button>
+                    </div>
+
+                    {opportunities.length === 0 ? (
+                      <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-12 text-center space-y-3">
+                        <div className="text-3xl">📋</div>
+                        <h3 className="text-sm font-semibold text-zinc-300">No active opportunities</h3>
+                        <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+                          Publish internship or full-time roles with required canonical skills to begin sourcing candidates.
+                        </p>
+                        <button
+                          onClick={() => setShowCreateModal(true)}
+                          className="px-4 py-2 rounded-lg bg-purple-600 text-white text-xs font-medium hover:bg-purple-500 transition-colors"
+                        >
+                          Create First Opportunity
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {opportunities.map((opp) => (
+                          <div
+                            key={opp._id}
+                            className="bg-zinc-900/50 border border-zinc-800/80 rounded-xl p-5 hover:border-zinc-700 transition-all flex flex-col justify-between space-y-4"
+                          >
+                            <div className="space-y-2">
+                              <div className="flex items-start justify-between gap-2">
+                                <h3 className="font-semibold text-sm text-white capitalize">{opp.title}</h3>
+                                <span className={`text-[10px] px-2 py-0.5 rounded font-mono uppercase ${
+                                  opp.status === 'active' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-zinc-800 text-zinc-400'
+                                }`}>
+                                  {opp.status}
+                                </span>
+                              </div>
+                              <div className="text-xs text-zinc-400 flex items-center gap-3">
+                                <span>{opp.type}</span>
+                                <span>•</span>
+                                <span>{opp.workMode}</span>
+                                <span>•</span>
+                                <span>{opp.location}</span>
+                              </div>
+                              <p className="text-xs text-zinc-400 line-clamp-2 leading-relaxed">
+                                {opp.description}
+                              </p>
+
+                              {/* Skills chips */}
+                              <div className="flex flex-wrap gap-1 pt-1">
+                                {(opp.requiredSkills || []).slice(0, 4).map((sk, idx) => (
+                                  <span key={idx} className="text-[10px] px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700/60">
+                                    {sk}
+                                  </span>
+                                ))}
+                                {(opp.requiredSkills || []).length > 4 && (
+                                  <span className="text-[10px] text-zinc-500">+{opp.requiredSkills.length - 4} more</span>
+                                )}
+                              </div>
+                            </div>
+
+                            <div className="pt-3 border-t border-zinc-800/60 flex items-center justify-between">
+                              <span className="text-xs text-zinc-400">
+                                <strong className="text-white font-mono">{opp.applicantsCount || 0}</strong> applicants
+                              </span>
+                              <div className="flex items-center gap-2">
+                                <button
+                                  onClick={() => handleViewPipeline(opp)}
+                                  className="px-3 py-1 rounded bg-purple-600 hover:bg-purple-500 text-white text-xs font-medium transition-colors"
+                                >
+                                  View Pipeline →
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ════════ TAB: TALENT SEARCH ════════ */}
+            {activeTab === 'talent' && (
+              <div className="space-y-6">
+                {/* Search & Filter Header */}
+                <div className="bg-zinc-900/60 border border-zinc-800/80 rounded-xl p-5 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-sm font-semibold text-white">Student Talent Discovery</h2>
+                      <p className="text-xs text-zinc-400">Server-side candidate search with canonical skill matching and verified telemetry</p>
+                    </div>
+                    {talentFilters.opportunityId && (
+                      <div className="flex items-center gap-2 bg-purple-500/10 border border-purple-500/20 px-3 py-1 rounded-lg text-xs text-purple-300">
+                        <span>Matching against opportunity: <strong>{opportunities.find((o) => o._id === talentFilters.opportunityId)?.title}</strong></span>
+                        <button
+                          onClick={() => setTalentFilters({ ...talentFilters, opportunityId: '' })}
+                          className="text-purple-400 hover:text-white font-bold ml-1"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  

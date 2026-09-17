@@ -433,4 +433,123 @@ export default function InstitutionDashboard() {
                     </span>
                   </div>
                 </div>
+ {/* Department Analytics Cards */}
+                <div>
+                  <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight mb-4">Department Cohort Breakdown</h2>
+                  {departments.length === 0 ? (
+                    <div className="p-12 border border-dashed border-zinc-800 rounded-2xl text-center text-xs md:text-sm text-zinc-400 font-medium">
+                      No departments configured yet.
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+                      {departments.map((d, idx) => (
+                        <div key={idx} className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/70 to-zinc-950/90 shadow-lg hover:border-zinc-700 transition-all flex flex-col justify-between">
+                          <div>
+                            <div className="flex items-center justify-between mb-3">
+                              <h3 className="text-base md:text-lg font-bold text-white">{d.department}</h3>
+                              <span className="text-xs md:text-sm font-mono font-bold text-indigo-400 px-2 py-0.5 rounded bg-indigo-500/10 border border-indigo-500/20">
+                                {d.averageReadiness}/100
+                              </span>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2.5 text-xs text-zinc-300 my-3.5 bg-zinc-950/80 p-3.5 rounded-xl border border-zinc-800/80">
+                              <div>
+                                <span className="text-zinc-400 font-semibold block text-[11px] uppercase tracking-wider">Enrolled</span>
+                                <span className="text-white font-bold text-sm">{d.studentCount} students</span>
+                              </div>
+                              <div>
+                                <span className="text-zinc-400 font-semibold block text-[11px] uppercase tracking-wider">Placement Ready</span>
+                                <span className="text-emerald-400 font-bold text-sm">{d.placementReadyStudents}</span>
+                              </div>
+                              <div>
+                                <span className="text-zinc-400 font-semibold block text-[11px] uppercase tracking-wider">At Risk</span>
+                                <span className="text-amber-400 font-bold text-sm">{d.studentsAtRisk}</span>
+                              </div>
+                              <div>
+                                <span className="text-zinc-400 font-semibold block text-[11px] uppercase tracking-wider">Project Coverage</span>
+                                <span className="text-white font-bold text-sm">{d.projectCoverageRate}%</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="pt-3 border-t border-zinc-800/80 flex items-center justify-between text-xs text-zinc-400">
+                            <span className="font-medium">Active Application Rate</span>
+                            <span className="text-zinc-200 font-bold">{d.activeApplicationRate}%</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* ── TAB: STUDENTS COHORT ──────────────────────────────────── */}
+            {activeTab === 'students' && (
+              <div className="flex flex-col gap-8">
+                {/* Hero Header */}
+                <div className="rounded-3xl border border-zinc-800/90 bg-gradient-to-r from-zinc-900 via-zinc-900/70 to-zinc-950 p-6 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xl">
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-3.5">
+                      Enrolled Student Cohort
+                    </div>
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight">
+                      Student Cohort Directory
+                    </h1>
+                    <p className="text-sm md:text-base text-zinc-300 font-medium mt-2 max-w-2xl leading-relaxed">
+                      Enrolled students strictly isolated to {institutionInfo?.name || 'your educational institution'} ({students.length} students currently enrolled).
+                    </p>
+                  </div>
+                </div>
+
+                {/* Sub-KPI HUD */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Total Enrolled</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-white tracking-tight">{students.length}</span>
+                      <span className="text-sm font-semibold text-zinc-400">students</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Institution roster
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Placement Ready</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-emerald-400 tracking-tight">
+                        {students.filter(s => (s.readinessScore || 0) >= 70).length}
+                      </span>
+                      <span className="text-sm font-semibold text-zinc-400">candidates</span>
+                    </div>
+                    <span className="text-xs font-semibold text-emerald-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Score &ge; 70 benchmark
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Active in Funnel</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-indigo-400 tracking-tight">
+                        {students.filter(s => ['PLACED', 'IN_PROCESS', 'APPLIED'].includes(s.placementStatus)).length}
+                      </span>
+                      <span className="text-sm font-semibold text-zinc-400">engaged</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Applied or in review
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Flagged At-Risk</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className={`text-4xl md:text-5xl font-black tracking-tight ${students.filter(s => (s.readinessScore || 0) < 40).length > 0 ? 'text-amber-400' : 'text-zinc-200'}`}>
+                        {students.filter(s => (s.readinessScore || 0) < 40).length}
+                      </span>
+                      <span className="text-sm font-semibold text-zinc-400">flagged</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Score &lt; 40 or missing proofs
+                    </span>
+                  </div>
+                </div>
 

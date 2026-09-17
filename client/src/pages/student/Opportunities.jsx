@@ -257,3 +257,9 @@ function CompanyLogo({ company }) {
     </div>
   );
 }
+/* ── Executive Obsidian Job Card (Matching Reference Layout) ─── */
+function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving }) {
+  const isSaved = opp.applicationStatus === 'saved';
+  const isApplied = opp.applicationStatus === 'applied' || isActioned;
+  const isPartner = opp.industry || opp.isDemo === false;
+  const timeAgo = getTimeAgo(opp.createdAt);

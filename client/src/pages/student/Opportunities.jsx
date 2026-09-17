@@ -815,3 +815,17 @@ export default function Opportunities() {
       setLoadingMatches(false);
     }
   }, []);
+    
+    const fetchData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const params = {};
+      if (filterType) params.type = filterType;
+      if (filterDomain) params.domain = filterDomain;
+      if (filterRemote) params.remote = true;
+
+      const [oppRes, appRes] = await Promise.all([
+        getOpportunities(params),
+        getApplications(),
+      ]);

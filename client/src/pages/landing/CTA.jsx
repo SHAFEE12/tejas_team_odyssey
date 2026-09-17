@@ -1765,3 +1765,135 @@ export default function CTA({ onLogin, onRegister }) {
       section.removeEventListener("touchend", onTouchEnd);
     };
   }, []);
+
+  return (
+    <section
+      id="cta"
+      ref={(el) => {
+        if (typeof sectionRef === 'function') {
+          sectionRef(el);
+        } else if (sectionRef) {
+          sectionRef.current = el;
+        }
+
+        sectionElementRef.current = el;
+      }}
+      className="
+        relative
+        h-[600px]
+        w-full
+        overflow-hidden
+        bg-black
+        border-t
+        border-white/[0.06]
+      "
+    >
+
+      {/* =====================================================
+          SPIDER CANVAS
+      ===================================================== */}
+
+      <canvas
+        ref={canvasRef}
+        className="
+          absolute
+          inset-0
+          w-full
+          h-full
+          block
+        "
+      />
+
+
+      {/* =====================================================
+          CAREERODYSSEY LOGO
+      ===================================================== */}
+
+      <div
+        ref={spiderRef}
+        className="
+          absolute
+          z-20
+          w-[76px]
+          h-[76px]
+          pointer-events-none
+          will-change-[left,top,transform]
+          max-[700px]:w-[60px]
+          max-[700px]:h-[60px]
+        "
+        style={{
+          filter: `
+            drop-shadow(
+              0 0 8px
+              rgba(255,55,30,0.28)
+            )
+            drop-shadow(
+              0 0 25px
+              rgba(255,55,30,0.12)
+            )
+          `
+        }}
+      >
+        <img
+          src={logo}
+          alt="CareerOdyssey"
+          className="
+            w-full
+            h-full
+            object-contain
+            block
+            pointer-events-none
+            select-none
+          "
+          draggable="false"
+        />
+      </div>
+
+
+      {/* =====================================================
+          BOTTOM CTA
+      ===================================================== */}
+
+      <div
+        className={`
+          absolute
+          bottom-6
+          sm:bottom-8
+          left-4
+          right-4
+          sm:left-6
+          sm:right-6
+          lg:left-10
+          lg:right-10
+          z-30
+
+          flex
+          flex-col
+          md:flex-row
+
+          md:items-end
+          md:justify-between
+
+          gap-5
+          md:gap-8
+
+          transition-all
+          duration-700
+
+          ${
+            isRevealed
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-4'
+          }
+        `}
+      >
+
+  
+
+   
+
+      </div>
+
+    </section>
+  );
+}

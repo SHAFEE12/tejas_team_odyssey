@@ -129,7 +129,7 @@ export default function IndustryDashboard() {
     loadInitialData();
   }, [token]);
 
-   // 2. Load Talent Search
+  // 2. Load Talent Search
   const loadTalent = async () => {
     if (!token) return;
     setLoadingTalent(true);
@@ -263,6 +263,7 @@ export default function IndustryDashboard() {
       showToast('Failed to update stage', 'error');
     }
   };
+
   // 7. Create New Opportunity
   const handleCreateOpportunity = async (e) => {
     e.preventDefault();
@@ -384,6 +385,7 @@ export default function IndustryDashboard() {
       showToast('Network error submitting evaluation', 'error');
     }
   };
+
   // 9. Update Profile
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
@@ -612,7 +614,7 @@ export default function IndustryDashboard() {
                       </div>
                     )}
                   </div>
-                  
+
                   {/* Right: Canonical Sourcing Quick Launch */}
                   <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-xl p-5 space-y-4">
                     <div className="flex items-center justify-between">
@@ -902,7 +904,8 @@ export default function IndustryDashboard() {
                       </div>
                     )}
                   </div>
-            {/* Filter Controls */}
+
+                  {/* Filter Controls */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
                     <input
                       type="text"
@@ -1069,7 +1072,6 @@ export default function IndustryDashboard() {
                               )}
                             </div>
 
-                  
                             {/* Match Reasons */}
                             {cand.matchEvaluation?.reasons?.length > 0 && (
                               <div className="bg-purple-950/20 border border-purple-900/40 rounded p-2 text-[10px] text-purple-300 space-y-0.5">
@@ -1172,7 +1174,8 @@ export default function IndustryDashboard() {
                 )}
               </div>
             )}
- {/* ════════ TAB: COMPANY PROFILE ════════ */}
+
+            {/* ════════ TAB: COMPANY PROFILE ════════ */}
             {activeTab === 'profile' && companyProfile && (
               <div className="max-w-2xl bg-zinc-900/40 border border-zinc-800/80 rounded-xl p-6 space-y-6">
                 <div>
@@ -1273,7 +1276,8 @@ export default function IndustryDashboard() {
           </>
         )}
       </main>
- {/* ════════ MODAL: CREATE OPPORTUNITY ════════ */}
+
+      {/* ════════ MODAL: CREATE OPPORTUNITY ════════ */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-xl w-full p-6 space-y-4 max-h-[90vh] overflow-y-auto">
@@ -1424,7 +1428,8 @@ export default function IndustryDashboard() {
           </div>
         </div>
       )}
-       {/* ════════ MODAL: SHORTLIST CANDIDATE ════════ */}
+
+      {/* ════════ MODAL: SHORTLIST CANDIDATE ════════ */}
       {shortlistModalOpen && candidateToShortlist && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-md w-full p-6 space-y-4">
@@ -1533,3 +1538,253 @@ export default function IndustryDashboard() {
                     <span>{evalFormOpen ? 'Close Rubric' : 'Evaluate Candidate'}</span>
                   </button>
                 </div>
+
+                {/* ── Evaluation Rubric Form ── */}
+                {evalFormOpen && (
+                  <form onSubmit={handleSubmitEvaluation} className="p-4 bg-zinc-950/90 border border-purple-500/40 rounded-xl space-y-4 animate-fadeIn">
+                    <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                      <span className="font-bold text-white text-xs uppercase tracking-wider text-purple-300">
+                        Interview Assessment Rubric
+                      </span>
+                      <span className="text-[10px] text-zinc-500 font-mono">Real-time Candidate Feedback</span>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      <div className="bg-white/[0.02] p-2.5 rounded-lg border border-white/5">
+                        <label className="text-[10px] text-zinc-400 block mb-1">Technical: <strong className="text-white">{evalForm.technicalScore}%</strong></label>
+                        <input
+                          type="range"
+                          min="40"
+                          max="100"
+                          value={evalForm.technicalScore}
+                          onChange={(e) => setEvalForm({ ...evalForm, technicalScore: e.target.value })}
+                          className="w-full accent-purple-500 cursor-pointer"
+                        />
+                      </div>
+                      <div className="bg-white/[0.02] p-2.5 rounded-lg border border-white/5">
+                        <label className="text-[10px] text-zinc-400 block mb-1">Communication: <strong className="text-white">{evalForm.communicationScore}%</strong></label>
+                        <input
+                          type="range"
+                          min="40"
+                          max="100"
+                          value={evalForm.communicationScore}
+                          onChange={(e) => setEvalForm({ ...evalForm, communicationScore: e.target.value })}
+                          className="w-full accent-purple-500 cursor-pointer"
+                        />
+                      </div>
+                      <div className="bg-white/[0.02] p-2.5 rounded-lg border border-white/5">
+                        <label className="text-[10px] text-zinc-400 block mb-1">Problem Solving: <strong className="text-white">{evalForm.problemSolvingScore}%</strong></label>
+                        <input
+                          type="range"
+                          min="40"
+                          max="100"
+                          value={evalForm.problemSolvingScore}
+                          onChange={(e) => setEvalForm({ ...evalForm, problemSolvingScore: e.target.value })}
+                          className="w-full accent-purple-500 cursor-pointer"
+                        />
+                      </div>
+                      <div className="bg-white/[0.02] p-2.5 rounded-lg border border-white/5">
+                        <label className="text-[10px] text-zinc-400 block mb-1">Teamwork: <strong className="text-white">{evalForm.teamworkScore}%</strong></label>
+                        <input
+                          type="range"
+                          min="40"
+                          max="100"
+                          value={evalForm.teamworkScore}
+                          onChange={(e) => setEvalForm({ ...evalForm, teamworkScore: e.target.value })}
+                          className="w-full accent-purple-500 cursor-pointer"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-[10px] text-zinc-400 block mb-1 font-semibold">Recommendation Decision</label>
+                        <select
+                          value={evalForm.recommendation}
+                          onChange={(e) => setEvalForm({ ...evalForm, recommendation: e.target.value })}
+                          className="w-full p-2 rounded-lg bg-zinc-900 border border-zinc-700 text-white text-xs"
+                        >
+                          <option value="HIRE">HIRE — Immediate Placement Offer</option>
+                          <option value="SHORTLIST">SHORTLIST — Next Interview Round</option>
+                          <option value="CONSIDER">CONSIDER — Conditional Talent</option>
+                          <option value="REJECT">REJECT — Profile Misaligned</option>
+                          <option value="FUTURE_POOL">FUTURE_POOL — Candidate for Future Batch</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-[10px] text-zinc-400 block mb-1 font-semibold">Observed Gaps / Missing Competencies</label>
+                        <input
+                          type="text"
+                          value={evalForm.weaknesses}
+                          onChange={(e) => setEvalForm({ ...evalForm, weaknesses: e.target.value })}
+                          placeholder="e.g. Automated HL7 testing, FHIR integration"
+                          className="w-full p-2 rounded-lg bg-zinc-900 border border-zinc-700 text-white text-xs"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] text-zinc-400 block mb-1 font-semibold">Qualitative Feedback to Candidate</label>
+                      <textarea
+                        rows={2}
+                        value={evalForm.feedback}
+                        onChange={(e) => setEvalForm({ ...evalForm, feedback: e.target.value })}
+                        className="w-full p-2 rounded-lg bg-zinc-900 border border-zinc-700 text-white text-xs"
+                      />
+                    </div>
+
+                    <div className="flex justify-end gap-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={() => setEvalFormOpen(false)}
+                        className="px-3 py-1.5 rounded-lg bg-zinc-800 text-zinc-400 hover:text-white text-xs cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-4 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold shadow cursor-pointer"
+                      >
+                        Submit Evaluation & Trigger Student Feedback Loop
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                {/* Explainable Match Card if Available */}
+                {candidate360.matchEvaluation && (
+                  <div className="bg-purple-950/30 border border-purple-800/60 rounded-xl p-4 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-bold text-white">Deterministic Match Score</span>
+                        <span className="px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono text-[10px] uppercase font-semibold">
+                          {candidate360.matchEvaluation.matchBand}
+                        </span>
+                      </div>
+                      <span className="text-2xl font-black text-purple-400 font-mono">
+                        {candidate360.matchEvaluation.matchScore}%
+                      </span>
+                    </div>
+
+                    {/* Breakdown Scores */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 font-mono text-[11px]">
+                      <div className="bg-zinc-950/60 p-2 rounded border border-zinc-800/80">
+                        <span className="text-[10px] text-zinc-500 block">Required Skills (35%)</span>
+                        <span className="text-purple-300 font-bold">{candidate360.matchEvaluation.breakdown.requiredSkills.score}%</span>
+                      </div>
+                      <div className="bg-zinc-950/60 p-2 rounded border border-zinc-800/80">
+                        <span className="text-[10px] text-zinc-500 block">Preferred Skills (15%)</span>
+                        <span className="text-purple-300 font-bold">{candidate360.matchEvaluation.breakdown.preferredSkills.score}%</span>
+                      </div>
+                      <div className="bg-zinc-950/60 p-2 rounded border border-zinc-800/80">
+                        <span className="text-[10px] text-zinc-500 block">Project Evidence (15%)</span>
+                        <span className="text-purple-300 font-bold">{candidate360.matchEvaluation.breakdown.projectEvidence.score}%</span>
+                      </div>
+                      <div className="bg-zinc-950/60 p-2 rounded border border-zinc-800/80">
+                        <span className="text-[10px] text-zinc-500 block">Readiness (10%)</span>
+                        <span className="text-purple-300 font-bold">{candidate360.matchEvaluation.breakdown.careerReadiness.score}%</span>
+                      </div>
+                    </div>
+
+                    {/* Reasons & Recommendations */}
+                    <div className="space-y-1 text-zinc-300 text-[11px] pt-1">
+                      {candidate360.matchEvaluation.reasons.map((r, i) => (
+                        <div key={i} className="flex items-start gap-1.5">
+                          <span className="text-purple-400">✓</span>
+                          <span>{r}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Skills Profile */}
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-zinc-200 text-xs uppercase tracking-wider">Technical Competencies</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {(candidate360.skills || []).map((sk, idx) => (
+                      <div key={idx} className="bg-zinc-950 border border-zinc-800 px-2.5 py-1 rounded-lg flex items-center gap-2">
+                        <span className="text-zinc-200 font-medium">{sk.name}</span>
+                        <span className="text-[10px] font-mono px-1 rounded bg-zinc-800 text-zinc-400 uppercase">
+                          {sk.level}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Projects Portfolio */}
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-zinc-200 text-xs uppercase tracking-wider">Projects Evidence</h4>
+                  {(candidate360.projects || []).length === 0 ? (
+                    <div className="text-zinc-500 text-xs">No projects logged yet.</div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {candidate360.projects.map((proj) => (
+                        <div key={proj._id} className="bg-zinc-950/70 border border-zinc-800/80 rounded-xl p-3 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="font-semibold text-white">{proj.title}</span>
+                            <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono ${
+                              proj.evidenceStatus === 'VERIFIED' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-blue-500/20 text-blue-400'
+                            }`}>
+                              {proj.evidenceStatus}
+                            </span>
+                          </div>
+                          <p className="text-zinc-400 text-[11px] line-clamp-2">{proj.description}</p>
+                          {proj.githubUrl && (
+                            <a
+                              href={proj.githubUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-purple-400 hover:text-purple-300 text-[11px] block underline"
+                            >
+                              View Code Repository ↗
+                            </a>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* GitHub & DSA Evidence Grid */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-zinc-950/60 border border-zinc-800 rounded-xl p-3 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-zinc-300">GitHub Activity</span>
+                      <span className="text-[9px] font-mono uppercase text-zinc-500">{candidate360.github?.evidenceStatus}</span>
+                    </div>
+                    {candidate360.github?.evidenceStatus === 'CONNECTED' ? (
+                      <div className="text-[11px] text-zinc-400 space-y-0.5 pt-1">
+                        <div>Username: @{candidate360.github.username}</div>
+                        <div>Public Repos: {candidate360.github.publicRepos}</div>
+                        <div>Stars: {candidate360.github.totalStars}</div>
+                      </div>
+                    ) : (
+                      <div className="text-zinc-500 text-[11px] pt-1">No GitHub profile linked.</div>
+                    )}
+                  </div>
+
+                  <div className="bg-zinc-950/60 border border-zinc-800 rounded-xl p-3 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-zinc-300">DSA Problem Solving</span>
+                      <span className="text-[9px] font-mono uppercase text-zinc-500">{candidate360.dsa?.evidenceStatus}</span>
+                    </div>
+                    {candidate360.dsa?.totalSolved > 0 ? (
+                      <div className="text-[11px] text-zinc-400 space-y-0.5 pt-1">
+                        <div>Total Solved: <strong className="text-white">{candidate360.dsa.totalSolved}</strong></div>
+                        <div>Easy: {candidate360.dsa.easy} | Medium: {candidate360.dsa.medium} | Hard: {candidate360.dsa.hard}</div>
+                      </div>
+                    ) : (
+                      <div className="text-zinc-500 text-[11px] pt-1">No DSA stats recorded.</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

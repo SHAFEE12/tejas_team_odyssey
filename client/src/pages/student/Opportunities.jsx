@@ -829,3 +829,4 @@ export default function Opportunities() {
         getOpportunities(params),
         getApplications(),
       ]);
+      

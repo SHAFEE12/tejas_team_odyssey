@@ -1005,4 +1005,56 @@ export default function Opportunities() {
                                 ✕
                               </button>
                             )}
-                          </div>
+                             </div>
+
+            {/* Type */}
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="px-3 py-2 bg-zinc-900/90 border border-white/[0.08] rounded-xl text-xs text-zinc-300 focus:outline-none focus:border-orange-500/50 cursor-pointer"
+            >
+              {TYPE_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </select>
+
+            {/* Domain */}
+            <select
+              value={filterDomain}
+              onChange={(e) => setFilterDomain(e.target.value)}
+              className="px-3 py-2 bg-zinc-900/90 border border-white/[0.08] rounded-xl text-xs text-zinc-300 focus:outline-none focus:border-orange-500/50 cursor-pointer"
+            >
+              {DOMAIN_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </select>
+
+            {/* Remote */}
+            <label className="flex items-center gap-2 px-3 py-2 bg-zinc-900/90 border border-white/[0.08] rounded-xl text-xs text-zinc-300 cursor-pointer select-none hover:border-white/[0.14] transition-colors">
+              <input
+                type="checkbox"
+                checked={filterRemote}
+                onChange={(e) => setFilterRemote(e.target.checked)}
+                className="accent-orange-500 rounded"
+              />
+              <span>Remote Only</span>
+            </label>
+
+            {/* Result count & Clear */}
+            <div className="flex items-center gap-3 ml-auto text-xs font-mono text-zinc-400">
+              <span>{filtered.length} matches</span>
+              {(filterType || filterDomain || filterRemote || searchQuery) && (
+                <button
+                  onClick={() => {
+                    setFilterType('');
+                    setFilterDomain('');
+                    setFilterRemote(false);
+                    setSearchQuery('');
+                  }}
+                  className="text-orange-400 hover:underline cursor-pointer"
+                >
+                  Reset
+                </button>
+              )}
+            </div>
+          </div>

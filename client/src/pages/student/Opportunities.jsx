@@ -477,6 +477,27 @@ function QuickApplyModal({ opp, onClose, onConfirm, submitting }) {
             </div>
           </div>
         </div>
+          <p className="text-[11px] text-zinc-400 leading-relaxed">
+          Your profile will be directly cataloged into the employer’s applicant tracking system with deterministic match explainability.
+        </p>
+
+        {/* Actions */}
+        <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/[0.08]">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 rounded-xl text-xs font-semibold text-zinc-400 hover:text-white transition-colors cursor-pointer"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            disabled={submitting}
+            onClick={() => onConfirm(opp._id)}
+            className="px-5 py-2 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs shadow-lg shadow-orange-600/25 transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer"
+          >
+            
+          </button>
 
       </div>
 

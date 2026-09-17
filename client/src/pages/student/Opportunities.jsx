@@ -879,4 +879,10 @@ export default function Opportunities() {
                 opp.requiredSkills?.some((s) => s.toLowerCase().includes(q))
               );
             });
-          }, [opportunities, searchQuery]);
+          }, [opportunities, searchQuery]);  const pipelineGroups = useMemo(() => {
+              return PIPELINE_STATUSES.reduce((acc, s) => {
+                acc[s] = applications.filter((a) => a.status === s);
+                return acc;
+              }, {});
+            }, [applications]);
+          

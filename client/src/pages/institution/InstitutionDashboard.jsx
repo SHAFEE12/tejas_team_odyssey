@@ -1122,3 +1122,161 @@ export default function InstitutionDashboard() {
                         </span>
                       </div>
                     </div>
+                    {/* Department Placement Breakdown */}
+                    <div className="rounded-3xl border border-zinc-800/90 bg-gradient-to-b from-zinc-900/70 to-zinc-950/90 p-6 md:p-8 shadow-xl">
+                      <h2 className="text-xl font-bold text-white mb-2 tracking-tight">Placement Conversion by Department</h2>
+                      <p className="text-xs text-zinc-400 mb-6 font-medium">Cohort outcomes from initial application to confirmed offers</p>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        {placements.departmentBreakdown?.map((dp, i) => (
+                          <div key={i} className="p-5 rounded-2xl bg-zinc-950/70 border border-zinc-800/80 shadow-md flex flex-col justify-between">
+                            <h3 className="text-base font-bold text-zinc-100 mb-3">{dp.department}</h3>
+                            <div className="space-y-2 text-xs">
+                              <div className="flex justify-between text-zinc-300 py-1.5 border-b border-zinc-800/60 font-medium">
+                                <span className="text-zinc-400">Applications</span>
+                                <span className="font-mono font-bold text-white">{dp.applications}</span>
+                              </div>
+                              <div className="flex justify-between text-zinc-300 py-1.5 border-b border-zinc-800/60 font-medium">
+                                <span className="text-zinc-400">Interviews</span>
+                                <span className="font-mono font-bold text-amber-400">{dp.interviews}</span>
+                              </div>
+                              <div className="flex justify-between text-zinc-300 py-1.5 font-medium">
+                                <span className="text-zinc-400">Offers Received</span>
+                                <span className="font-mono font-black text-emerald-400 text-sm">{dp.offers}</span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ── TAB: HIRING DRIVES ───────────────────────────────────── */}
+            {activeTab === 'drives' && (
+              <div className="flex flex-col gap-8">
+                {/* Hero Header */}
+                <div className="rounded-3xl border border-zinc-800/90 bg-gradient-to-r from-zinc-900 via-zinc-900/70 to-zinc-950 p-6 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xl">
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-3.5">
+                      Campus Recruitment Campaigns
+                    </div>
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight">
+                      Campus Hiring Drives
+                    </h1>
+                    <p className="text-sm md:text-base text-zinc-300 font-medium mt-2 max-w-2xl leading-relaxed">
+                      Organize recruitment drives, set strict eligibility thresholds, and evaluate cohort readiness in real time.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-3">
+                    <button
+                      onClick={() => setShowDriveModal(true)}
+                      className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs md:text-sm font-bold tracking-wide transition-all shadow-xl shadow-indigo-600/30 flex items-center gap-2 cursor-pointer"
+                    >
+                      <span className="text-base leading-none">+</span> Create Campus Drive
+                    </button>
+                  </div>
+                </div>
+
+                {/* Sub-KPI HUD */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Active Drives</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-white tracking-tight">{hiringDrives.length}</span>
+                      <span className="text-sm font-semibold text-zinc-400">campaigns</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Recruitment drives
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Corporate Partners</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-indigo-400 tracking-tight">{new Set(hiringDrives.map(d => d.company)).size}</span>
+                      <span className="text-sm font-semibold text-zinc-400">companies</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Participating employers
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Min CGPA Standard</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-white tracking-tight">7.0</span>
+                      <span className="text-sm font-semibold text-zinc-400">benchmark</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Standard eligibility floor
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Min Readiness Floor</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-emerald-400 tracking-tight">60%</span>
+                      <span className="text-sm font-semibold text-zinc-400">score</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Technical qualification
+                    </span>
+                  </div>
+                </div>
+
+                {hiringDrives.length === 0 ? (
+                  <div className="p-16 border border-dashed border-zinc-800 rounded-3xl bg-zinc-900/30 text-center text-sm text-zinc-400 font-medium">
+                    No active campus recruitment drives created yet.
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {hiringDrives.map((drive) => (
+                      <div key={drive._id} className="p-6 rounded-2xl border border-zinc-800/90 bg-gradient-to-b from-zinc-900/80 to-zinc-950/90 shadow-xl flex flex-col justify-between hover:border-indigo-500/40 transition-all">
+                        <div>
+                          <div className="flex items-center justify-between mb-3">
+                            <span className="text-xs font-bold text-indigo-400 uppercase tracking-wider">{drive.company}</span>
+                            <span className="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-mono font-bold">
+                              {drive.status}
+                            </span>
+                          </div>
+                          <h3 className="text-lg font-bold text-white mb-3 tracking-tight">{drive.title}</h3>
+
+                          <div className="space-y-2 text-xs text-zinc-300 bg-zinc-950/60 p-4 rounded-xl border border-zinc-800/80 mb-5 font-medium">
+                            <div className="flex justify-between">
+                              <span className="text-zinc-400">Eligible Batches:</span>
+                              <span className="text-zinc-100 font-bold">{drive.eligibleBatches?.join(', ')}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-zinc-400">Min CGPA:</span>
+                              <span className="text-zinc-100 font-bold">{drive.minCgpa || 'None'}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-zinc-400">Min Readiness:</span>
+                              <span className="text-indigo-300 font-mono font-bold">{drive.minReadinessScore || 50}/100</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-between">
+                          <span className="text-xs text-zinc-400 font-mono">
+                            {drive.deadline ? `Deadline: ${new Date(drive.deadline).toLocaleDateString()}` : 'No deadline'}
+                          </span>
+                          <button
+                            onClick={() => handleCheckDriveEligibility(drive)}
+                            className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-md shadow-indigo-600/20"
+                          >
+                            Check Eligibility
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </>
+        )}
+      </main>

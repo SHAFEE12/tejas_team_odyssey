@@ -950,3 +950,13 @@ export default function Opportunities() {
                                                   )}
                                                 </button>
                                                 <button
+                                                 onClick={() => {
+                                                              setTab('matches');
+                                                              fetchMatches();
+                                                            }}
+                                                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                                                              tab === 'matches'
+                                                                ? 'bg-orange-500 text-white shadow-md shadow-orange-500/25'
+                                                                : 'text-zinc-400 hover:text-white'
+                                                            }`}
+                                                          ></button>

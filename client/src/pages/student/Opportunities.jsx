@@ -93,3 +93,32 @@ function formatRoleTitle(title) {
     })
     .join(' ');
 }
+
+const SKILL_NAME_FORMAT = {
+  html: 'HTML',
+  css: 'CSS',
+  javascript: 'JavaScript',
+  'java script': 'JavaScript',
+  js: 'JavaScript',
+  typescript: 'TypeScript',
+  ts: 'TypeScript',
+  react: 'React',
+  'react.js': 'React',
+  'react native': 'React Native',
+  node: 'Node.js',
+  'node.js': 'Node.js',
+  mongodb: 'MongoDB',
+  git: 'Git',
+  'rest api': 'REST API',
+  aws: 'AWS',
+  gcp: 'GCP',
+  docker: 'Docker',
+  linux: 'Linux',
+  dsa: 'DSA',
+  sql: 'SQL',
+  nosql: 'NoSQL',
+  python: 'Python',
+  java: 'Java',
+  'c++': 'C++',
+  bash: 'Bash',
+};

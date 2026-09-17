@@ -263,3 +263,11 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
   const isApplied = opp.applicationStatus === 'applied' || isActioned;
   const isPartner = opp.industry || opp.isDemo === false;
   const timeAgo = getTimeAgo(opp.createdAt);
+
+  const levelLabel = opp.experienceLevel === 'senior' ? 'Senior Level' :
+                     opp.experienceLevel === 'mid' ? 'Mid Level' :
+                     opp.experienceLevel === 'internship' ? 'Internship' :
+                     'Entry Level';
+
+  const workModeLabel = opp.workMode === 'remote' || opp.remote ? 'Remote' :
+                        opp.workMode === 'hybrid' ? 'Flexible Schedule' : 'In office';

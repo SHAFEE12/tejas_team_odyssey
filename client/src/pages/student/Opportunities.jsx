@@ -845,4 +845,17 @@ export default function Opportunities() {
           } finally {
             setSaving(null);
           }
-        };
+        }; const handleUpdateStatus = async (appId, newStatus) => {
+            setSaving('updating');
+            try {
+              await updateApplication(appId, { status: newStatus });
+              showToast(`Status advanced to "${newStatus}".`);
+              await fetchData();
+              setSelected((prev) => prev ? { ...prev, applicationStatus: newStatus } : prev);
+            } catch (err) {
+              showToast(err.message || 'Failed to update status.', 'error');
+            } finally {
+              setSaving(null);
+            }
+          };
+        

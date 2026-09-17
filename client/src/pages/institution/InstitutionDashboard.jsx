@@ -270,3 +270,74 @@ export default function InstitutionDashboard() {
             </p>
           </div>
         </div>
+{/* Global Navigation Tabs */}
+        <nav className="hidden lg:flex items-center gap-1 bg-[#06120e]/90 p-1 rounded-xl border border-emerald-950/80">
+          {[
+            { id: 'overview', label: 'Overview' },
+            { id: 'students', label: 'Cohort', badge: metrics.totalStudents },
+            { id: 'academicians', label: 'Faculty', badge: facultyWorkload.academicians.length },
+            { id: 'skills', label: 'Skill Gap Radar' },
+            { id: 'industry', label: 'Demand vs Supply' },
+            { id: 'placements', label: 'Placements' },
+            { id: 'drives', label: 'Hiring Drives', badge: hiringDrives.length },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center gap-1.5 ${
+                activeTab === tab.id
+                  ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30'
+                  : 'text-zinc-400 hover:text-emerald-200 hover:bg-emerald-950/40'
+              }`}
+            >
+              {tab.label}
+              {tab.badge !== undefined && (
+                <span
+                  className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                    activeTab === tab.id
+                      ? 'bg-emerald-800 text-white'
+                      : tab.badge === 'Live'
+                      ? 'bg-emerald-950 text-emerald-400 border border-emerald-800/60'
+                      : 'bg-zinc-800 text-zinc-300'
+                  }`}
+                >
+                  {tab.badge}
+                </span>
+              )}
+            </button>
+          ))}
+        </nav>
+
+        {/* User Profile & Exit Button */}
+        <HeaderUserMenu
+          user={user}
+          onLogout={logout}
+          role="institution"
+          subtitle={user?.email || 'Institution Admin'}
+        />
+      </header>
+
+      {/* Mobile Tab Scroll Bar */}
+      <div className="flex lg:hidden px-4 pt-3 pb-1 overflow-x-auto gap-1.5 border-b border-emerald-950/60 bg-[#06120e]/95">
+        {[
+          { id: 'overview', label: 'Overview' },
+          { id: 'students', label: 'Cohort' },
+          { id: 'academicians', label: 'Faculty' },
+          { id: 'skills', label: 'Skill Gap' },
+          { id: 'industry', label: 'Demand' },
+          { id: 'placements', label: 'Placements' },
+          { id: 'drives', label: 'Drives' },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium shrink-0 transition-colors ${
+              activeTab === tab.id
+                ? 'bg-emerald-600 text-white'
+                : 'text-zinc-400 hover:text-white bg-zinc-900/60'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>

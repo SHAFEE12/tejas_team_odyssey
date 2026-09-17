@@ -418,8 +418,27 @@ function QuickApplyModal({ opp, onClose, onConfirm, submitting }) {
         className="relative w-full max-w-lg rounded-3xl bg-[#0c0e17] border border-white/[0.12] shadow-2xl p-6 sm:p-7 flex flex-col gap-5"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Modal Header */}
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <CompanyLogo company={opp.company} />
+            <div>
+              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-orange-400">
+                Direct Recruiter Application
+              </span>
+              <h3 className="text-base font-bold text-white leading-tight">
+                {formatRoleTitle(opp.title)}
+              </h3>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-white/[0.08] transition-colors cursor-pointer"
+          >
+            <Icon d={ICONS.close} size={16} />
+          </button>
+        </div>
 
-        
       </div>
 
           

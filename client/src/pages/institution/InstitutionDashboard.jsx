@@ -1052,3 +1052,73 @@ export default function InstitutionDashboard() {
                 )}
               </div>
             )}
+              {/* ── TAB: PLACEMENTS ──────────────────────────────────────── */}
+            {activeTab === 'placements' && (
+              <div className="flex flex-col gap-8">
+                {/* Hero Header */}
+                <div className="rounded-3xl border border-zinc-800/90 bg-gradient-to-r from-zinc-900 via-zinc-900/70 to-zinc-950 p-6 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xl">
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-3.5">
+                      Placement Outcomes &amp; Conversion
+                    </div>
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight">
+                      Placement Intelligence &amp; Funnel
+                    </h1>
+                    <p className="text-sm md:text-base text-zinc-300 font-medium mt-2 max-w-2xl leading-relaxed">
+                      Real application transitions, interview progression, and verified offers for {institutionInfo?.name || 'your institution'}.
+                    </p>
+                  </div>
+                </div>
+
+                {placements.status === 'INSUFFICIENT_DATA' ? (
+                  <div className="p-16 border border-dashed border-zinc-800 rounded-3xl bg-zinc-900/30 text-center text-sm text-zinc-400 font-medium">
+                    Insufficient outcome data recorded for your institution yet.
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-8">
+                    {/* Funnel HUD */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
+                      <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                        <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Applications Logged</span>
+                        <div className="mt-3 flex items-baseline gap-2.5">
+                          <span className="text-4xl md:text-5xl font-black text-white tracking-tight">{placements.funnel?.applied || 0}</span>
+                          <span className="text-sm font-semibold text-zinc-400">submitted</span>
+                        </div>
+                        <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                          Initial student applications
+                        </span>
+                      </div>
+
+                      <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                        <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Online Assessments</span>
+                        <div className="mt-3 flex items-baseline gap-2.5">
+                          <span className="text-4xl md:text-5xl font-black text-indigo-400 tracking-tight">{placements.funnel?.oa || 0}</span>
+                          <span className="text-sm font-semibold text-zinc-400">cleared</span>
+                        </div>
+                        <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                          OA screening stage
+                        </span>
+                      </div>
+
+                      <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                        <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Interviews Conducted</span>
+                        <div className="mt-3 flex items-baseline gap-2.5">
+                          <span className="text-4xl md:text-5xl font-black text-amber-400 tracking-tight">{placements.funnel?.interview || 0}</span>
+                          <span className="text-sm font-semibold text-zinc-400">rounds</span>
+                        </div>
+                        <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                          Technical &amp; HR rounds
+                        </span>
+                      </div>
+
+                      <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                        <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Verified Offers</span>
+                        <div className="mt-3 flex items-baseline gap-2.5">
+                          <span className="text-4xl md:text-5xl font-black text-emerald-400 tracking-tight">{placements.funnel?.offers || 0}</span>
+                          <span className="text-sm font-semibold text-zinc-400">offers</span>
+                        </div>
+                        <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                          Confirmed student placements
+                        </span>
+                      </div>
+                    </div>

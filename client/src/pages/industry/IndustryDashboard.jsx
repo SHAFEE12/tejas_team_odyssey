@@ -1533,3 +1533,96 @@ export default function IndustryDashboard() {
                     <span>{evalFormOpen ? 'Close Rubric' : 'Evaluate Candidate'}</span>
                   </button>
                 </div>
+                 {/* ── Evaluation Rubric Form ── */}
+                {evalFormOpen && (
+                  <form onSubmit={handleSubmitEvaluation} className="p-4 bg-zinc-950/90 border border-purple-500/40 rounded-xl space-y-4 animate-fadeIn">
+                    <div className="flex items-center justify-between border-b border-white/10 pb-2">
+                      <span className="font-bold text-white text-xs uppercase tracking-wider text-purple-300">
+                        Interview Assessment Rubric
+                      </span>
+                      <span className="text-[10px] text-zinc-500 font-mono">Real-time Candidate Feedback</span>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      <div className="bg-white/[0.02] p-2.5 rounded-lg border border-white/5">
+                        <label className="text-[10px] text-zinc-400 block mb-1">Technical: <strong className="text-white">{evalForm.technicalScore}%</strong></label>
+                        <input
+                          type="range"
+                          min="40"
+                          max="100"
+                          value={evalForm.technicalScore}
+                          onChange={(e) => setEvalForm({ ...evalForm, technicalScore: e.target.value })}
+                          className="w-full accent-purple-500 cursor-pointer"
+                        />
+                      </div>
+                      <div className="bg-white/[0.02] p-2.5 rounded-lg border border-white/5">
+                        <label className="text-[10px] text-zinc-400 block mb-1">Communication: <strong className="text-white">{evalForm.communicationScore}%</strong></label>
+                        <input
+                          type="range"
+                          min="40"
+                          max="100"
+                          value={evalForm.communicationScore}
+                          onChange={(e) => setEvalForm({ ...evalForm, communicationScore: e.target.value })}
+                          className="w-full accent-purple-500 cursor-pointer"
+                        />
+                      </div>
+                      <div className="bg-white/[0.02] p-2.5 rounded-lg border border-white/5">
+                        <label className="text-[10px] text-zinc-400 block mb-1">Problem Solving: <strong className="text-white">{evalForm.problemSolvingScore}%</strong></label>
+                        <input
+                          type="range"
+                          min="40"
+                          max="100"
+                          value={evalForm.problemSolvingScore}
+                          onChange={(e) => setEvalForm({ ...evalForm, problemSolvingScore: e.target.value })}
+                          className="w-full accent-purple-500 cursor-pointer"
+                        />
+                      </div>
+                      <div className="bg-white/[0.02] p-2.5 rounded-lg border border-white/5">
+                        <label className="text-[10px] text-zinc-400 block mb-1">Teamwork: <strong className="text-white">{evalForm.teamworkScore}%</strong></label>
+                        <input
+                          type="range"
+                          min="40"
+                          max="100"
+                          value={evalForm.teamworkScore}
+                          onChange={(e) => setEvalForm({ ...evalForm, teamworkScore: e.target.value })}
+                          className="w-full accent-purple-500 cursor-pointer"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-[10px] text-zinc-400 block mb-1 font-semibold">Recommendation Decision</label>
+                        <select
+                          value={evalForm.recommendation}
+                          onChange={(e) => setEvalForm({ ...evalForm, recommendation: e.target.value })}
+                          className="w-full p-2 rounded-lg bg-zinc-900 border border-zinc-700 text-white text-xs"
+                        >
+                          <option value="HIRE">HIRE — Immediate Placement Offer</option>
+                          <option value="SHORTLIST">SHORTLIST — Next Interview Round</option>
+                          <option value="CONSIDER">CONSIDER — Conditional Talent</option>
+                          <option value="REJECT">REJECT — Profile Misaligned</option>
+                          <option value="FUTURE_POOL">FUTURE_POOL — Candidate for Future Batch</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="text-[10px] text-zinc-400 block mb-1 font-semibold">Observed Gaps / Missing Competencies</label>
+                        <input
+                          type="text"
+                          value={evalForm.weaknesses}
+                          onChange={(e) => setEvalForm({ ...evalForm, weaknesses: e.target.value })}
+                          placeholder="e.g. Automated HL7 testing, FHIR integration"
+                          className="w-full p-2 rounded-lg bg-zinc-900 border border-zinc-700 text-white text-xs"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] text-zinc-400 block mb-1 font-semibold">Qualitative Feedback to Candidate</label>
+                      <textarea
+                        rows={2}
+                        value={evalForm.feedback}
+                        onChange={(e) => setEvalForm({ ...evalForm, feedback: e.target.value })}
+                        className="w-full p-2 rounded-lg bg-zinc-900 border border-zinc-700 text-white text-xs"
+                      />
+                    </div>

@@ -552,4 +552,134 @@ export default function InstitutionDashboard() {
                     </span>
                   </div>
                 </div>
+     {/* Filters HUD */}
+                <div className="p-5 rounded-2xl bg-zinc-900/60 border border-zinc-800 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3.5 shadow-lg">
+                  <input
+                    type="text"
+                    value={studentFilters.search}
+                    onChange={(e) => setStudentFilters({ ...studentFilters, search: e.target.value })}
+                    placeholder="Search name, roll no, goal..."
+                    className="bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-zinc-200 focus:outline-none focus:border-indigo-500 font-medium"
+                  />
 
+                  <select
+                    value={studentFilters.department}
+                    onChange={(e) => setStudentFilters({ ...studentFilters, department: e.target.value })}
+                    className="bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-zinc-200 focus:outline-none font-medium"
+                  >
+                    <option value="">All Departments</option>
+                    {institutionInfo?.departments?.map((dep, i) => (
+                      <option key={i} value={dep}>{dep}</option>
+                    ))}
+                  </select>
+
+                  <select
+                    value={studentFilters.batch}
+                    onChange={(e) => setStudentFilters({ ...studentFilters, batch: e.target.value })}
+                    className="bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-zinc-200 focus:outline-none font-medium"
+                  >
+                    <option value="">All Batches</option>
+                    <option value="2025">Batch 2025</option>
+                    <option value="2026">Batch 2026</option>
+                    <option value="2027">Batch 2027</option>
+                  </select>
+
+                  <select
+                    value={studentFilters.readiness}
+                    onChange={(e) => setStudentFilters({ ...studentFilters, readiness: e.target.value })}
+                    className="bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-zinc-200 focus:outline-none font-medium"
+                  >
+                    <option value="">All Readiness</option>
+                    <option value="ready">Placement Ready (&ge;70)</option>
+                    <option value="progressing">Progressing (40-69)</option>
+                    <option value="at_risk">At Risk (&lt;40)</option>
+                  </select>
+
+                  <select
+                    value={studentFilters.placementStatus}
+                    onChange={(e) => setStudentFilters({ ...studentFilters, placementStatus: e.target.value })}
+                    className="bg-zinc-950 border border-zinc-800 rounded-xl px-3.5 py-2.5 text-xs text-zinc-200 focus:outline-none font-medium"
+                  >
+                    <option value="">All Placement Status</option>
+                    <option value="PLACED">Placed / Offer</option>
+                    <option value="IN_PROCESS">In Process / Interview</option>
+                    <option value="APPLIED">Applied</option>
+                    <option value="NOT_APPLIED">Not Applied</option>
+                  </select>
+                </div>
+
+                {/* Cohort Table */}
+                {students.length === 0 ? (
+                  <div className="p-16 border border-dashed border-zinc-800 rounded-3xl bg-zinc-900/30 text-center text-sm text-zinc-400 font-medium">
+                    No students match the current filter criteria.
+                  </div>
+                ) : (
+                  <div className="border border-zinc-800 rounded-2xl overflow-hidden bg-zinc-900/40 shadow-xl">
+                    <table className="w-full text-left border-collapse text-xs">
+                      <thead>
+                        <tr className="border-b border-zinc-800 bg-zinc-950/80 text-zinc-300 font-bold uppercase tracking-wider text-[11px]">
+                          <th className="p-4 font-bold">Student Name</th>
+                          <th className="p-4 font-bold">Department</th>
+                          <th className="p-4 font-bold">Batch</th>
+                          <th className="p-4 font-bold">Target Role</th>
+                          <th className="p-4 font-bold">Readiness</th>
+                          <th className="p-4 font-bold">Placement Status</th>
+                          <th className="p-4 font-bold">Assigned Mentor</th>
+                          <th className="p-4 font-bold text-right">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-zinc-800/60">
+                        {students.map((st) => (
+                          <tr key={st._id} className="hover:bg-zinc-800/40 transition-colors">
+                            <td className="p-4">
+                              <span className="font-bold text-white text-sm block">{st.name}</span>
+                              <span className="text-xs text-zinc-400 font-mono mt-0.5">{st.registrationNumber || 'Pending'}</span>
+                            </td>
+                            <td className="p-4 text-zinc-200 font-medium">{st.department}</td>
+                            <td className="p-4 text-zinc-300 font-mono font-medium">{st.batch}</td>
+                            <td className="p-4 text-indigo-300 font-bold">{st.targetRole || 'Engineering'}</td>
+                            <td className="p-4">
+                              <span
+                                className={`font-mono font-black px-2.5 py-1 rounded-lg text-xs ${
+                                  st.readinessScore >= 70
+                                    ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
+                                    : st.readinessScore >= 40
+                                    ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/30'
+                                    : 'bg-rose-500/15 text-rose-300 border border-rose-500/30'
+                                }`}
+                              >
+                                {st.readinessScore}/100
+                              </span>
+                            </td>
+                            <td className="p-4">
+                              <span
+                                className={`text-[10px] uppercase font-mono px-2.5 py-1 rounded-full font-bold ${
+                                  st.placementStatus === 'PLACED'
+                                    ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
+                                    : st.placementStatus === 'IN_PROCESS'
+                                    ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30'
+                                    : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
+                                }`}
+                              >
+                                {st.placementStatus}
+                              </span>
+                            </td>
+                            <td className="p-4 text-zinc-300 font-medium">
+                              {st.assignedMentor?.name || <span className="text-zinc-500 font-normal">Unassigned</span>}
+                            </td>
+                            <td className="p-4 text-right">
+                              <button
+                                onClick={() => handleViewStudent360(st)}
+                                className="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-sm"
+                              >
+                                View 360°
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}

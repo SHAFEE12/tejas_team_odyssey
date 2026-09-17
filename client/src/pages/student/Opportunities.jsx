@@ -496,7 +496,23 @@ function QuickApplyModal({ opp, onClose, onConfirm, submitting }) {
             onClick={() => onConfirm(opp._id)}
             className="px-5 py-2 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs shadow-lg shadow-orange-600/25 transition-all disabled:opacity-50 flex items-center gap-2 cursor-pointer"
           >
-            
+             {submitting ? (
+              <>
+                <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span>Transmitting…</span>
+              </>
+            ) : (
+              <>
+                <span>Confirm & Submit</span>
+                <Icon d={ICONS.arrow} size={12} />
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
           </button>
 
       </div>

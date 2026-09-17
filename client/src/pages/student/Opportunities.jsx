@@ -271,3 +271,11 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
 
   const workModeLabel = opp.workMode === 'remote' || opp.remote ? 'Remote' :
                         opp.workMode === 'hybrid' ? 'Flexible Schedule' : 'In office';
+
+                     return (
+    <div
+      id={`opp-card-${opp._id}`}
+      className="group relative flex flex-col justify-between rounded-[28px] p-6 sm:p-7 cursor-pointer transition-all duration-300 bg-[#0f121d] hover:bg-[#141726] text-zinc-100 border border-white/[0.08] hover:border-orange-500/40 shadow-[0_12px_36px_rgba(0,0,0,0.5)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.7),0_0_20px_rgba(249,115,22,0.06)] hover:-translate-y-0.5"
+      onClick={() => onView(opp)}
+    ></div>
+    

@@ -558,10 +558,24 @@ function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
             onClick={onClose}
             className="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.08] transition-colors cursor-pointer shrink-0"
           >
-
+          <Icon d={ICONS.close} size={18} />
           </button>
+        </div>
 
-      </div>
+        <div className="flex flex-col gap-6 p-6">
+          {/* Metadata Badges */}
+          <div className="flex flex-wrap gap-2 items-center">
+            <span className="px-3 py-1 rounded-xl text-xs font-medium capitalize bg-white/[0.05] text-zinc-300 border border-white/[0.08]">
+              {opp.type}
+            </span>
+            <span className="px-3 py-1 rounded-xl text-xs font-medium bg-white/[0.05] text-zinc-300 border border-white/[0.08]">
+              {opp.workMode === 'remote' || opp.remote ? 'Remote' : 'In office'}
+            </span>
+            <span className="px-3 py-1 rounded-xl text-xs font-mono font-bold bg-emerald-500/10 text-emerald-300 border border-emerald-500/25">
+              {opp.fitScore ?? 0}% Fit Score
+            </span>
+          </div>
 
+        
           
       

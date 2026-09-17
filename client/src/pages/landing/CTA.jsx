@@ -954,3 +954,27 @@ export default function CTA({ onLogin, onRegister }) {
       targetDirectionX: 1,
       targetDirectionY: 0
     };
+
+    /* =========================================================
+       POINTER / TOUCH INTERACTION
+       Normal autonomous movement stays unchanged.
+       Near pointer/touch: pause -> glow -> fast movement.
+    ========================================================= */
+
+    const interaction = {
+      phase: "normal",
+      until: 0,
+      pointerNear: false,
+      lastPointer: null
+    };
+
+    const INTERACTION = {
+      triggerRadius: 105,
+      pauseDuration: 520,
+      fastDuration: 5000,
+      fastMultiplier: 4.8,
+      glowMultiplier: 2.8,
+      glowBlur: 16,
+      glowWidth: 1.45,
+      exitMargin: 90
+    };

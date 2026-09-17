@@ -885,4 +885,12 @@ export default function Opportunities() {
                 return acc;
               }, {});
             }, [applications]);
-          
+           return (
+              <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-7 flex flex-col gap-6 animate-fadeIn font-sans">
+                {/* Toast Feedback */}
+                {toast && (
+                  <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 rounded-2xl border text-xs font-semibold shadow-2xl transition-all ${
+                    toast.type === 'error'
+                      ? 'bg-rose-950/95 border-rose-800 text-rose-200'
+                      : 'bg-[#0c0e17]/95 border-white/20 text-white'
+                  }`}></div>

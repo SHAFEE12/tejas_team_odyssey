@@ -936,3 +936,48 @@ export default function InstitutionDashboard() {
                 </div>
               </div>
             )}
+      {/* ── TAB: INDUSTRY DEMAND VS SUPPLY ────────────────────────── */}
+            {activeTab === 'industry' && (
+              <div className="flex flex-col gap-8">
+                {/* Hero Header */}
+                <div className="rounded-3xl border border-zinc-800/90 bg-gradient-to-r from-zinc-900 via-zinc-900/70 to-zinc-950 p-6 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xl">
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-3.5">
+                      Market Alignment Telemetry
+                    </div>
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight">
+                      Student Supply vs. Industry Demand
+                    </h1>
+                    <p className="text-sm md:text-base text-zinc-300 font-medium mt-2 max-w-2xl leading-relaxed">
+                      Live market intelligence comparing catalog opportunity requirements directly against placement-ready students.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Sub-KPI HUD */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Catalog Openings</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-white tracking-tight">
+                        {industryDemand.comparisons.reduce((acc, c) => acc + (c.demand || 0), 0)}
+                      </span>
+                      <span className="text-sm font-semibold text-zinc-400">openings</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Active hiring requirements
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">High Priority Gaps</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-rose-400 tracking-tight">
+                        {industryDemand.comparisons.filter(c => c.priority === 'HIGH').length}
+                      </span>
+                      <span className="text-sm font-semibold text-zinc-400">skills</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Urgent curriculum update
+                    </span>
+                  </div>

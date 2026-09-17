@@ -890,3 +890,25 @@
 //     </section>
 //   );
 // }
+
+
+
+
+import { useEffect, useRef } from 'react';
+import useScrollReveal from './useScrollReveal';
+import logo from '../../assets/images/logo co.png';
+
+export default function CTA({ onLogin, onRegister }) {
+  const [sectionRef, isRevealed] = useScrollReveal({ threshold: 0.15 });
+
+  const canvasRef = useRef(null);
+  const spiderRef = useRef(null);
+  const sectionElementRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const spider = spiderRef.current;
+    const section = sectionElementRef.current;
+
+    if (!canvas || !spider || !section) return;

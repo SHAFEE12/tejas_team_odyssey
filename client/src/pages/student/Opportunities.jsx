@@ -770,3 +770,16 @@ const TYPE_OPTIONS = [
   { value: 'part-time', label: 'Part-time' },
   { value: 'contract', label: 'Contract' },
 ];
+   
+export default function Opportunities() {
+  const [tab, setTab] = useState('discover'); // 'discover' | 'matches' | 'pipeline'
+  const [opportunities, setOpportunities] = useState([]);
+  const [applications, setApplications] = useState([]);
+  const [matches, setMatches] = useState([]);
+  const [loadingMatches, setLoadingMatches] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [saving, setSaving] = useState(null);
+  const [selected, setSelected] = useState(null);
+  const [applyModalOpp, setApplyModalOpp] = useState(null);
+  const [toast, setToast] = useState(null);

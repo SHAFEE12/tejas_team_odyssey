@@ -829,4 +829,7 @@ export default function Opportunities() {
         getOpportunities(params),
         getApplications(),
       ]);
+        useEffect(() => {
+          fetchData();
+        }, [fetchData]);
       

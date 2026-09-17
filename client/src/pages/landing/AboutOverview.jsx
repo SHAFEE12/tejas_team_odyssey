@@ -112,3 +112,32 @@ export default function AboutOverview() {
             </div>
           </div>
         </div>
+
+        {/* 4 Core Values Grid matching Framer */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {values.map((val, index) => (
+            <div
+              key={val.id}
+              style={{ transitionDelay: `${index * 100}ms` }}
+              className={`p-6 rounded-2xl bg-[#131415] border border-white/10 hover:border-[#fc8200]/40 transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1 shadow-lg hover:shadow-[#fc8200]/5 ${
+                isRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+            >
+              <div className="space-y-3">
+                <h3 className="text-lg font-semibold text-white tracking-tight">
+                  {val.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                  {val.description}
+                </p>
+              </div>
+
+              <div className="pt-4 mt-4 border-t border-white/5 flex items-center justify-between text-[11px] font-mono text-zinc-400 group-hover:text-zinc-400">
+                <span>0{index + 1}</span>
+                <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform text-[#fc8200]">
+                  arrow_forward
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>

@@ -981,3 +981,74 @@ export default function InstitutionDashboard() {
                       Urgent curriculum update
                     </span>
                   </div>
+                       <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Ready Supply</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-emerald-400 tracking-tight">
+                        {industryDemand.comparisons.reduce((acc, c) => acc + (c.readyStudents || 0), 0)}
+                      </span>
+                      <span className="text-sm font-semibold text-zinc-400">candidates</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Placement-ready students
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Net Supply Deficit</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-amber-400 tracking-tight">
+                        {industryDemand.comparisons.reduce((acc, c) => acc + (c.gap || 0), 0)}
+                      </span>
+                      <span className="text-sm font-semibold text-zinc-400">positions</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Unfulfilled campus demand
+                    </span>
+                  </div>
+                </div>
+
+                {industryDemand.comparisons.length === 0 ? (
+                  <div className="p-16 border border-dashed border-zinc-800 rounded-3xl bg-zinc-900/30 text-center text-sm text-zinc-400 font-medium">
+                    No industry demand data available in the opportunity catalog.
+                  </div>
+                ) : (
+                  <div className="border border-zinc-800 rounded-2xl overflow-hidden bg-zinc-900/40 shadow-xl">
+                    <table className="w-full text-left border-collapse text-xs">
+                      <thead>
+                        <tr className="border-b border-zinc-800 bg-zinc-950/80 text-zinc-300 font-bold uppercase tracking-wider text-[11px]">
+                          <th className="p-4 font-bold">Required Skill</th>
+                          <th className="p-4 font-bold">Industry Demand</th>
+                          <th className="p-4 font-bold">Capable Students</th>
+                          <th className="p-4 font-bold">Placement Ready</th>
+                          <th className="p-4 font-bold">Supply Gap</th>
+                          <th className="p-4 font-bold">Remediation Priority</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-zinc-800/60">
+                        {industryDemand.comparisons.map((c, idx) => (
+                          <tr key={idx} className="hover:bg-zinc-800/40 transition-colors">
+                            <td className="p-4 font-bold text-white text-sm">{c.skill}</td>
+                            <td className="p-4 font-mono text-zinc-200 font-bold">{c.demand} openings</td>
+                            <td className="p-4 font-mono text-zinc-300">{c.capableStudents}</td>
+                            <td className="p-4 font-mono text-emerald-400 font-bold">{c.readyStudents}</td>
+                            <td className="p-4 font-mono text-amber-400 font-bold">{c.gap} deficit</td>
+                            <td className="p-4">
+                              <span
+                                className={`text-[10px] font-mono uppercase px-2.5 py-1 rounded-full font-bold ${
+                                  c.priority === 'HIGH'
+                                    ? 'bg-rose-500/15 text-rose-300 border border-rose-500/30'
+                                    : 'bg-zinc-800 text-zinc-300 border border-zinc-700'
+                                }`}
+                              >
+                                {c.priority}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}

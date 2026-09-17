@@ -783,3 +783,9 @@ export default function Opportunities() {
   const [selected, setSelected] = useState(null);
   const [applyModalOpp, setApplyModalOpp] = useState(null);
   const [toast, setToast] = useState(null);
+
+    // Filters
+  const [filterType, setFilterType] = useState('');
+  const [filterDomain, setFilterDomain] = useState('');
+  const [filterRemote, setFilterRemote] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');

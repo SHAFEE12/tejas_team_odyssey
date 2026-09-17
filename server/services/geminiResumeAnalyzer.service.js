@@ -2,15 +2,14 @@
  * geminiResumeAnalyzer.service.js
  *
  * Google Gemini AI Resume Analyzer & Multimodal Evaluation Engine.
- * Powered by Google Gemini API.
  *
  * Features:
- * - High-accuracy AI extraction of candidate info, technical skills,
- *   experience, education, and projects
- * - ATS compatibility evaluation, quantified achievement detection,
- *   and actionable recommendations
- * - Multimodal document support (PDF, DOCX, Images, Text)
- * - Zero-downtime deterministic fallback if Gemini is offline or rate-limited
+ * - Structured resume extraction
+ * - ATS compatibility evaluation
+ * - Multimodal PDF/image support
+ * - Automatic Gemini model fallback
+ * - Deterministic fallback when Gemini is unavailable
+ * - API key loaded only from environment variables
  */
 
 'use strict';
@@ -18,6 +17,13 @@
 const https = require('https');
 const { analyzeResumeDocument } = require('./resumeAnalyzer.service');
 
+/**
+ * Never hard-code API credentials in source code.
+ *
+ * Configure one of these environment variables:
+ * GEMINI_API_KEY
+ * LLM_API_KEY
+ */
 const GEMINI_API_KEY =
   process.env.GEMINI_API_KEY ||
   process.env.LLM_API_KEY ||
@@ -31,7 +37,7 @@ const PREFERRED_MODELS = [
 ];
 
 /**
- * Probe Google Gemini API to verify connectivity and active model
+ * Probe Gemini API and determine whether the service is available.
  */
 async function checkGeminiHealth(apiKey = GEMINI_API_KEY) {
   const startTime = Date.now();
@@ -63,28 +69,27 @@ async function checkGeminiHealth(apiKey = GEMINI_API_KEY) {
           (res) => {
             let body = '';
 
-            res.on('data', (c) => (body += c));
+            res.on('data', (chunk) => {
+              body += chunk;
+            });
 
-            res.on('end', () =>
+            res.on('end', () => {
               resolve({
                 statusCode: res.statusCode,
-              })
-            );
+                body,
+              });
+            });
           }
         );
 
         req.on('timeout', () => {
           req.destroy();
-          resolve({
-            statusCode: 408,
-          });
+          resolve({ statusCode: 408 });
         });
 
-        req.on('error', () =>
-          resolve({
-            statusCode: 500,
-          })
-        );
+        req.on('error', () => {
+          resolve({ statusCode: 500 });
+        });
 
         req.end();
       });
@@ -100,7 +105,7 @@ async function checkGeminiHealth(apiKey = GEMINI_API_KEY) {
         };
       }
     } catch {
-      // try next model
+      // Try the next model.
     }
   }
 
@@ -115,14 +120,25 @@ async function checkGeminiHealth(apiKey = GEMINI_API_KEY) {
 }
 
 /**
- * Execute Gemini generateContent with automatic model fallback
+ * Execute Gemini generateContent with model fallback.
  */
-async function callGeminiGenerate(parts, apiKey = GEMINI_API_KEY) {
+async function callGeminiGenerate(
+  parts,
+  apiKey = GEMINI_API_KEY
+) {
+  if (!apiKey) {
+    throw new Error('Gemini API key is not configured');
+  }
+
   for (const model of PREFERRED_MODELS) {
     try {
       const response = await new Promise((resolve, reject) => {
         const payload = JSON.stringify({
-          contents: [{ parts }],
+          contents: [
+            {
+              parts,
+            },
+          ],
           generationConfig: {
             responseMimeType: 'application/json',
             temperature: 0.2,
@@ -144,39 +160,50 @@ async function callGeminiGenerate(parts, apiKey = GEMINI_API_KEY) {
           (res) => {
             let body = '';
 
-            res.on('data', (c) => (body += c));
+            res.on('data', (chunk) => {
+              body += chunk;
+            });
 
             res.on('end', () => {
-              if (res.statusCode >= 200 && res.statusCode < 300) {
+              if (
+                res.statusCode >= 200 &&
+                res.statusCode < 300
+              ) {
                 try {
                   const data = JSON.parse(body);
 
                   const text =
-                    data?.candidates?.[0]?.content?.parts?.[0]?.text;
+                    data?.candidates?.[0]?.content?.parts?.[0]
+                      ?.text;
 
-                  if (text) {
-                    resolve({
-                      model,
-                      text,
-                    });
-                  } else {
+                  if (!text) {
                     reject(
-                      new Error('Empty Gemini response content')
+                      new Error(
+                        'Empty Gemini response content'
+                      )
                     );
+                    return;
                   }
-                } catch (jsonErr) {
-                  reject(jsonErr);
+
+                  resolve({
+                    model,
+                    text,
+                  });
+                } catch (error) {
+                  reject(error);
                 }
-              } else {
-                reject(
-                  new Error(
-                    `Gemini ${model} HTTP ${res.statusCode}: ${body.slice(
-                      0,
-                      120
-                    )}`
-                  )
-                );
+
+                return;
               }
+
+              reject(
+                new Error(
+                  `Gemini ${model} HTTP ${res.statusCode}: ${body.slice(
+                    0,
+                    120
+                  )}`
+                )
+              );
             });
           }
         );
@@ -185,23 +212,27 @@ async function callGeminiGenerate(parts, apiKey = GEMINI_API_KEY) {
           req.destroy();
 
           reject(
-            new Error(`Gemini request timeout on ${model}`)
+            new Error(
+              `Gemini request timeout on ${model}`
+            )
           );
         });
 
-        req.on('error', (err) => reject(err));
+        req.on('error', (error) => {
+          reject(error);
+        });
 
         req.write(payload);
         req.end();
       });
 
-      if (response && response.text) {
+      if (response?.text) {
         return response;
       }
-    } catch (err) {
+    } catch (error) {
       console.warn(
         `[Gemini Resume Analyzer] ${model} attempt failed:`,
-        err.message
+        error.message
       );
     }
   }
@@ -210,7 +241,13 @@ async function callGeminiGenerate(parts, apiKey = GEMINI_API_KEY) {
 }
 
 /**
- * Analyze resume with Gemini AI and format into canonical Career Odyssey schema
+ * Analyze resume using Gemini AI.
+ *
+ * Falls back to the deterministic resume analyzer when:
+ * - Gemini API key is missing
+ * - Gemini is unavailable
+ * - Gemini returns invalid data
+ * - Any Gemini request fails
  */
 async function analyzeResumeWithGemini({
   fileBuffer,
@@ -224,105 +261,126 @@ async function analyzeResumeWithGemini({
     skillProfile
   );
 
-  // If no Gemini key, return deterministic baseline
+  // Gemini is optional. The deterministic analyzer remains available.
   if (!GEMINI_API_KEY) {
     return fallbackAnalysis;
   }
 
-  const promptText = `You are a world-class ATS Resume Parser and Senior Technical Recruiter.
-Analyze this resume thoroughly. Extract all structured details and evaluate ATS compatibility, content quality, role alignment, and evidence strength.
+  const promptText = `
+You are a world-class ATS Resume Parser and Senior Technical Recruiter.
 
-Ensure:
-1. Candidate info: extract full name, email, phone, location. If not explicitly found, use sensible defaults.
-2. Skills: extract ALL technical programming languages, frameworks, libraries, databases, cloud tools, methodologies, and tools.
-3. Experience: extract employer, job title, employment dates, location, and responsibilities.
-4. Education: extract institution, degree, major/field, and graduation year.
-5. Projects: extract project titles, technologies, and bullet points with measurable impact.
-6. Scores: calculate realistic scores (0-100) based on ATS readability, quantified metrics, and technical depth.
-   - resumeScore must be between 60 and 95 for valid resumes with clear technical content.
-   - statusLabel should be "Excellent" (90+), "Strong" (75-89), "Good Foundation" (60-74), or "Needs Improvement" (<60).
+Analyze this resume thoroughly.
 
-Return ONLY a JSON object matching this schema:
+Extract:
+1. Candidate information.
+2. Technical skills.
+3. Professional experience.
+4. Education.
+5. Projects.
+6. Relevant links.
+7. ATS compatibility.
+8. Content quality.
+9. Role alignment.
+10. Evidence strength.
+11. Actionable recommendations.
+
+Scoring:
+- All scores must be between 0 and 100.
+- resumeScore must be realistic.
+- statusLabel:
+  - Excellent: 90+
+  - Strong: 75-89
+  - Good Foundation: 60-74
+  - Needs Improvement: below 60
+
+Return ONLY valid JSON matching this structure:
+
 {
   "candidate": {
-    "name": string,
-    "email": string,
-    "phone": string or null,
-    "location": string or null
+    "name": "string",
+    "email": "string",
+    "phone": "string or null",
+    "location": "string or null"
   },
   "links": {
-    "github": string or null,
-    "linkedin": string or null,
-    "portfolio": string or null,
-    "other": [string]
+    "github": "string or null",
+    "linkedin": "string or null",
+    "portfolio": "string or null",
+    "other": []
   },
-  "summary": string,
-  "skills": [string],
+  "summary": "string",
+  "skills": [],
   "education": [
     {
-      "institution": string,
-      "degree": string,
-      "field": string,
-      "graduationYear": string or null,
-      "grade": string or null
+      "institution": "string",
+      "degree": "string",
+      "field": "string",
+      "graduationYear": "string or null",
+      "grade": "string or null"
     }
   ],
   "experience": [
     {
-      "employer": string,
-      "jobTitle": string,
-      "dates": string or null,
-      "location": string or null,
-      "description": string
+      "employer": "string",
+      "jobTitle": "string",
+      "dates": "string or null",
+      "location": "string or null",
+      "description": "string"
     }
   ],
   "projects": [
     {
-      "title": string,
-      "technologies": [string],
-      "bullets": [string],
-      "liveUrl": string or null,
-      "githubUrl": string or null
+      "title": "string",
+      "technologies": [],
+      "bullets": [],
+      "liveUrl": "string or null",
+      "githubUrl": "string or null"
     }
   ],
   "scores": {
-    "ats": number,
-    "contentQuality": number,
-    "roleAlignment": number,
-    "evidenceStrength": number,
-    "resumeScore": number
+    "ats": 0,
+    "contentQuality": 0,
+    "roleAlignment": 0,
+    "evidenceStrength": 0,
+    "resumeScore": 0
   },
-  "statusLabel": string,
+  "statusLabel": "string",
   "recommendations": [
     {
-      "category": string,
-      "text": string,
-      "impact": "High" | "Medium" | "Low"
+      "category": "string",
+      "text": "string",
+      "impact": "High"
     }
   ]
-}`;
+}
+`;
 
   try {
-    const parts = [{ text: promptText }];
+    const parts = [
+      {
+        text: promptText,
+      },
+    ];
 
-    // If extracted text is substantial, provide it
     if (
       extractedData?.text &&
       extractedData.text.length > 50
     ) {
       parts.push({
-        text: `\n\n--- EXTRACTED RESUME DOCUMENT TEXT ---\n${extractedData.text}`,
+        text:
+          '\n\n--- EXTRACTED RESUME DOCUMENT TEXT ---\n' +
+          extractedData.text,
       });
     } else if (
       fileBuffer &&
       Buffer.isBuffer(fileBuffer)
     ) {
-      // Use multimodal input if text was empty or image-based
-      const normalizedMime = mimeType?.includes('pdf')
-        ? 'application/pdf'
-        : mimeType?.startsWith('image/')
-        ? mimeType
-        : 'application/pdf';
+      const normalizedMime =
+        mimeType?.includes('pdf')
+          ? 'application/pdf'
+          : mimeType?.startsWith('image/')
+            ? mimeType
+            : 'application/pdf';
 
       parts.push({
         inlineData: {
@@ -339,10 +397,9 @@ Return ONLY a JSON object matching this schema:
 
     const parsed = JSON.parse(jsonResponse);
 
-    // Bounded score calculations
     const rawScore =
-      parsed.scores?.resumeScore ??
-      parsed.scores?.ats ??
+      parsed?.scores?.resumeScore ??
+      parsed?.scores?.ats ??
       75;
 
     const resumeScore = Math.min(
@@ -364,22 +421,23 @@ Return ONLY a JSON object matching this schema:
       }
     }
 
-    // Detected skills formatted
     const rawSkills = Array.isArray(parsed.skills)
       ? parsed.skills
       : [];
 
-    const detectedSkills = rawSkills.map((s) => ({
-      name: typeof s === 'string' ? s : s.name,
+    const detectedSkills = rawSkills.map((skill) => ({
+      name:
+        typeof skill === 'string'
+          ? skill
+          : skill?.name || 'Unknown Skill',
       category:
-        typeof s === 'object'
-          ? s.category || 'Technical'
+        typeof skill === 'object'
+          ? skill?.category || 'Technical'
           : 'Technical Skills',
       evidence: 'Detected by Gemini AI parsing',
       confidence: 0.95,
     }));
 
-    // Target role match enrichment
     const targetRole =
       skillProfile?.targetRole ||
       'Software Engineering';
@@ -392,13 +450,12 @@ Return ONLY a JSON object matching this schema:
       matchedSkills: rawSkills.slice(0, 10),
       missingSkills: [],
       score:
-        parsed.scores?.roleAlignment ||
+        parsed?.scores?.roleAlignment ||
         resumeScore,
     };
 
     const wordCount =
-      extractedData?.wordCount &&
-      extractedData.wordCount > 10
+      extractedData?.wordCount > 10
         ? extractedData.wordCount
         : (extractedData?.text || '')
             .split(/\s+/)
@@ -408,52 +465,51 @@ Return ONLY a JSON object matching this schema:
       status: 'completed',
 
       resumeScore,
-
       statusLabel,
 
       scores: {
         ats:
-          parsed.scores?.ats ??
+          parsed?.scores?.ats ??
           Math.min(100, resumeScore + 2),
 
         contentQuality:
-          parsed.scores?.contentQuality ??
+          parsed?.scores?.contentQuality ??
           resumeScore,
 
         roleAlignment:
-          parsed.scores?.roleAlignment ??
+          parsed?.scores?.roleAlignment ??
           resumeScore,
 
         evidenceStrength:
-          parsed.scores?.evidenceStrength ??
+          parsed?.scores?.evidenceStrength ??
           Math.max(0, resumeScore - 4),
       },
 
       candidate: {
         name:
-          parsed.candidate?.name ||
-          fallbackAnalysis.candidate?.name ||
+          parsed?.candidate?.name ||
+          fallbackAnalysis?.candidate?.name ||
           'Candidate',
 
         email:
-          parsed.candidate?.email ||
-          fallbackAnalysis.candidate?.email ||
+          parsed?.candidate?.email ||
+          fallbackAnalysis?.candidate?.email ||
           null,
 
         phone:
-          parsed.candidate?.phone ||
-          fallbackAnalysis.candidate?.phone ||
+          parsed?.candidate?.phone ||
+          fallbackAnalysis?.candidate?.phone ||
           null,
 
         location:
-          parsed.candidate?.location ||
-          fallbackAnalysis.candidate?.location ||
+          parsed?.candidate?.location ||
+          fallbackAnalysis?.candidate?.location ||
           null,
       },
 
       links:
-        parsed.links ||
-        fallbackAnalysis.links || {
+        parsed?.links ||
+        fallbackAnalysis?.links || {
           github: null,
           linkedin: null,
           portfolio: null,
@@ -461,27 +517,27 @@ Return ONLY a JSON object matching this schema:
         },
 
       summary:
-        parsed.summary ||
-        fallbackAnalysis.candidate?.summary ||
+        parsed?.summary ||
+        fallbackAnalysis?.candidate?.summary ||
         '',
 
       education:
         Array.isArray(parsed.education) &&
         parsed.education.length > 0
           ? parsed.education
-          : fallbackAnalysis.education || [],
+          : fallbackAnalysis?.education || [],
 
       experience:
         Array.isArray(parsed.experience) &&
         parsed.experience.length > 0
           ? parsed.experience
-          : fallbackAnalysis.experience || [],
+          : fallbackAnalysis?.experience || [],
 
       projects:
         Array.isArray(parsed.projects) &&
         parsed.projects.length > 0
           ? parsed.projects
-          : fallbackAnalysis.projects || [],
+          : fallbackAnalysis?.projects || [],
 
       skills: {
         detected: detectedSkills,
@@ -489,7 +545,7 @@ Return ONLY a JSON object matching this schema:
       },
 
       sections:
-        fallbackAnalysis.sections || {
+        fallbackAnalysis?.sections || {
           education: true,
           experience: true,
           skills: true,
@@ -500,13 +556,13 @@ Return ONLY a JSON object matching this schema:
 
       quality: {
         quantifiedAchievements:
-          (parsed.experience || []).length * 2 || 4,
+          (parsed?.experience || []).length * 2 || 4,
 
         totalBullets:
-          (parsed.experience || []).length * 3 || 6,
+          (parsed?.experience || []).length * 3 || 6,
 
         issues:
-          (parsed.scores?.ats || 80) < 70
+          (parsed?.scores?.ats || 80) < 70
             ? [
                 {
                   severity: 'warning',
@@ -539,8 +595,7 @@ Return ONLY a JSON object matching this schema:
 
       ats: {
         score:
-          parsed.scores?.ats ??
-          resumeScore,
+          parsed?.scores?.ats ?? resumeScore,
 
         warnings: [],
 
@@ -560,28 +615,15 @@ Return ONLY a JSON object matching this schema:
         wordCount,
         pageCount:
           extractedData?.pageCount || 1,
-        extractionMethod: 'gemini-3.6-flash',
+        extractionMethod: 'gemini-ai',
+        filename,
       },
     };
-  } catch (geminiErr) {
+  } catch (geminiError) {
     console.warn(
       '[Gemini Resume Analyzer] Gemini parsing failed, falling back to deterministic analyzer:',
-      geminiErr.message
+      geminiError.message
     );
-
-    fallbackAnalysis.experience =
-      Array.isArray(fallbackAnalysis.experience) &&
-      fallbackAnalysis.experience.length > 0
-        ? fallbackAnalysis.experience
-        : [
-            {
-              employer: 'Engineering Tech',
-              jobTitle: 'Software Engineer',
-              dates: '2022 - Present',
-              description:
-                'Engineering and system development responsibilities.',
-            },
-          ];
 
     fallbackAnalysis.metadata =
       fallbackAnalysis.metadata || {};
@@ -593,7 +635,7 @@ Return ONLY a JSON object matching this schema:
       'native-deterministic';
 
     fallbackAnalysis.metadata.fallbackReason =
-      geminiErr.message;
+      geminiError.message;
 
     return fallbackAnalysis;
   }

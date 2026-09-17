@@ -162,3 +162,13 @@ const COMPANY_GRADIENTS = [
   { bg: 'from-rose-500/20 via-pink-500/15 to-fuchsia-500/20', text: 'text-rose-400', border: 'border-rose-500/30' },
   { bg: 'from-teal-500/20 via-emerald-500/15 to-cyan-500/20', text: 'text-teal-400', border: 'border-teal-500/30' },
 ];
+
+function getCompanyStyle(name = '') {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = (hash << 5) - hash + name.charCodeAt(i);
+    hash |= 0;
+  }
+  const idx = Math.abs(hash) % COMPANY_GRADIENTS.length;
+  return COMPANY_GRADIENTS[idx];
+}

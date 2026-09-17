@@ -805,3 +805,134 @@ export default function InstitutionDashboard() {
                 )}
               </div>
             )}
+  {/* ── TAB: SKILL GAP RADAR ─────────────────────────────────── */}
+            {activeTab === 'skills' && (
+              <div className="flex flex-col gap-8">
+                {/* Hero Header */}
+                <div className="rounded-3xl border border-zinc-800/90 bg-gradient-to-r from-zinc-900 via-zinc-900/70 to-zinc-950 p-6 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-2xl">
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-bold uppercase tracking-wider mb-3.5">
+                      Cohort Competency Telemetry
+                    </div>
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight">
+                      Institutional Skill Gap Radar
+                    </h1>
+                    <p className="text-sm md:text-base text-zinc-300 font-medium mt-2 max-w-2xl leading-relaxed">
+                      Aggregated competencies and deficit severity across {skillGaps.totalStudentsAnalyzed} analyzed student portfolios.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Sub-KPI HUD */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Students Analyzed</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-white tracking-tight">{skillGaps.totalStudentsAnalyzed}</span>
+                      <span className="text-sm font-semibold text-zinc-400">profiles</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Portfolio skill telemetry
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Critical Deficits</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-rose-400 tracking-tight">{skillGaps.topMissingSkills.length}</span>
+                      <span className="text-sm font-semibold text-zinc-400">skills</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Demanded by industry
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Mastered Competencies</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-emerald-400 tracking-tight">{skillGaps.topCoveredSkills.length}</span>
+                      <span className="text-sm font-semibold text-zinc-400">skills</span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Verified capabilities
+                    </span>
+                  </div>
+
+                  <div className="p-6 rounded-2xl border border-zinc-800 bg-gradient-to-b from-zinc-900/80 to-zinc-950/80 shadow-xl flex flex-col justify-between hover:border-zinc-700 transition-all">
+                    <span className="text-xs md:text-sm text-zinc-300 font-bold uppercase tracking-wider">Average Gap Rate</span>
+                    <div className="mt-3 flex items-baseline gap-2.5">
+                      <span className="text-4xl md:text-5xl font-black text-indigo-400 tracking-tight">
+                        {skillGaps.topMissingSkills.length > 0 ? Math.round(skillGaps.topMissingSkills.reduce((acc, s) => acc + (s.missingPercentage || 0), 0) / skillGaps.topMissingSkills.length) : 0}%
+                      </span>
+                    </div>
+                    <span className="text-xs font-medium text-zinc-400 mt-3 pt-2.5 border-t border-zinc-800/80">
+                      Across deficit skills
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Top Missing Skills */}
+                  <div className="rounded-2xl border border-zinc-800/90 bg-gradient-to-b from-zinc-900/80 to-zinc-950/90 p-6 flex flex-col shadow-xl">
+                    <h2 className="text-lg font-bold text-white mb-1 tracking-tight">Top Missing Engineering Skills</h2>
+                    <p className="text-xs text-zinc-400 mb-5 font-medium">Required by active job opportunities but lacking in cohort</p>
+
+                    {skillGaps.topMissingSkills.length === 0 ? (
+                      <div className="p-12 text-center text-xs text-zinc-500">No critical skill gaps flagged.</div>
+                    ) : (
+                      <div className="divide-y divide-zinc-800/60">
+                        {skillGaps.topMissingSkills.map((sk, i) => (
+                          <div key={i} className="py-3.5 flex items-center justify-between gap-4">
+                            <div>
+                              <span className="text-base font-bold text-zinc-100 block">{sk.skill}</span>
+                              <span className="text-xs text-zinc-400 font-medium">
+                                Demanded in {sk.industryDemandCount} opportunities
+                              </span>
+                            </div>
+                            <div className="text-right">
+                              <span
+                                className={`text-xs font-mono font-bold px-2.5 py-1 rounded-lg ${
+                                  sk.severity === 'HIGH'
+                                    ? 'bg-rose-500/15 text-rose-300 border border-rose-500/30'
+                                    : 'bg-amber-500/15 text-amber-300 border border-amber-500/30'
+                                }`}
+                              >
+                                {sk.missingPercentage}% missing
+                              </span>
+                              <span className="text-xs text-zinc-400 font-mono block mt-1">
+                                {sk.studentsMissing} students
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+ {/* Top Covered Skills */}
+                  <div className="rounded-2xl border border-zinc-800/90 bg-gradient-to-b from-zinc-900/80 to-zinc-950/90 p-6 flex flex-col shadow-xl">
+                    <h2 className="text-lg font-bold text-white mb-1 tracking-tight">Top Mastered Competencies</h2>
+                    <p className="text-xs text-zinc-400 mb-5 font-medium">Verified student capabilities across engineering batches</p>
+
+                    {skillGaps.topCoveredSkills.length === 0 ? (
+                      <div className="p-12 text-center text-xs text-zinc-500">No student skills documented yet.</div>
+                    ) : (
+                      <div className="divide-y divide-zinc-800/60">
+                        {skillGaps.topCoveredSkills.map((sk, i) => (
+                          <div key={i} className="py-3.5 flex items-center justify-between gap-4">
+                            <span className="text-base font-bold text-zinc-100">{sk.skill}</span>
+                            <div className="text-right">
+                              <span className="text-xs font-mono font-bold text-emerald-400 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                                {sk.coveragePercentage}% coverage
+                              </span>
+                              <span className="text-xs text-zinc-400 font-mono block mt-1">
+                                {sk.studentCount} students
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}

@@ -762,3 +762,11 @@ const DOMAIN_OPTIONS = [
   { value: 'cybersecurity', label: 'Cybersecurity' },
   { value: 'mobile', label: 'Mobile Development' },
 ];
+
+const TYPE_OPTIONS = [
+  { value: '', label: 'All Employment Types' },
+  { value: 'internship', label: 'Internship' },
+  { value: 'full-time', label: 'Full-time' },
+  { value: 'part-time', label: 'Part-time' },
+  { value: 'contract', label: 'Contract' },
+];

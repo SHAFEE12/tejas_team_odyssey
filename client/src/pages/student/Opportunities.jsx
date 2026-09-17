@@ -959,4 +959,50 @@ export default function Opportunities() {
                                                                 ? 'bg-orange-500 text-white shadow-md shadow-orange-500/25'
                                                                 : 'text-zinc-400 hover:text-white'
                                                             }`}
-                                                          ></button>
+                                                          >
+                                                             <span>⚡ Best Matches</span>
+            {matches.length > 0 && (
+              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-black/40 text-white">
+                {matches.length}
+              </span>
+            )}
+          </button>
+          <button
+            onClick={() => setTab('pipeline')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              tab === 'pipeline'
+                ? 'bg-orange-500 text-white shadow-md shadow-orange-500/25'
+                : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            Pipeline ({applications.length})
+          </button>
+        </div>
+      </div>
+{/* ── DISCOVER TAB ── */}
+      {tab === 'discover' && (
+        <div className="flex flex-col gap-6">
+          {/* Filter Toolbar */}
+          <div className="flex flex-wrap items-center gap-3 p-3.5 rounded-2xl bg-[#0c0e17] border border-white/[0.08]">
+            {/* Search */}
+            <div className="relative flex-1 min-w-[220px] sm:min-w-[280px]">
+              <Icon
+                d={ICONS.search}
+                size={14}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500"
+              />   <input
+                              type="text"
+                              placeholder="Search opportunities, skills, companies…"
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                              className="w-full pl-9 pr-3 py-2 bg-zinc-900/90 border border-white/[0.08] rounded-xl text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-orange-500/50"
+                            />
+                            {searchQuery && (
+                              <button
+                                onClick={() => setSearchQuery('')}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white cursor-pointer"
+                              >
+                                ✕
+                              </button>
+                            )}
+                          </div>

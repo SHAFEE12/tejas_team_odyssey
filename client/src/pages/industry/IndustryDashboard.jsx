@@ -1070,3 +1070,105 @@ export default function IndustryDashboard() {
                             </div>
 
                   
+                            {/* Match Reasons */}
+                            {cand.matchEvaluation?.reasons?.length > 0 && (
+                              <div className="bg-purple-950/20 border border-purple-900/40 rounded p-2 text-[10px] text-purple-300 space-y-0.5">
+                                {cand.matchEvaluation.reasons.map((r, i) => (
+                                  <div key={i}>• {r}</div>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Skills Chips */}
+                            <div className="flex flex-wrap gap-1">
+                              {(cand.skills || []).slice(0, 5).map((s, i) => (
+                                <span key={i} className="text-[10px] px-1.5 py-0.2 rounded bg-zinc-800 text-zinc-400">
+                                  {s.name}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className="pt-2 border-t border-zinc-800/60 flex items-center justify-between">
+                            <button
+                              onClick={() => handleViewCandidate360(cand.studentId, talentFilters.opportunityId)}
+                              className="text-xs text-purple-400 hover:text-purple-300 underline font-medium"
+                            >
+                              View 360° Profile
+                            </button>
+                            <button
+                              onClick={() => handleOpenShortlistModal(cand)}
+                              className="px-3 py-1 rounded bg-purple-600 hover:bg-purple-500 text-white text-xs font-medium transition-colors"
+                            >
+                              Shortlist Candidate
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* ════════ TAB: SHORTLISTED / INTERVIEWS / OFFERS ════════ */}
+            {['shortlisted', 'interviews', 'offers'].includes(activeTab) && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-base font-semibold text-white capitalize">{activeTab} Candidates</h2>
+                    <p className="text-xs text-zinc-400">Review all candidate applications currently in the {activeTab} stage</p>
+                  </div>
+                </div>
+
+                {loadingStageCandidates ? (
+                  <div className="py-12 text-center text-xs text-zinc-500">Loading candidate stage cohort...</div>
+                ) : stageCandidates.length === 0 ? (
+                  <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-12 text-center space-y-2">
+                    <div className="text-2xl">📂</div>
+                    <div className="text-sm font-medium text-zinc-300">No candidates in {activeTab} stage</div>
+                    <p className="text-xs text-zinc-500">Move applicants from the pipeline or shortlist talent from search.</p>
+                  </div>
+                ) : (
+                  <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-xl overflow-hidden">
+                    <table className="w-full text-left text-xs">
+                      <thead className="bg-zinc-950/80 border-b border-zinc-800 text-zinc-400 font-medium">
+                        <tr>
+                          <th className="py-3 px-4">Candidate</th>
+                          <th className="py-3 px-4">Department</th>
+                          <th className="py-3 px-4">Opportunity</th>
+                          <th className="py-3 px-4">Stage</th>
+                          <th className="py-3 px-4">Updated</th>
+                          <th className="py-3 px-4 text-right">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-zinc-800/60 text-zinc-300">
+                        {stageCandidates.map((c) => (
+                          <tr key={c.applicationId} className="hover:bg-zinc-800/30 transition-colors">
+                            <td className="py-3 px-4 font-semibold text-white">{c.name}</td>
+                            <td className="py-3 px-4 text-zinc-400">{c.department} ({c.graduationYear})</td>
+                            <td className="py-3 px-4 text-purple-300 font-medium">{c.opportunityTitle}</td>
+                            <td className="py-3 px-4">
+                              <span className="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                                {c.status}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 text-zinc-500 font-mono text-[11px]">
+                              {new Date(c.updatedAt).toLocaleDateString()}
+                            </td>
+                            <td className="py-3 px-4 text-right">
+                              <button
+                                onClick={() => handleViewCandidate360(c.studentId, c.opportunityId)}
+                                className="px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs transition-colors"
+                              >
+                                View 360°
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}

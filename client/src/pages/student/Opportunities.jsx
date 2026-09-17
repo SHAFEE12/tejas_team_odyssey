@@ -278,4 +278,14 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
       className="group relative flex flex-col justify-between rounded-[28px] p-6 sm:p-7 cursor-pointer transition-all duration-300 bg-[#0f121d] hover:bg-[#141726] text-zinc-100 border border-white/[0.08] hover:border-orange-500/40 shadow-[0_12px_36px_rgba(0,0,0,0.5)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.7),0_0_20px_rgba(249,115,22,0.06)] hover:-translate-y-0.5"
       onClick={() => onView(opp)}
     ></div>
-    
+      {/* Top row: Circular Logo + Fit Ring indicator + Save Bookmark button */}
+        <div className="flex items-center justify-between gap-3 mb-5">
+          <div className="flex items-center gap-3">
+            <CompanyLogo company={opp.company} />
+            {opp.fitScore !== undefined && (
+              <div
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono font-bold bg-white/[0.05] border border-white/[0.08] text-zinc-200"
+                title="Deterministic Job Fit"
+              >
+                
+              </div>

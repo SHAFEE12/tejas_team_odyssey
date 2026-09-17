@@ -245,3 +245,15 @@ function CompanyLogo({ company }) {
       </div>
     );
   }
+
+  // Default circular avatar styled for dark theme
+  const style = getCompanyStyle(company);
+  const initials = getCompanyInitials(company);
+  return (
+    <div
+      className={`w-12 h-12 rounded-full bg-gradient-to-br ${style.bg} border ${style.border} flex items-center justify-center font-mono font-black text-sm ${style.text} shadow-md shrink-0`}
+    >
+      {initials}
+    </div>
+  );
+}

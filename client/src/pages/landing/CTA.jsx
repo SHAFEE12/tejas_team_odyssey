@@ -1117,3 +1117,68 @@ export default function CTA({ onLogin, onRegister }) {
         }
       }
     }
+
+    /* =========================================================
+       CHOOSE RANDOM DIRECTION
+    ========================================================= */
+
+    function chooseNewDirection() {
+      const angle =
+        Math.random() *
+        Math.PI *
+        2;
+
+      spiderPosition.targetDirectionX =
+        Math.cos(angle);
+
+      spiderPosition.targetDirectionY =
+        Math.sin(angle);
+    }
+
+    /* =========================================================
+       AUTONOMOUS SPIDER MOVEMENT
+    ========================================================= */
+
+    function respawnFromRandomSide() {
+      const side = Math.floor(Math.random() * 4);
+      const padding = 55;
+      let x;
+      let y;
+      let angle;
+
+      if (side === 0) {
+        // Top
+        x = padding + Math.random() * Math.max(1, width - padding * 2);
+        y = -INTERACTION.exitMargin;
+        angle = Math.PI / 2 + (Math.random() - 0.5) * 0.9;
+      } else if (side === 1) {
+        // Right
+        x = width + INTERACTION.exitMargin;
+        y = padding + Math.random() * Math.max(1, height - padding * 2);
+        angle = Math.PI + (Math.random() - 0.5) * 0.9;
+      } else if (side === 2) {
+        // Bottom
+        x = padding + Math.random() * Math.max(1, width - padding * 2);
+        y = height + INTERACTION.exitMargin;
+        angle = -Math.PI / 2 + (Math.random() - 0.5) * 0.9;
+      } else {
+        // Left
+        x = -INTERACTION.exitMargin;
+        y = padding + Math.random() * Math.max(1, height - padding * 2);
+        angle = (Math.random() - 0.5) * 0.9;
+      }
+
+      spiderPosition.x = x;
+      spiderPosition.y = y;
+      spiderPosition.vx = 0;
+      spiderPosition.vy = 0;
+      spiderPosition.directionX = Math.cos(angle);
+      spiderPosition.directionY = Math.sin(angle);
+      spiderPosition.targetDirectionX = spiderPosition.directionX;
+      spiderPosition.targetDirectionY = spiderPosition.directionY;
+
+      // Keep the fast state briefly so the spider visibly enters from
+      // the newly selected side before returning to normal movement.
+      interaction.phase = "fast";
+      interaction.until = performance.now() + 900;
+    }

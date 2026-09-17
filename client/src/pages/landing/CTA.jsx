@@ -912,3 +912,25 @@ export default function CTA({ onLogin, onRegister }) {
     const section = sectionElementRef.current;
 
     if (!canvas || !spider || !section) return;
+
+    const SETTINGS = {
+      spacing: 52,
+      dotRadius: 0.85,
+      dotOpacity: 0.50,
+
+      spiderRadius: 225,
+      maxConnections: 12,
+
+      movementSpeed: 0.22,
+      directionChangeSpeed: 0.004,
+      directionSmoothness: 0.020,
+      maxVelocity: 0.90,
+
+      displacement: 9,
+      spring: 0.024,
+      friction: 0.87,
+
+      lineWidth: 0.7,
+      lineColor: "255, 58, 32",
+      maxLineAlpha: 0.72
+    };

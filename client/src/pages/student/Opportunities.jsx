@@ -122,3 +122,13 @@ const SKILL_NAME_FORMAT = {
   'c++': 'C++',
   bash: 'Bash',
 };
+
+function formatSkillName(s) {
+  if (!s) return '';
+  const lower = s.toLowerCase().trim();
+  if (SKILL_NAME_FORMAT[lower]) return SKILL_NAME_FORMAT[lower];
+  return s
+    .split(' ')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+}

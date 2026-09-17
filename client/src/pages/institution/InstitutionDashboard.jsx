@@ -165,3 +165,48 @@ export default function InstitutionDashboard() {
       loadStudents();
     }
   }, [activeTab, studentFilters]);
+  // Evaluate Hiring Drive Eligibility
+  const handleCheckDriveEligibility = async (drive) => {
+    setSelectedDriveForEligibility(drive);
+    setLoadingEligibility(true);
+    try {
+      const res = await fetch(`${API_URL}/api/institution/hiring-drives/${drive._id}/eligible-students`, {
+        credentials: 'omit',
+        headers: authHeaders,
+      });
+      if (res.ok) {
+        const d = await res.json();
+        if (d.success) setEligibilityData(d.data);
+      }
+    } catch (err) {
+      showToast('Failed to compute eligibility', 'error');
+    } finally {
+      setLoadingEligibility(false);
+    }
+  };
+
+  // Assign Student to Faculty Mentor
+  const handleAssignStudent = async (e) => {
+    e.preventDefault();
+    if (!selectedAcademician || !assignStudentId) return;
+
+    try {
+      const res = await fetch(`${API_URL}/api/institution/academicians/${selectedAcademician._id}/assign-student`, {
+        method: 'POST',
+        credentials: 'omit',
+        headers: authHeaders,
+        body: JSON.stringify({ studentId: assignStudentId }),
+      });
+      const d = await res.json();
+      if (d.success) {
+        showToast('Student assigned to faculty mentor');
+        setShowAssignModal(false);
+        setAssignStudentId('');
+        loadDashboardData();
+      } else {
+        showToast(d.message || 'Error assigning student', 'error');
+      }
+    } catch (err) {
+      showToast('Error assigning student', 'error');
+    }
+  };

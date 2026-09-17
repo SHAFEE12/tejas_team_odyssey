@@ -354,6 +354,24 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
           {formatRoleTitle(opp.title)}
         </h3>
 
+           {/* Pill Tags Row (Aligned with Dashboard Theme) */}
+        <div className="flex flex-wrap gap-2 items-center mb-6">
+          <span className="px-3 py-1 rounded-xl text-xs font-medium capitalize bg-purple-500/10 text-purple-300 border border-purple-500/20">
+            {opp.type}
+          </span>
+          <span className="px-3 py-1 rounded-xl text-xs font-medium bg-teal-500/10 text-teal-300 border border-teal-500/20">
+            {workModeLabel}
+          </span>
+          <span className="px-3 py-1 rounded-xl text-xs font-medium bg-white/[0.05] text-zinc-300 border border-white/[0.07]">
+            {levelLabel}
+          </span>
+          {opp.requiredSkills?.[0] && (
+            <span className="px-3 py-1 rounded-xl text-xs font-medium bg-white/[0.03] text-zinc-400 border border-white/[0.05]">
+              {formatSkillName(opp.requiredSkills[0])}
+            </span>
+          )}
+        </div>
+      </div>
             </svg>
           </button>
               </div>

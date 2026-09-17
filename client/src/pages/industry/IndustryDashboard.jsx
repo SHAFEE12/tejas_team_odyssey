@@ -1705,3 +1705,78 @@ export default function IndustryDashboard() {
                     ))}
                   </div>
                 </div>
+ {/* Projects Portfolio */}
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-zinc-200 text-xs uppercase tracking-wider">Projects Evidence</h4>
+                  {(candidate360.projects || []).length === 0 ? (
+                    <div className="text-zinc-500 text-xs">No projects logged yet.</div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {candidate360.projects.map((proj) => (
+                        <div key={proj._id} className="bg-zinc-950/70 border border-zinc-800/80 rounded-xl p-3 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="font-semibold text-white">{proj.title}</span>
+                            <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono ${
+                              proj.evidenceStatus === 'VERIFIED' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-blue-500/20 text-blue-400'
+                            }`}>
+                              {proj.evidenceStatus}
+                            </span>
+                          </div>
+                          <p className="text-zinc-400 text-[11px] line-clamp-2">{proj.description}</p>
+                          {proj.githubUrl && (
+                            <a
+                              href={proj.githubUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-purple-400 hover:text-purple-300 text-[11px] block underline"
+                            >
+                              View Code Repository ↗
+                            </a>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* GitHub & DSA Evidence Grid */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-zinc-950/60 border border-zinc-800 rounded-xl p-3 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-zinc-300">GitHub Activity</span>
+                      <span className="text-[9px] font-mono uppercase text-zinc-500">{candidate360.github?.evidenceStatus}</span>
+                    </div>
+                    {candidate360.github?.evidenceStatus === 'CONNECTED' ? (
+                      <div className="text-[11px] text-zinc-400 space-y-0.5 pt-1">
+                        <div>Username: @{candidate360.github.username}</div>
+                        <div>Public Repos: {candidate360.github.publicRepos}</div>
+                        <div>Stars: {candidate360.github.totalStars}</div>
+                      </div>
+                    ) : (
+                      <div className="text-zinc-500 text-[11px] pt-1">No GitHub profile linked.</div>
+                    )}
+                  </div>
+
+                  <div className="bg-zinc-950/60 border border-zinc-800 rounded-xl p-3 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-zinc-300">DSA Problem Solving</span>
+                      <span className="text-[9px] font-mono uppercase text-zinc-500">{candidate360.dsa?.evidenceStatus}</span>
+                    </div>
+                    {candidate360.dsa?.totalSolved > 0 ? (
+                      <div className="text-[11px] text-zinc-400 space-y-0.5 pt-1">
+                        <div>Total Solved: <strong className="text-white">{candidate360.dsa.totalSolved}</strong></div>
+                        <div>Easy: {candidate360.dsa.easy} | Medium: {candidate360.dsa.medium} | Hard: {candidate360.dsa.hard}</div>
+                      </div>
+                    ) : (
+                      <div className="text-zinc-500 text-[11px] pt-1">No DSA stats recorded.</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}                

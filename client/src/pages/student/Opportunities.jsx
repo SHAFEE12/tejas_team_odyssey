@@ -898,4 +898,23 @@ export default function Opportunities() {
                               <span>{toast.msg}</span>
                             </div>
                           )}
-                    
+                     {/* ── Top Hero Header (Harmonized with Dashboard Obsidian Theme) ── */}
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-3xl bg-[#0c0e17] border border-white/[0.08] shadow-lg">
+                            <div className="flex items-center gap-3.5">
+                              <div className="w-10 h-10 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 shrink-0">
+                                <Icon d={ICONS.compass} size={20} />
+                              </div>
+                              <div>
+                                <div className="flex items-center gap-2.5 flex-wrap">
+                                  <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+                                    Career Opportunities
+                                  </h1>
+                                  <span className="text-[11px] font-mono text-zinc-400 bg-white/[0.06] px-2.5 py-0.5 rounded-full border border-white/[0.08]">
+                                    {opportunities.length} active roles
+                                  </span>
+                                </div>
+                                <p className="text-xs text-zinc-400 mt-0.5">
+                                  Curated openings calibrated with verified platform evidence and deterministic fit scoring.
+                                </p>
+                              </div>
+                            </div>

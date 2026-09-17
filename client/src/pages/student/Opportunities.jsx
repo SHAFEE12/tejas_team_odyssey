@@ -371,7 +371,33 @@ function OpportunityCard({ opp, onView, onSave, onApplyClick, isActioned, saving
             </span>
           )}
         </div>
-      </div>
-            </svg>
-          </button>
-              </div>
+          </div>
+
+      {/* Footer: Salary & Location on Left, Apply Now on Right */}
+      <div
+        className="flex items-end justify-between gap-4 pt-4 border-t border-white/[0.06]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="space-y-0.5 min-w-0">
+          <p className="text-base sm:text-lg font-extrabold text-white font-mono tracking-tight truncate">
+            {opp.stipend && opp.stipend !== 'Not disclosed' ? opp.stipend : '$100-150k'}
+          </p>
+          <p className="text-xs text-zinc-400 truncate">
+            {opp.location}
+          </p>
+        </div>
+
+  {isApplied ? (
+          <div className="flex items-center gap-1.5 px-4 py-2 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-bold shrink-0">
+            <Icon d={ICONS.check} size={13} />
+            <span>Applied</span>
+          </div>
+        ) : (
+          <button
+            type="button"
+            id={`btn-apply-${opp._id}`}
+            disabled={saving === opp._id}
+            onClick={() => onApplyClick(opp)}
+            className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs shadow-md shadow-orange-600/25 active:scale-95 transition-all disabled:opacity-50 cursor-pointer shrink-0"
+          ></button>
+      

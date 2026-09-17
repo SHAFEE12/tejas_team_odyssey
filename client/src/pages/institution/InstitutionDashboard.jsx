@@ -1280,3 +1280,95 @@ export default function InstitutionDashboard() {
           </>
         )}
       </main>
+   {/* ── MODAL: CREATE HIRING DRIVE ───────────────────────────────── */}
+      {showDriveModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <form
+            onSubmit={handleCreateDrive}
+            className="bg-zinc-900 border border-zinc-800 rounded-2xl max-w-lg w-full p-6 flex flex-col gap-4 shadow-2xl"
+          >
+            <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+              <h3 className="text-base font-semibold text-white">Create Campus Hiring Drive</h3>
+              <button type="button" onClick={() => setShowDriveModal(false)} className="text-zinc-400 hover:text-white">✕</button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs font-medium text-zinc-300 block mb-1">Company *</label>
+                <input
+                  type="text"
+                  required
+                  value={newDrive.company}
+                  onChange={(e) => setNewDrive({ ...newDrive, company: e.target.value })}
+                  placeholder="e.g. Stripe, AWS"
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-200"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-medium text-zinc-300 block mb-1">Drive Title *</label>
+                <input
+                  type="text"
+                  required
+                  value={newDrive.title}
+                  onChange={(e) => setNewDrive({ ...newDrive, title: e.target.value })}
+                  placeholder="e.g. Graduate Software Engineer 2026"
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-200"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs font-medium text-zinc-300 block mb-1">Min CGPA</label>
+                <input
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="10"
+                  value={newDrive.minCgpa}
+                  onChange={(e) => setNewDrive({ ...newDrive, minCgpa: e.target.value })}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-200"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-medium text-zinc-300 block mb-1">Min Readiness Score</label>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={newDrive.minReadinessScore}
+                  onChange={(e) => setNewDrive({ ...newDrive, minReadinessScore: e.target.value })}
+                  className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-200"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-xs font-medium text-zinc-300 block mb-1">Eligible Departments (comma separated)</label>
+              <input
+                type="text"
+                value={newDrive.departments}
+                onChange={(e) => setNewDrive({ ...newDrive, departments: e.target.value })}
+                placeholder="e.g. Computer Science, Electronics & Communication"
+                className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-200"
+              />
+            </div>
+
+            <div>
+              <label className="text-xs font-medium text-zinc-300 block mb-1">Required Skills (comma separated)</label>
+              <input
+                type="text"
+                value={newDrive.requiredSkills}
+                onChange={(e) => setNewDrive({ ...newDrive, requiredSkills: e.target.value })}
+                placeholder="e.g. Python, SQL, Docker"
+                className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-200"
+              />
+            </div>
+
+            <div className="pt-3 border-t border-zinc-800 flex justify-end gap-2">
+              <button type="button" onClick={() => setShowDriveModal(false)} className="px-4 py-2 rounded-xl bg-zinc-800 text-zinc-300 text-xs font-medium">Cancel</button>
+              <button type="submit" className="px-4 py-2 rounded-xl bg-indigo-600 text-white text-xs font-medium">Publish Drive</button>
+            </div>
+          </form>
+        </div>
+      )}

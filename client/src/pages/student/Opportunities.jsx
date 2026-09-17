@@ -189,3 +189,12 @@ function CompanyLogo({ company }) {
       </div>
     );
   }
+
+  
+  if (c.includes('amazon')) {
+    return (
+      <div className="w-12 h-12 rounded-full bg-black border border-white/10 flex items-center justify-center shadow-md shrink-0">
+        <span className="font-serif font-black text-white text-2xl leading-none -translate-y-0.5">a</span>
+      </div>
+    );
+  }

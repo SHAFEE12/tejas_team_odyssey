@@ -653,5 +653,37 @@ function DetailDrawer({ opp, onClose, onSave, onApplyClick, saving }) {
               </div>
             </div>
           )}
-    
-      
+           
+
+           {/* Action Footer */}
+          <div className="pt-4 border-t border-white/[0.08] flex items-center justify-end gap-3 sticky bottom-0 bg-[#0b0d16] py-4">
+            {!isActioned ? (
+              <>
+                <button
+                  disabled={saving === opp._id}
+                  onClick={() => onSave(opp._id)}
+                  className="px-4 py-2.5 rounded-2xl text-xs font-semibold border border-white/[0.1] text-zinc-300 hover:text-white hover:bg-white/[0.06] transition-all disabled:opacity-50 cursor-pointer"
+                >
+                  Save Opportunity
+                </button>
+                <button
+                  disabled={saving === opp._id}
+                  onClick={() => onApplyClick(opp)}
+                  className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold text-xs shadow-md shadow-orange-600/25 transition-all disabled:opacity-50 cursor-pointer"
+                >
+                  Apply now
+                </button>
+              </>
+            ) : (
+              <span className="text-xs font-mono text-emerald-400 flex items-center gap-1.5">
+                <Icon d={ICONS.check} size={14} />
+                Tracked as <strong className="capitalize">{opp.applicationStatus}</strong>
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+       

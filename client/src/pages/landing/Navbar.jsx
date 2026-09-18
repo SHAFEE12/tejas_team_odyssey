@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
+import logoImg from '../../assets/images/logo.png';
 
-const LOGO_SRC = '/logo.png';
+const LOGO_SRC = logoImg;
 
 export default function Navbar({ onLogin, onRegister }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

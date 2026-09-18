@@ -24,6 +24,7 @@ import { ROUTES } from '../../utils/constants';
 import ModernResumePreview from '../../components/resume/ModernResumePreview';
 import ResumeUpgradeStudio from '../../components/resume/ResumeUpgradeStudio';
 import EnhancvReportSidebar from '../../components/resume/EnhancvReportSidebar';
+import ResumeAnalysisLoading from '../../components/resume/ResumeAnalysisLoading';
 import { generateUpgradedResumeData } from '../../utils/resumeUpgradeEngine';
 
 /* ── Inline Icons ────────────────────────────────────────────── */
@@ -143,6 +144,7 @@ export default function Resume() {
   const [checkingStatus, setCheckingStatus] = useState(false);
 
   const fileInputRef = useRef(null);
+  const isAnalyzing = uploading || analyzing;
 
   // Refresh or check Google Gemini AI engine status
   const refreshAnalyzerStatus = useCallback(async () => {
@@ -424,7 +426,7 @@ export default function Resume() {
             <span className="text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-white/5 text-zinc-400 border border-white/10">
               Evidence-Based
             </span>
-            <button
+            {/* <button
               type="button"
               onClick={() => setShowEngineModal(true)}
               className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium transition-all cursor-pointer border ${
@@ -437,7 +439,7 @@ export default function Resume() {
               <span className={`w-2 h-2 rounded-full ${analyzerStatus?.online ? 'bg-purple-400 animate-pulse' : 'bg-amber-400'}`} />
               <span>{analyzerStatus?.online ? '✨ Gemini AI Engine' : 'Native Engine'}</span>
               {analyzerStatus?.online && <span className="text-[10px] text-purple-400/80 font-mono">({analyzerStatus?.model || 'gemini-3.6-flash'})</span>}
-            </button>
+            </button> */}
           </div>
           <p className="text-sm text-zinc-400 max-w-[650px] leading-relaxed">
             Upload your resume (PDF, Word, Images, or Text) for real text extraction, ATS compatibility evaluation,
@@ -515,21 +517,9 @@ export default function Resume() {
           <div className="h-44 rounded-2xl bg-zinc-900/60 border border-zinc-800 animate-pulse" />
           <div className="h-80 rounded-2xl bg-zinc-900/60 border border-zinc-800 animate-pulse" />
         </div>
-      ) : uploading ? (
+      ) : isAnalyzing ? (
         /* ── Uploading / Analyzing In-Progress View ── */
-        <div className="rounded-2xl border border-[var(--dash-card-border)] bg-[var(--dash-card-bg)] p-12 text-center flex flex-col items-center justify-center">
-          <div className="w-14 h-14 rounded-full bg-[#FC8200]/10 border border-[#FC8200]/20 flex items-center justify-center text-[#FC8200] mb-4 animate-bounce">
-            <Icon d={ICONS.sparkle} size={24} />
-          </div>
-          <h3 className="text-[18px] font-bold text-white mb-2">Analyzing Resume Document...</h3>
-          <p className="text-[13px] text-zinc-400 max-w-[420px] leading-relaxed mb-6">
-            Extracting text layer, verifying ATS formatting, identifying technical competencies, and
-            evaluating evidence strength.
-          </p>
-          <div className="w-48 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-            <div className="h-full bg-[#FC8200] rounded-full animate-pulse w-3/4" />
-          </div>
-        </div>
+        <ResumeAnalysisLoading />
       ) : !resumeData ? (
         /* ── Empty State / Drag & Drop Upload ── */
         <div
@@ -643,7 +633,7 @@ export default function Resume() {
             </div>
 
             <div className="flex items-center gap-2.5 flex-wrap">
-              {analysis?.metadata?.parser === 'gemini-ai' || analysis?.metadata?.engine === 'gemini-ai' ? (
+              {/* {analysis?.metadata?.parser === 'gemini-ai' || analysis?.metadata?.engine === 'gemini-ai' ? (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 font-medium">
                   <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
                   ✨ Google Gemini AI Engine
@@ -653,7 +643,7 @@ export default function Resume() {
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
                   Native Deterministic Parser
                 </span>
-              )}
+              )} */}
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/5 text-zinc-300 border border-white/10 font-medium">
                 {analysis?.metadata?.wordCount || 0} words
               </span>

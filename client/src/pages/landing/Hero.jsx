@@ -4,6 +4,7 @@ import {
   useGSAP,
   prefersReducedMotion
 } from './motion/gsapSetup';
+import InteractiveHoverButton from '../../components/magicui/interactive-hover-button';
 
 const TRAJECTORIES = [
   {
@@ -482,15 +483,14 @@ export default function Hero({
 
             <div className="hero-cta-group pt-2 flex flex-wrap items-center justify-center gap-4">
 
-              <button
-                type="button"
+              <InteractiveHoverButton
                 onClick={() =>
                   onRegister?.('student')
                 }
-                className="px-6 py-3 rounded-[48px] text-sm font-semibold text-black bg-[#ff7a00] hover:bg-[#ff9124] transition-all cursor-pointer shadow-lg shadow-orange-500/20 active:scale-95"
+                className="px-6 py-3"
               >
-                Get Started →
-              </button>
+                Get Started
+              </InteractiveHoverButton>
 
               <button
                 type="button"

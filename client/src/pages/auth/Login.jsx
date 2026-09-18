@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import AuthLayout, { AuthVisualPanel, GoogleIcon } from '../../components/auth/AuthLayout';
 
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from '../../utils/constants';
 
 const Login = ({ onRegister, onHome }) => {
   const [formData, setFormData] = useState({
@@ -53,11 +53,26 @@ const Login = ({ onRegister, onHome }) => {
         }
       );
 
-      const data = await response.json();
+      let data = {};
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        try {
+          data = await response.json();
+        } catch {
+          data = {};
+        }
+      } else {
+        const text = await response.text().catch(() => '');
+        try {
+          data = JSON.parse(text);
+        } catch {
+          data = { message: text };
+        }
+      }
 
       if (!response.ok) {
         throw new Error(
-          data.message || 'Login failed.'
+          data.message || `Login failed (${response.status})`
         );
       }
 
